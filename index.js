@@ -48,10 +48,10 @@ express.Router().post('/', function(req, res) {
 // });
 //
 // // Get authz url and redirect to it.
-// app.get('/oauth2/auth', function(req, res) {
-//     console.log('-------- ', req);
-//     res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
-// });
+app.get('/oauth2/auth', function(req, res) {
+    console.log('-------- ', req);
+    res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
+});
 //
 // app.get('/oauth2/callback', function(req, res) {
 //     var conn = new sf.Connection({ oauth2 : oauth2 });
