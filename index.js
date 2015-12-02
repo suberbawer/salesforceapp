@@ -80,9 +80,9 @@ app.get('/oauth2/auth', function(req, res) {
 //     });
 // });
 app.get('/test', function(req, res) {
-    var hola = req.body.content;
-    console.log(hola);
-    res.send(hola);
+    // var hola = req.body.content;
+    // console.log(hola);
+    res.send('hola');
 });
 app.post('/', function(req, res) {
     console.log('------- ', req.body.content);
