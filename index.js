@@ -83,7 +83,7 @@ app.post('/test', function(req, res) {
     //var hola = req.body.content;
     var hola = req.body;
     // console.log(hola);
-    res.send('hola');
+    res.send(hola);
 });
 app.post('/', function(req, res) {
     console.log('------- ', req.body.content);
