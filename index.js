@@ -79,7 +79,7 @@ app.get('/oauth2/auth', function(req, res) {
 //         }
 //     });
 // });
-app.get('/test/:ids', function(req, res) {
+app.post('/test/:ids', function(req, res) {
     // var hola = req.body.content;
     let hola = req.params.ids;
     console.log(hola);
