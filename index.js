@@ -1,4 +1,4 @@
-var sf = require('./nodemodules/node-salesforce');
+var sf = require('node-salesforce');
 var express = require('express');
 var app = express();
 
