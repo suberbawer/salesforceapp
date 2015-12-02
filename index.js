@@ -5,6 +5,7 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.bodyParser());
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
@@ -81,9 +82,9 @@ app.get('/oauth2/auth', function(req, res) {
 // });
 app.post('/test', function(req, res) {
     //var hola = req.body.content;
-    var hola = req.body;
+    let hola = req.body;
     // console.log(hola);
-    res.send(hola);
+    res.send(req.body);
 });
 app.post('/', function(req, res) {
     console.log('------- ', req.body.content);
