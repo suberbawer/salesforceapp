@@ -62,6 +62,6 @@ app.get('/oauth2/auth', function(req, res) {
 app.post('/test', function(req, res) {
     //var hola = req.body.content;
     var hola = req.body;
-    console.log('5234523452345243524352345234523452345234 ',hola);
+    console.log('5234523452345243524352345234523452345234 ',req);
     res.send('hola');
 });
