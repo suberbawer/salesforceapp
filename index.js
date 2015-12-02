@@ -64,5 +64,5 @@ app.post('/test', function(req, res) {
     //var hola = req.body.content;
     var hola = req.body;
     console.log(hola);
-    res.send(req.body);
+    res.send('hola');
 });
