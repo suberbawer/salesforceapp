@@ -30,3 +30,26 @@ var oauth2 = new sf.OAuth2({
 app.get('/oauth2/auth', function(req, res) {
   res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 });
+
+app.post('/getAttachment', function(req, res) {
+    console.log('------- ', req.body.content);
+    res.send('SUCESS');
+// try
+// {
+//     fs.writeFile("myfilefromSalesForce", req.body.content, function(err)
+//     {
+//         if(err)
+//         {
+//             throw err;
+//         }
+//         else
+//         {
+//             ;
+//         }
+//     });
+// }
+// catch(err)
+// {
+//     res.send(err);
+// }
+});
