@@ -1,4 +1,4 @@
-var sf = require('node-salesforce');
+var sf = require('lodash');
 var express = require('express');
 var app = express();
 
