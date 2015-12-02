@@ -79,7 +79,7 @@ app.get('/oauth2/auth', function(req, res) {
 //         }
 //     });
 // });
-app.get('/test', function(req, res) {
+app.get('/', function(req, res) {
     return 'hola';
 });
 app.post('/', function(req, res) {
