@@ -81,7 +81,8 @@ express.Router().post('/', function(req, res) {
 //     });
 // });
 app.get('/test', function(req, res) {
-}
+    return 'hola';
+});
 app.post('/', function(req, res) {
     console.log('------- ', req.body.content);
     res.send('SUCESS');
