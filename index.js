@@ -79,9 +79,9 @@ app.get('/oauth2/auth', function(req, res) {
 //         }
 //     });
 // });
-app.post('/test/:ids', function(req, res) {
+app.post('/test/:att', function(req, res) {
     // var hola = req.body.content;
-    let hola = req.params.ids;
+    var hola = req.params.att;
     console.log(hola);
     res.send('hola');
 });
