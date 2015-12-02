@@ -20,26 +20,6 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-express.Router().post('/', function(req, res) {
-  // get the obm as an object
-  //var message = unwrapMessage(req.body);
-  alert(req.body);
-  // if (!_.isEmpty(message)) {
-  //   // some something #awesome with message
-  //   console.log(message);
-  //   // return a 'true' Ack to Salesforce
-  //   res.send(
-  //     '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:out="http://soap.sforce.com/2005/09/outbound"><soapenv:Header/><soapenv:Body><out:notificationsResponse><out:Ack>true</out:Ack></out:notificationsResponse></soapenv:Body></soapenv:Envelope>'
-  //   );
-  // } else {
-  //   // return a 'false' Ack to Salesforce
-  //   res.send(
-  //     '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:out="http://soap.sforce.com/2005/09/outbound"><soapenv:Header/><soapenv:Body><out:notificationsResponse><out:Ack>false</out:Ack></out:notificationsResponse></soapenv:Body></soapenv:Envelope>'
-  //   );
-  // }
-
-});
-
 var oauth2 = new sf.OAuth2({
   // we can change loginUrl to connect to sandbox or prerelease env.
   // loginUrl : 'https://test.salesforce.com',
@@ -85,26 +65,4 @@ app.post('/test', function(req, res) {
     let hola = req.body;
     // console.log(hola);
     res.send(req.body);
-});
-app.post('/', function(req, res) {
-    console.log('------- ', req.body.content);
-    res.send('SUCESS');
-// try
-// {
-//     fs.writeFile("myfilefromSalesForce", req.body.content, function(err)
-//     {
-//         if(err)
-//         {
-//             throw err;
-//         }
-//         else
-//         {
-//             ;
-//         }
-//     });
-// }
-// catch(err)
-// {
-//     res.send(err);
-// }
 });
