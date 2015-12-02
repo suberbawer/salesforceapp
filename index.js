@@ -31,7 +31,7 @@ app.get('/oauth2/auth', function(req, res) {
   res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 });
 
-app.post('/getAttachment', function(req, res) {
+app.post('/', function(req, res) {
     console.log('------- ', req.body.content);
     res.send('SUCESS');
 // try
