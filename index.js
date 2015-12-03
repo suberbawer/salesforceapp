@@ -35,9 +35,8 @@ app.listen(app.get('port'), function() {
 });
 
 app.get('/', function(req, res) {
-    console.log('////////////////////////// code', req.query.code);
     var conn = new sf.Connection({ oauth2 : oauth2 });
-    var code = req.param('code');
+    var code = req.query.code;
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.error(err); }
         // Now you can get the access token, refresh token, and instance URL information.
@@ -49,18 +48,18 @@ app.get('/', function(req, res) {
         console.log("Org ID: " + userInfo.organizationId);
         // ...
     });
-    var records = [];
-    conn.query("SELECT Id, Name FROM Account", function(err, result) {
-        if (err) { return console.error(err); }
-        console.log("total : " + result.totalSize);
-        console.log("fetched : " + result.records.length);
-        console.log("done ? : " + result.done);
-        if (!result.done) {
-            // you can use the locator to fetch next records set.
-            // Connection#queryMore()
-            console.log("next records URL : " + result.nextRecordsUrl);
-        }
-    });
+    // var records = [];
+    // conn.query("SELECT Id, Name FROM Account", function(err, result) {
+    //     if (err) { return console.error(err); }
+    //     console.log("total : " + result.totalSize);
+    //     console.log("fetched : " + result.records.length);
+    //     console.log("done ? : " + result.done);
+    //     if (!result.done) {
+    //         // you can use the locator to fetch next records set.
+    //         // Connection#queryMore()
+    //         console.log("next records URL : " + result.nextRecordsUrl);
+    //     }
+    // });
 });
 
 // var records = [];
