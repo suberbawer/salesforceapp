@@ -75,12 +75,12 @@ app.post('/test', function(req, res) {
     attIds = req.body;
     console.log('5234523452345243524352345234523452345234 ', attIds);
     console.log('-----------------------------  ', res);
-    console.log('-----------------------------  ', res.success);
+    //console.log('-----------------------------  ', res.success);
     if (attId) {
         message = 'SUCCESS';
-        if (res.success) {
-            res.redirect('/');
-        }
+        // if (res.success) {
+        //     res.redirect('/');
+        // }
     }
     res.send(message);
 });
