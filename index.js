@@ -36,7 +36,7 @@ app.listen(app.get('port'), function() {
 
 app.get('/', function(req, res) {
     var conn = new sf.Connection({ oauth2 : oauth2 });
-    let code = req.query.code;
+    var code = req.query.code;
     console.log('-------------code', req.query.code);
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.log('erroooooooooor ',err); }
