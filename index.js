@@ -30,8 +30,8 @@ app.get('/', function(req, res) {
     res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+app.listen(app.put('/test'), function() {
+  console.log('Node app is running on port');
 });
 
 app.get('/callback', function(req, res) {
@@ -76,7 +76,6 @@ app.post('/test', function(req, res) {
     console.log('5234523452345243524352345234523452345234 ', attIds);
     if (attIds) {
         message = 'SUCCESS';
-        res.redirect('/');
     }
     res.send(message);
 });
