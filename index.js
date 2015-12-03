@@ -37,31 +37,31 @@ app.listen(app.get('port'), function() {
 app.get('/', function(req, res) {
     var conn = new sf.Connection({ oauth2 : oauth2 });
     var code = req.query.code;
-    console.log('-------------code', req.query);
+    console.log('-------------code', req.query.code);
     conn.authorize(code, function(err, userInfo) {
-        if (err) { return console.error(err); }
+        if (err) { return console.log('erroooooooooor ',err); }
         // Now you can get the access token, refresh token, and instance URL information.
         // Save them to establish connection next time.
-        console.log('-----token', conn.accessToken);
-        console.log('------refresh', conn.refreshToken);
-        console.log('------url ', conn.instanceUrl);
-        console.log('***********userInfo ', userInfo);
-        console.log("User ID: " + userInfo.id);
-        console.log("Org ID: " + userInfo.organizationId);
+        // console.log('-----token', conn.accessToken);
+        // console.log('------refresh', conn.refreshToken);
+        // console.log('------url ', conn.instanceUrl);
+        // console.log('***********userInfo ', userInfo);
+        // console.log("User ID: " + userInfo.id);
+        // console.log("Org ID: " + userInfo.organizationId);
         // ...
     });
-    // var records = [];
-    // conn.query("SELECT Id, Name FROM Account", function(err, result) {
-    //     if (err) { return console.error(err); }
-    //     console.log("total : " + result.totalSize);
-    //     console.log("fetched : " + result.records.length);
-    //     console.log("done ? : " + result.done);
-    //     if (!result.done) {
-    //         // you can use the locator to fetch next records set.
-    //         // Connection#queryMore()
-    //         console.log("next records URL : " + result.nextRecordsUrl);
-    //     }
-    // });
+    var records = [];
+    conn.query("SELECT Id, Name FROM Account", function(err, result) {
+        if (err) { return console.error(err); }
+        console.log("total : " + result.totalSize);
+        console.log("fetched : " + result.records.length);
+        console.log("done ? : " + result.done);
+        if (!result.done) {
+            // you can use the locator to fetch next records set.
+            // Connection#queryMore()
+            console.log("next records URL : " + result.nextRecordsUrl);
+        }
+    });
 });
 
 // var records = [];
