@@ -36,9 +36,9 @@ app.listen(app.get('port'), function() {
 
 app.get('/', function(req, res) {
     var conn = new sf.Connection({ oauth2 : oauth2 });
-    var code = req.query.code;
+    let code = req.query.code;
     console.log('-------------code', req.query.code);
-    conn.authorize(code, function(err, userInfo) {
+    conn.authorize('aPrxlJVwTHScBoWw2sd2B4ydT8qioIzre5e6.JEnSBC5pg0oyoO0dOI3.18URSVMdVGERmIhtw%3D%3D', function(err, userInfo) {
         if (err) { return console.log('erroooooooooor ',err); }
         // Now you can get the access token, refresh token, and instance URL information.
         // Save them to establish connection next time.
