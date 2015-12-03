@@ -41,9 +41,10 @@ app.get('/', function(req, res) {
         if (err) { return console.error(err); }
         // Now you can get the access token, refresh token, and instance URL information.
         // Save them to establish connection next time.
-        console.log(conn.accessToken);
-        console.log(conn.refreshToken);
-        console.log(conn.instanceUrl);
+        console.log('-----token', conn.accessToken);
+        console.log('------refresh', conn.refreshToken);
+        console.log('------url ', conn.instanceUrl);
+        console.log('***********userInfo ', userInfo);
         console.log("User ID: " + userInfo.id);
         console.log("Org ID: " + userInfo.organizationId);
         // ...
