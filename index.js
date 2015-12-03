@@ -30,9 +30,9 @@ app.get('/', function(req, res) {
     res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 });
 
-// app.listen(app.put('/test'), function() {
-//   console.log('Node app is running on port');
-// });
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
 
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({ oauth2 : oauth2 });
