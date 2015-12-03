@@ -76,7 +76,7 @@ app.post('/test', function(req, res) {
     console.log('5234523452345243524352345234523452345234 ', attIds);
     console.log('-----------------------------  ', res);
     //console.log('-----------------------------  ', res.success);
-    if (attId) {
+    if (attIds) {
         message = 'SUCCESS';
         // if (res.success) {
         //     res.redirect('/');
