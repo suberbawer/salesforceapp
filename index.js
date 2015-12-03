@@ -21,7 +21,7 @@ var oauth2 = new sf.OAuth2({
     // loginUrl : 'https://test.salesforce.com',
     clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
     clientSecret : '4671395917099215169',
-    redirectUri : 'https://salesforceapi.herokuapp.com'
+    redirectUri : 'https://google.com.uy'
 });
 
 // Get authz url and redirect to it.
