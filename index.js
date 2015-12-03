@@ -34,8 +34,8 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-app.get('/', function(req, res) {
-    console.log('code', req.param('code'))
+app.get('/:code', function(req, res) {
+    console.log('code', req.param.code);
     var conn = new sf.Connection({ oauth2 : oauth2 });
     var code = req.param('code');
     conn.authorize(code, function(err, userInfo) {
