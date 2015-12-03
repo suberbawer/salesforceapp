@@ -27,8 +27,7 @@ var oauth2 = new sf.OAuth2({
 // Get authz url and redirect to it.
 app.get('/oauth2/auth', function(req, res) {
     console.log('---------------------- estoy adentro de la autorizacion');
-    res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }))
-    ;
+    res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 });
 
 app.listen(app.get('port'), function() {
