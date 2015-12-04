@@ -60,12 +60,16 @@ app.get('/callback', function(req, res) {
     var code = req.query.code;
 
     conn.authorize(code, function(err, userInfo) {
-        if (err) { return console.log('erroooooooooor ',err); }
-        // have to save in database to persist nex time connection
-        req.session.accesToken = conn.accesToken;
-        req.session.refreshToken = conn.refreshToken;
+        if (err) { return console.error(err); }
+
+        console.log('Access Token: ' + conn.accessToken);
+        console.log('Instance URL: ' + conn.instanceUrl);
+        console.log('User ID: ' + userInfo.id);
+        console.log('Org ID: ' + userInfo.organizationId);
+
+        req.session.accessToken = conn.accessToken;
         req.session.instanceUrl = conn.instanceUrl;
-        res.redirect('/attachments');
+        res.redirect('/accounts');
     });
 });
 
@@ -77,7 +81,7 @@ app.get('/callback', function(req, res) {
 //     }
 // });
 
-app.get('/attachments', function(req, res) {
+app.get('/accounts', function(req, res) {
     console.log('acces token', accesToken);
     // if auth has not been set, redirect to index
     // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
