@@ -71,7 +71,7 @@ app.get('/callback', function(req, res) {
         var aT = encodeURIComponent(conn.accessToken);
         var iUrl = encodeURIComponent(conn.instanceUrl);
         var rT = encodeURIComponent(conn.refreshToken);
-        console.log('**************getrecords ', dbOperations.getRecords(req,res));
+        
         console.log('2', Object.keys(dbOperations.getRecords(req,res)).length);
         if ( false ) {
             res.redirect('/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT);
