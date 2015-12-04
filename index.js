@@ -73,7 +73,7 @@ app.get('/callback', function(req, res) {
         var rT = encodeURIComponent(conn.refreshToken);
         console.log('getrecords ', dbOperations.getRecords(req,res));
         if (!dbOperations.getRecords(req,res)) {
-            res.redirect('/db/addRecord?aT=' + aT + '&?iUrl=' + iUrl + '&?rT=' + rT);
+            res.redirect('/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT);
         } else {
             res.redirect('/accounts');
         }
