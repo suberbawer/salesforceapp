@@ -68,9 +68,9 @@ app.get('/callback', function(req, res) {
         console.log('Instance URL: ' + conn.instanceUrl);
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
-            var aT = conn.accessToken.toString();
-            var iUrl = conn.instanceUrl.toString();
-            var rT = conn.refreshToken.toString();
+            var aT = encodeURIComponent(conn.accessToken);
+            var iUrl = encodeURIComponent(conn.instanceUrl);
+            var rT = encodeURIComponent(conn.refreshToken);
 
             res.redirect('/db/addRecord?aT=' + aT + '?iUrl=' + iUrl + '?rT=' + rT;
         // } esle {
