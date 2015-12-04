@@ -18,7 +18,7 @@ module.exports = {
     },
     addRecord : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
+        var conString = process.env.DATABASE_URL || "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
         var login_data = new pg.Client(conString);
         login_data.connect();
         var query = login_data.query("insert into login_data (accessToken, refreshToken, instanceUrl) "+
@@ -32,7 +32,7 @@ module.exports = {
     },
      delRecord : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
+        var conString = process.env.DATABASE_URL || "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
         var login_data = new pg.Client(conString);
         login_data.connect();
         var query = login_data.query( "Delete from login_data Where id ="+req.query.id);
@@ -45,7 +45,7 @@ module.exports = {
     createTable : function(req, res){
         console.log('logiin url database ');
         var pg = require('pg');
-        var conString = 'postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8';
+        var conString = process.env.DATABASE_URL || 'postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8';
         var loggin_data = new pg.Client(conString);
         loggin_data.connect();
         var query = loggin_data.query( "CREATE TABLE loggin_data"+
@@ -63,7 +63,7 @@ module.exports = {
     },
     dropTable : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL || "postgres://postgres:Welcome123@localhost:5432/postgres";
+        var conString = process.env.DATABASE_URL || "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
         var login_data = new pg.Client(conString);
         login_data.connect();
         var query = login_data.query( "Drop TABLE login_data");
