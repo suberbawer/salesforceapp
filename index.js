@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var url = require('url') ;
+var dbOperations = require("./database/database.js");
 
 var conn;
 var attIds;
@@ -69,6 +70,7 @@ app.get('/callback', function(req, res) {
 
         req.session.accessToken = conn.accessToken;
         req.session.instanceUrl = conn.instanceUrl;
+                                conn.refreshToken;
         res.redirect('/accounts');
     });
 });
@@ -111,4 +113,21 @@ app.post('/test', function(req, res) {
         message = 'SUCCESS';
     }
     res.send(message);
+});
+
+// DATABAES OPERATIONS
+app.get('/db/readRecords', function(req,res){
+    dbOperations.getRecords(req,res);
+});
+app.get('/db/addRecord', function(req,res){
+    dbOperations.addRecord(req,res);
+});
+app.get('/db/delRecord', function(req,res){
+    dbOperations.delRecord(req,res);
+});
+app.get('/db/createTable', function(req,res){
+    dbOperations.createTable(req,res);
+});
+app.get('/db/dropTable', function(req,res){
+    dbOperations.dropTable(req,res);
 });
