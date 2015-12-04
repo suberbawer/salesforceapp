@@ -68,13 +68,16 @@ app.get('/callback', function(req, res) {
         console.log('Instance URL: ' + conn.instanceUrl);
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
+        
         var aT = encodeURIComponent(conn.accessToken);
         var iUrl = encodeURIComponent(conn.instanceUrl);
         var rT = encodeURIComponent(conn.refreshToken);
+
+        var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
         console.log('**************getrecords ', dbOperations.getRecords(req,res));
         // console.log('2', Object.keys(dbOperations.getRecords(req,res)).length);
         if ( false ) {
-            res.redirect('/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT);
+            res.redirect(url);
         } else {
             res.redirect('/accounts');
         }
