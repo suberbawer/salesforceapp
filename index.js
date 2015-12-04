@@ -68,14 +68,15 @@ app.get('/callback', function(req, res) {
         console.log('Instance URL: ' + conn.instanceUrl);
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
-            var aT = encodeURIComponent(conn.accessToken);
-            var iUrl = encodeURIComponent(conn.instanceUrl);
-            var rT = encodeURIComponent(conn.refreshToken);
-
+        var aT = encodeURIComponent(conn.accessToken);
+        var iUrl = encodeURIComponent(conn.instanceUrl);
+        var rT = encodeURIComponent(conn.refreshToken);
+        console.log('getrecords, 'dbOperations.getRecords(req,res));
+        if (!dbOperations.getRecords(req,res)) {
             res.redirect('/db/addRecord?aT=' + aT + '&?iUrl=' + iUrl + '&?rT=' + rT);
-        // } esle {
-        //     res.redirect('/accounts');
-        // }
+        } esle {
+            res.redirect('/accounts');
+        }
     });
 });
 
