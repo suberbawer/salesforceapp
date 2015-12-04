@@ -44,9 +44,9 @@ module.exports = {
         });
     },
     createTable : function(req, res){
-        console.log('logiin url database ', process.env.DATABASE_URL)
+        console.log('logiin url database ');
         var pg = require('pg');
-        var conString = (process.env.DATABASE_URL || 'postgres://tkunpksswvhgmw:sTvuo7Eb8iO5T5Vy_1WOY3K5Ox@ec2-54-204-40-209.compute-1.amazonaws.com:5432/d97mbunfmhvufm');
+        var conString = process.env.DATABASE_URL;
         var loggin_data = new pg.LogginData(conString);
         loggin_data.connect();
         var query = loggin_data.query( "CREATE TABLE loggin_data"+
