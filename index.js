@@ -3,7 +3,11 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var url = require('url') ;
+
 var attIds;
+var accesToken;
+var refreshToken;
+var instanceUrl;
 
 app.use(bodyParser());
 app.use(bodyParser.json());
@@ -53,15 +57,15 @@ app.listen(app.get('port'), function() {
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({ oauth2 : oauth2 });
     var code = req.query.code;
-    console.log('-------------code', req.query.code);
-    var urlObj = url.parse(req.url,true).query;
-    console.log('-code object', urlObj);
-    console.log('-code from obj', urlObj.code);
 
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.log('erroooooooooor ',err); }
         // Now you can get the access token, refresh token, and instance URL information.
         // Save them to establish connection next time.
+        accesToken = conn.accesToken;
+        refreshToken = conn.refreshToken;
+        instanceUrl = conn.instanceUrl;
+
         console.log('-----token', conn.accessToken);
         console.log('------refresh', conn.refreshToken);
         console.log('------url ', conn.instanceUrl);
@@ -91,6 +95,13 @@ app.get('/callback', function(req, res) {
 //         console.log("fetched : " + result.records.length);
 //     }
 // });
+
+jsforce.browser.on('connect', function(conn) {
+  conn.query('SELECT Id, Name FROM Account', function(err, res) {
+    if (err) { return console.error(err); }
+    console.log('resultado de la query ', res);
+  });
+});
 
 app.post('/test', function(req, res) {
     var message = 'ERROR';
