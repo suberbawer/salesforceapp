@@ -45,22 +45,22 @@ module.exports = {
     },
     createTable : function(req, res){
         console.log('logiin url database ');
-        var pg = require('pg');
-        var conString = process.env.DATABASE_URL;
-        var loggin_data = new pg.LogginData(conString);
-        loggin_data.connect();
-        var query = loggin_data.query( "CREATE TABLE loggin_data"+
-                                    "("+
-                                      "accesToken character varying(50),"+
-                                      "refreshToken character varying(50),"+
-                                      "instanceUrl character varying(50),"+
-                                      "id serial NOT NULL"+
-                                    ")");
-        query.on("end", function (result) {
-            loggin_data.end();
-            res.write('Table Schema Created');
-            res.end();
-        });
+        // var pg = require('pg');
+        // var conString = process.env.DATABASE_URL;
+        // var loggin_data = new pg.LogginData(conString);
+        // loggin_data.connect();
+        // var query = loggin_data.query( "CREATE TABLE loggin_data"+
+        //                             "("+
+        //                               "accesToken character varying(50),"+
+        //                               "refreshToken character varying(50),"+
+        //                               "instanceUrl character varying(50),"+
+        //                               "id serial NOT NULL"+
+        //                             ")");
+        // query.on("end", function (result) {
+        //     loggin_data.end();
+        //     res.write('Table Schema Created');
+        //     res.end();
+        // });
     },
     dropTable : function(req, res){
         var pg = require('pg');
