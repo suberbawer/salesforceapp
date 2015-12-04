@@ -68,15 +68,15 @@ app.get('/callback', function(req, res) {
         console.log('Instance URL: ' + conn.instanceUrl);
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
-        
+
         var aT = encodeURIComponent(conn.accessToken);
         var iUrl = encodeURIComponent(conn.instanceUrl);
         var rT = encodeURIComponent(conn.refreshToken);
 
         var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
         console.log('**************getrecords ', dbOperations.getRecords(req,res));
-        // console.log('2', Object.keys(dbOperations.getRecords(req,res)).length);
-        if ( false ) {
+        if ( dbOperations.getRecords(req,res) == undefined) {
+            // add tokens and user data
             res.redirect(url);
         } else {
             res.redirect('/accounts');
@@ -93,9 +93,8 @@ app.get('/callback', function(req, res) {
 // });
 
 app.get('/accounts', function(req, res) {
-    var test = res.redirect('/db/readRecords');
-    console.log('acces token', test.accessToken);
-
+    // var test = res.redirect('/db/readRecords');
+    // console.log('acces token', test.accessToken);
     // if auth has not been set, redirect to index
     // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
 
@@ -119,7 +118,7 @@ app.get('/accounts', function(req, res) {
 app.post('/test', function(req, res) {
     var message = 'ERROR';
     attIds = req.body;
-    console.log('5234523452345243524352345234523452345234 ', attIds);
+    console.log('attachments ids+++++++++ ', attIds);
     if (attIds) {
         message = 'SUCCESS';
     }
@@ -137,7 +136,6 @@ app.get('/db/delRecord', function(req,res){
     dbOperations.delRecord(req,res);
 });
 app.get('/db/createTable', function(req,res){
-    console.log('createtable');
     dbOperations.createTable(req,res);
 });
 app.get('/db/dropTable', function(req,res){
