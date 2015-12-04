@@ -2,6 +2,7 @@ var sf = require('node-salesforce');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var url = require('url') ;
 var attIds;
 
 app.use(bodyParser());
@@ -21,7 +22,7 @@ var oauth2 = new sf.OAuth2({
     // loginUrl : 'https://test.salesforce.com',
     clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
     clientSecret : '4671395917099215169',
-    redirectUri : 'https://google.com.uy'
+    redirectUri : 'https://salesforceapi.herokuapp.com/callback'
 });
 
 // Get authz url and redirect to it.
@@ -34,10 +35,12 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-app.get('/oauth2/callback', function(req, res) {
+app.get('/callback', function(req, res) {
     var conn = new sf.Connection({ oauth2 : oauth2 });
     var code = req.query.code;
     console.log('-------------code', req.query.code);
+    console.log('----------code object', url.parse(req.url,true).query);
+
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.log('erroooooooooor ',err); }
         // Now you can get the access token, refresh token, and instance URL information.
