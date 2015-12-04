@@ -79,9 +79,9 @@ app.get('/callback', function(req, res) {
 
 app.get('/attachments', function(req, res) {
     // if auth has not been set, redirect to index
-    if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
+    if (!accessToken || !instanceUrl) { res.redirect('/'); }
 
-    var query = 'SELECT id, name FROM Account LIMIT 50000';
+    var query = "SELECT Id, Name FROM Account";
     // open connection with client's stored OAuth details
     var conn = new jsforce.Connection({
         accessToken: accesToken,
