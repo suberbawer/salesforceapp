@@ -39,7 +39,9 @@ app.get('/callback', function(req, res) {
     var conn = new sf.Connection({ oauth2 : oauth2 });
     var code = req.query.code;
     console.log('-------------code', req.query.code);
-    console.log('----------code object', url.parse(req.url,true).query);
+    var urlObj = url.parse(req.url,true).query;
+    console.log('-code object', urlObj);
+    console.log('-code from obj', urlObj.code);
 
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.log('erroooooooooor ',err); }
