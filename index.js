@@ -122,7 +122,7 @@ app.get('/db/readRecords', function(req,res){
     dbOperations.getRecords(req,res);
 });
 app.get('/db/getRecordsPirate', function(req,res){
-    dbOperations.getRecordsPirate(req,res);
+    dbOperations.pirate(req,res);
 });
 app.get('/db/addRecord', function(req,res){
     dbOperations.addRecord(req,res);
