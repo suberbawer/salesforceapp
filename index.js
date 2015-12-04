@@ -71,7 +71,7 @@ app.get('/callback', function(req, res) {
         var aT = encodeURIComponent(conn.accessToken);
         var iUrl = encodeURIComponent(conn.instanceUrl);
         var rT = encodeURIComponent(conn.refreshToken);
-        console.log('getrecords, 'dbOperations.getRecords(req,res));
+        console.log('getrecords ', dbOperations.getRecords(req,res));
         if (!dbOperations.getRecords(req,res)) {
             res.redirect('/db/addRecord?aT=' + aT + '&?iUrl=' + iUrl + '&?rT=' + rT);
         } esle {
