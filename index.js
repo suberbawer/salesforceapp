@@ -46,7 +46,7 @@ var oauth2 = new sf.OAuth2({
 //     });
 
 // Get authz url and redirect to it.
-app.get('/oauth2/auth', function(req, res) {
+app.get('/', function(req, res) {
     console.log('---------------------- estoy adentro de la autorizacion');
     res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 });
@@ -56,38 +56,17 @@ app.listen(app.get('port'), function() {
 });
 
 app.get('/callback', function(req, res) {
-    conn = new sf.Connection({ oauth2 : oauth2 });
+    var conn = new sf.Connection({ oauth2 : oauth2 });
     var code = req.query.code;
 
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.log('erroooooooooor ',err); }
-        // Now you can get the access token, refresh token, and instance URL information.
-        // Save them to establish connection next time.
+        // have to save in database to persist nex time connection
         accesToken = conn.accesToken;
         refreshToken = conn.refreshToken;
         instanceUrl = conn.instanceUrl;
-
-        console.log('-----token', conn.accessToken);
-        console.log('------refresh', conn.refreshToken);
-        console.log('------url ', conn.instanceUrl);
-        console.log('***********userInfo ', userInfo);
-        console.log("User ID: " + userInfo.id);
-        console.log("Org ID: " + userInfo.organizationId);
-        // ...
+        res.redirect('/attachments');
     });
-    // var records = [];
-    // conn.query("SELECT Id, Name FROM Account", function(err, result) {
-    //     if (err) { return console.error(err); }
-    //     console.log("total : " + result.totalSize);
-    //     console.log("fetched : " + result.records.length);
-    //     console.log("done ? : " + result.done);
-    //     if (!result.done) {
-    //         // you can use the locator to fetch next records set.
-    //         // Connection#queryMore()
-    //         console.log("next records URL : " + result.nextRecordsUrl);
-    //     }
-    // });
-    console.log('afuera********');
 });
 
 // var records = [];
@@ -97,6 +76,27 @@ app.get('/callback', function(req, res) {
 //         console.log("fetched : " + result.records.length);
 //     }
 // });
+
+app.get('/attachments', function(req, res) {
+    // if auth has not been set, redirect to index
+    if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
+
+    var query = 'SELECT id, name FROM Document__c LIMIT 50000';
+    // open connection with client's stored OAuth details
+    var conn = new jsforce.Connection({
+        accessToken: accesToken,
+        instanceUrl: instanceUrl
+    });
+
+    conn.query(query, function(err, result) {
+        if (err) {
+            console.error(err);
+            res.redirect('/');
+        }
+        console.log('resultado de query ', result);
+        //res.render('accounts', {title: 'Accounts List', accounts: result.records});
+    });
+});
 
 app.post('/test', function(req, res) {
     var message = 'ERROR';
