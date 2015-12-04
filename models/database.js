@@ -46,7 +46,7 @@ module.exports = {
     createTable : function(req, res){
         console.log('logiin url database ', process.env.DATABASE_URL)
         var pg = require('pg');
-        var conString = 'postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8';
+        var conString = (process.env.DATABASE_URL || 'postgres://tkunpksswvhgmw:sTvuo7Eb8iO5T5Vy_1WOY3K5Ox@ec2-54-204-40-209.compute-1.amazonaws.com:5432/d97mbunfmhvufm');
         var loggin_data = new pg.LogginData(conString);
         loggin_data.connect();
         var query = loggin_data.query( "CREATE TABLE loggin_data"+
