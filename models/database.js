@@ -57,38 +57,21 @@ module.exports = {
     // });
     createTable : function(req, res){
         var pg = require('pg');
-        // var conString = process.env.DATABASE_URL || 'postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8';
-        // // var loggin_data = new pg.ttttt(conString);
-        // pg.connect(conString);
-        var bati = "CREATE TABLE loggin_data"+
+        var conString = process.env.DATABASE_URL || 'postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8';
+        var loggin_data = new pg.DATATATAß(conString);
+        loggin_data.connect();
+        var query = loggin_data.query( "CREATE TABLE loggin_data"+
                                     "("+
                                       "accesToken charvar(200),"+
                                       "refreshToken charvar(200),"+
                                       "instanceUrl charvar(200),"+
                                       "id serial NOT NULL"+
-                                    ")";
-        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-          client.query(bati, function(err, result) {
-            done();
-            if (err)
-             { console.error(err); response.send("Error " + err); }
-            else
-            { console.log(result.rows) ; }
-
-          });
+                                    ")");
+        query.on("end", function (result) {
+            loggin_data.end();
+            res.write('Table Schema Created');
+            res.end();
         });
-        // var query = loggin_data.query( "CREATE TABLE loggin_data"+
-        //                             "("+
-        //                               "accesToken charvar(200),"+
-        //                               "refreshToken charvar(200),"+
-        //                               "instanceUrl charvar(200),"+
-        //                               "id serial NOT NULL"+
-        //                             ")");
-        // query.on("end", function (result) {
-        //     loggin_data.end();
-        //     res.write('Table Schema Created');
-        //     res.end();
-        // });
     },
     dropTable : function(req, res){
         var pg = require('pg');
