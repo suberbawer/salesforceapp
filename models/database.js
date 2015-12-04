@@ -5,7 +5,7 @@ module.exports = {
         var conString = process.env.DATABASE_URL || "postgres://postgres:Welcome123@localhost:5432/postgres";
         var login_data = new pg.LogginData(conString);
         login_data.connect();
-        var query = login_data.query("select * from login_data");
+        var query = login_data.query("select id, accessToken, refreshToken, instanceUrl from login_data");
         query.on("row", function (row, result) {
             result.addRow(row);
         });
