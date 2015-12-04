@@ -90,13 +90,13 @@ app.get('/callback', function(req, res) {
     console.log('afuera********');
 });
 
-var records = [];
-conn.query("SELECT Id, Name FROM Account", function(err, result) {
-    if (!err) {
-        console.log("total : " + result.totalSize);
-        console.log("fetched : " + result.records.length);
-    }
-});
+// var records = [];
+// conn.query("SELECT Id, Name FROM Account", function(err, result) {
+//     if (!err) {
+//         console.log("total : " + result.totalSize);
+//         console.log("fetched : " + result.records.length);
+//     }
+// });
 
 app.post('/test', function(req, res) {
     var message = 'ERROR';
