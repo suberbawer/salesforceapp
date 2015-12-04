@@ -75,7 +75,7 @@ app.get('/callback', function(req, res) {
         // if (!dbOperations.getRecords(req,res)) {
         //     res.redirect('/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT);
         // } else {
-        //     res.redirect('/accounts');
+            res.redirect('/accounts');
         // }
     });
 });
@@ -90,7 +90,7 @@ app.get('/callback', function(req, res) {
 
 app.get('/accounts', function(req, res) {
     // var test = res.redirect('/db/readRecords');
-    // console.log('acces token', test);
+    console.log('acces token');
     // console.log('acces token', test.accessToken);
     //
     // // if auth has not been set, redirect to index
