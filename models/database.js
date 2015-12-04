@@ -1,7 +1,6 @@
 module.exports = {
     getRecords: function(req, res) {
         var pg = require('pg');
-        console.log('logiin url database ', process.env.DATABASE_URL)
         //You can run command "heroku config" to see what is Database URL from Heroku belt
         var conString = process.env.DATABASE_URL || "postgres://postgres:Welcome123@localhost:5432/postgres";
         var login_data = new pg.LogginData(conString);
