@@ -71,12 +71,13 @@ app.get('/callback', function(req, res) {
         var aT = encodeURIComponent(conn.accessToken);
         var iUrl = encodeURIComponent(conn.instanceUrl);
         var rT = encodeURIComponent(conn.refreshToken);
-        //console.log('getrecords ', dbOperations.getRecords(req,res));
-        // if (!dbOperations.getRecords(req,res)) {
-        //     res.redirect('/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT);
-        // } else {
+        console.log('getrecords ', dbOperations.getRecords(req,res));
+
+        if (dbOperations.getRecords(req,res).length > 0) {
+            res.redirect('/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT);
+        } else {
             res.redirect('/accounts');
-        // }
+        }
     });
 });
 
@@ -89,28 +90,27 @@ app.get('/callback', function(req, res) {
 // });
 
 app.get('/accounts', function(req, res) {
-    // var test = res.redirect('/db/readRecords');
-    console.log('acces token');
-    // console.log('acces token', test.accessToken);
-    //
-    // // if auth has not been set, redirect to index
-    // // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
-    //
-    // var query = "SELECT Id, Name FROM Account";
-    // // open connection with client's stored OAuth details
-    // var conn = new jsforce.Connection({
-    //     accessToken: req.session.accesToken,
-    //     instanceUrl: req.session.instanceUrl
-    // });
-    //
-    // conn.query(query, function(err, result) {
-    //     if (err) {
-    //         console.error('error-----', err);
-    //         res.redirect('/');
-    //     }
-    //     console.log('resultado de query ', result);
-    //     //res.render('accounts', {title: 'Accounts List', accounts: result.records});
-    // });
+    var test = res.redirect('/db/readRecords');
+    console.log('acces token', test.accessToken);
+
+    // if auth has not been set, redirect to index
+    // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
+
+    var query = "SELECT Id, Name FROM Account";
+    // open connection with client's stored OAuth details
+    var conn = new jsforce.Connection({
+        accessToken: req.session.accesToken,
+        instanceUrl: req.session.instanceUrl
+    });
+
+    conn.query(query, function(err, result) {
+        if (err) {
+            console.error('error-----', err);
+            res.redirect('/');
+        }
+        console.log('resultado de query ', result);
+        //res.render('accounts', {title: 'Accounts List', accounts: result.records});
+    });
 });
 
 app.post('/test', function(req, res) {
