@@ -74,7 +74,7 @@ app.get('/callback', function(req, res) {
         var rT = encodeURIComponent(conn.refreshToken);
 
         var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
-        console.log('**************getrecords ', dbOperations.getRecords(req,res));
+        //console.log('**************getrecords ', dbOperations.getRecords(req,res));
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             res.redirect(url);
@@ -83,14 +83,6 @@ app.get('/callback', function(req, res) {
         // }
     });
 });
-
-// var records = [];
-// conn.query("SELECT Id, Name FROM Account", function(err, result) {
-//     if (!err) {
-//         console.log("total : " + result.totalSize);
-//         console.log("fetched : " + result.records.length);
-//     }
-// });
 
 app.get('/accounts', function(req, res) {
     // var test = res.redirect('/db/readRecords');
