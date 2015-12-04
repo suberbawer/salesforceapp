@@ -81,7 +81,7 @@ app.get('/attachments', function(req, res) {
     // if auth has not been set, redirect to index
     if (!req.session.accessToken || !req.session.instanceUrl) { res.redirect('/'); }
 
-    var query = 'SELECT id, name FROM Document__c LIMIT 50000';
+    var query = 'SELECT id, name FROM Account LIMIT 50000';
     // open connection with client's stored OAuth details
     var conn = new jsforce.Connection({
         accessToken: accesToken,
