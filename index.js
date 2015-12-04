@@ -74,7 +74,7 @@ app.get('/callback', function(req, res) {
         console.log('getrecords ', dbOperations.getRecords(req,res));
         if (!dbOperations.getRecords(req,res)) {
             res.redirect('/db/addRecord?aT=' + aT + '&?iUrl=' + iUrl + '&?rT=' + rT);
-        } esle {
+        } else {
             res.redirect('/accounts');
         }
     });
