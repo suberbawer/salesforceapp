@@ -90,7 +90,7 @@ app.get('/attachments', function(req, res) {
 
     conn.query(query, function(err, result) {
         if (err) {
-            console.error(err);
+            console.error('error-----', err);
             res.redirect('/');
         }
         console.log('resultado de query ', result);
