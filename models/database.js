@@ -44,6 +44,7 @@ module.exports = {
         });
     },
     createTable : function(req, res){
+        console.log('logiin url database ', process.env.DATABASE_URL)
         var pg = require('pg');
         var conString = process.env.DATABASE_URL || "postgres://postgres:Welcome123@localhost:5432/postgres";
         var loggin_data = new pg.LogginData(conString);

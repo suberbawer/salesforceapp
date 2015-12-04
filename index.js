@@ -124,18 +124,18 @@ app.post('/test', function(req, res) {
 });
 
 // // DATABAES OPERATIONS
-// app.get('/db/readRecords', function(req,res){
-//     dbOperations.getRecords(req,res);
-// });
-// app.get('/db/addRecord', function(req,res){
-//     dbOperations.addRecord(req,res);
-// });
-// app.get('/db/delRecord', function(req,res){
-//     dbOperations.delRecord(req,res);
-// });
-// app.get('/db/createTable', function(req,res){
-//     dbOperations.createTable(req,res);
-// });
-// app.get('/db/dropTable', function(req,res){
-//     dbOperations.dropTable(req,res);
-// });
+app.get('/db/readRecords', function(req,res){
+    dbOperations.getRecords(req,res);
+});
+app.get('/db/addRecord', function(req,res){
+    dbOperations.addRecord(req,res);
+});
+app.get('/db/delRecord', function(req,res){
+    dbOperations.delRecord(req,res);
+});
+app.get('/db/createTable', function(req,res){
+    dbOperations.createTable(req,res);
+});
+app.get('/db/dropTable', function(req,res){
+    dbOperations.dropTable(req,res);
+});
