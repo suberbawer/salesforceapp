@@ -68,11 +68,11 @@ app.get('/callback', function(req, res) {
         console.log('Instance URL: ' + conn.instanceUrl);
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
-
-        res.redirect('/db/addRecord?aT=' + conn.accessToken;
-        res.redirect('/db/addRecord?iUrl=' + conn.instanceUrl;
-        res.redirect('/db/addRecord?iUrl=' + conn.refreshToken;
-        res.redirect('/accounts');
+        if (!dbOperations.getRecords(req,res)) {
+            res.redirect('/db/addRecord?aT=' + conn.accessToken + '?iUrl=' + conn.instanceUrl + '?rT=' + conn.refreshToken;
+        } esle {
+            res.redirect('/accounts');
+        }
     });
 });
 

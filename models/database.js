@@ -22,7 +22,7 @@ module.exports = {
         var login_data = new pg.LogginData(conString);
         login_data.connect();
         var query = login_data.query("insert into login_data (accessToken, refreshToken, instanceUrl) "+
-                                "values ('"+req.query.aT+"','"+req.query.rAT+"','"+
+                                "values ('"+req.query.aT+"','"+req.query.rT+"','"+
                                     req.query.iUrl+"')");
         query.on("end", function (result) {
             login_data.end();
