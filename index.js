@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var url = require('url') ;
+var pg = require('pg');
 var dbOperations = require("./database/database.js");
 
 var conn;
