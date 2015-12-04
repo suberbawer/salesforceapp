@@ -62,9 +62,9 @@ app.get('/callback', function(req, res) {
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.log('erroooooooooor ',err); }
         // have to save in database to persist nex time connection
-        accesToken = conn.accesToken;
-        refreshToken = conn.refreshToken;
-        instanceUrl = conn.instanceUrl;
+        req.session.accesToken = conn.accesToken;
+        req.session.refreshToken = conn.refreshToken;
+        req.session.instanceUrl = conn.instanceUrl;
         res.redirect('/attachments');
     });
 });
@@ -85,8 +85,8 @@ app.get('/attachments', function(req, res) {
     var query = "SELECT Id, Name FROM Account";
     // open connection with client's stored OAuth details
     var conn = new jsforce.Connection({
-        accessToken: accesToken,
-        instanceUrl: instanceUrl
+        accessToken: req.session.accesToken,
+        instanceUrl: req.session.instanceUrl
     });
 
     conn.query(query, function(err, result) {
