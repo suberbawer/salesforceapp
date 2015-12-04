@@ -134,6 +134,7 @@ app.get('/db/delRecord', function(req,res){
     dbOperations.delRecord(req,res);
 });
 app.get('/db/createTable', function(req,res){
+    console.log('createtable');
     dbOperations.createTable(req,res);
 });
 app.get('/db/dropTable', function(req,res){
