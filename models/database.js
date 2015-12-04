@@ -75,14 +75,11 @@ module.exports = {
     testConnection: function(req, res) {
         var pg = require('pg');
         console.log('URL*********',process.env.DATABASE_URL);
-        pg.connect(process.env.DATABASE_URL, function(err, client) {
-          if (err) throw err;
-          console.log('Connected to postgres! Getting schemas...');
-
-          client
-            .query('SELECT table_schema,table_name FROM information_schema.tables;')
-            .on('row', function(row) {
-              console.log(JSON.stringify(row));
+        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+            client.query('SELECT * FROM your_table', function(err, result) {
+              done();
+              if(err) return console.error(err);
+              console.log(result.rows);
             });
         });
     }
