@@ -16,9 +16,29 @@ module.exports = {
             res.end();
         });
     },
+    getRecordsPirate: function(req, res) {
+        var pg = require('pg');
+        pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+          client.query('SELECT * FROM login_data', function(err, result) {
+            done();
+            if (err)
+             { console.error(err); response.send("Error " + err); }
+            else
+             {
+                 //response.render('pages/db', {results: result.rows} );
+             res.writeHead(200, {'Content-Type': 'text/plain'});
+             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
+             res.end();
+            }
+          });
+        });
+
+
+    },
+
     addRecord : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL || "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
+        var conString = "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
         var login_data = new pg.Client(conString);
         login_data.connect();
         console.log('*************asdasd ', req.query.aT);
