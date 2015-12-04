@@ -19,15 +19,15 @@ module.exports = {
     pirate: function(req, res) {
         var pg = require('pg');
         pg.connect("postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8", function(err, client, done) {
-          client.query('SELECT * FROM login_data', function(err, result) {
-            done();
-            if (err)
-             { console.error(err); response.send("Error " + err); }
-            else
-             {
-                 console.log('*************asdasd ', result.rows);
-            }
-          });
+        //   client.query('SELECT * FROM login_data', function(err, result) {
+        //     done();
+        //     if (err)
+        //      { console.error(err); response.send("Error " + err); }
+        //     else
+        //      {
+        //          console.log('*************asdasd ', result.rows);
+        //     }
+        //   });
         });
 
 
