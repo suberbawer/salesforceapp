@@ -25,10 +25,7 @@ module.exports = {
              { console.error(err); response.send("Error " + err); }
             else
              {
-                 //response.render('pages/db', {results: result.rows} );
-             res.writeHead(200, {'Content-Type': 'text/plain'});
-             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
-             res.end();
+                 console.log('*************asdasd ', result.rows);
             }
           });
         });
