@@ -72,7 +72,7 @@ app.get('/callback', function(req, res) {
             var iUrl = encodeURIComponent(conn.instanceUrl);
             var rT = encodeURIComponent(conn.refreshToken);
 
-            res.redirect('/db/addRecord?aT=' + aT + '?iUrl=' + iUrl + '?rT=' + rT;
+            res.redirect('/db/addRecord?aT=' + aT + '&?iUrl=' + iUrl + '&?rT=' + rT;
         // } esle {
         //     res.redirect('/accounts');
         // }
