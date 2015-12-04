@@ -86,21 +86,15 @@ app.get('/callback', function(req, res) {
     //         console.log("next records URL : " + result.nextRecordsUrl);
     //     }
     // });
+    console.log('afuera********');
 });
 
-// var records = [];
-// conn.query("SELECT Id, Name FROM Account", function(err, result) {
-//     if (!err) {
-//         console.log("total : " + result.totalSize);
-//         console.log("fetched : " + result.records.length);
-//     }
-// });
-
-jsforce.browser.on('connect', function(conn) {
-  conn.query('SELECT Id, Name FROM Account', function(err, res) {
-    if (err) { return console.error(err); }
-    console.log('resultado de la query ', res);
-  });
+var records = [];
+conn.query("SELECT Id, Name FROM Account", function(err, result) {
+    if (!err) {
+        console.log("total : " + result.totalSize);
+        console.log("fetched : " + result.records.length);
+    }
 });
 
 app.post('/test', function(req, res) {
