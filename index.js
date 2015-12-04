@@ -75,12 +75,12 @@ app.get('/callback', function(req, res) {
 
         var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
         console.log('**************getrecords ', dbOperations.getRecords(req,res));
-        if ( dbOperations.getRecords(req,res) == undefined) {
+        // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             res.redirect(url);
-        } else {
-            res.redirect('/accounts');
-        }
+        // } else {
+        //     res.redirect('/accounts');
+        // }
     });
 });
 
