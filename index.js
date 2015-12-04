@@ -78,8 +78,9 @@ app.get('/callback', function(req, res) {
 // });
 
 app.get('/attachments', function(req, res) {
+    console.log('acces token', accesToken);
     // if auth has not been set, redirect to index
-    if (!accessToken || !instanceUrl) { res.redirect('/'); }
+    if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
 
     var query = "SELECT Id, Name FROM Account";
     // open connection with client's stored OAuth details
