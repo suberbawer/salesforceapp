@@ -69,9 +69,9 @@ app.get('/callback', function(req, res) {
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
 
-        req.session.accessToken = conn.accessToken;
-        req.session.instanceUrl = conn.instanceUrl;
-                                conn.refreshToken;
+        res.redirect('/db/addRecord?aT=' + conn.accessToken;
+        res.redirect('/db/addRecord?iUrl=' + conn.instanceUrl;
+        res.redirect('/db/addRecord?iUrl=' + conn.refreshToken;
         res.redirect('/accounts');
     });
 });
@@ -85,7 +85,10 @@ app.get('/callback', function(req, res) {
 // });
 
 app.get('/accounts', function(req, res) {
-    console.log('acces token', accesToken);
+    var test = res.redirect('/db/readRecords');
+    console.log('acces token', test);
+    console.log('acces token', test.accessToken);
+
     // if auth has not been set, redirect to index
     // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
 

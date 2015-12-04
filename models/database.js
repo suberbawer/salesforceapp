@@ -21,7 +21,7 @@ module.exports = {
         var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
         var login_data = new pg.LogginData(conString);
         login_data.connect();
-        var query = login_data.query("insert into login_data (accesToken, refreshToken, instanceUrl) "+
+        var query = login_data.query("insert into login_data (accessToken, refreshToken, instanceUrl) "+
                                 "values ('"+req.query.aT+"','"+req.query.rAT+"','"+
                                     req.query.iUrl+"')");
         query.on("end", function (result) {
@@ -44,7 +44,6 @@ module.exports = {
     },
     createTable : function(req, res){
         var pg = require('pg');
-        console.log('create table----');
         var conString = process.env.DATABASE_URL;
         var loggin_data = new pg.LogginData(conString);
         loggin_data.connect();
