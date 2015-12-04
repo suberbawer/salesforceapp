@@ -53,6 +53,20 @@ app.get('/', function(req, res) {
     res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 });
 
+
+
+app.get('/magia', function (request, response) {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query('SELECT * FROM login_data', function(err, result) {
+      done();
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      else
+       { console.log(result.rows); }
+    });
+  });
+})
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
