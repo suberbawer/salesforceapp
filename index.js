@@ -69,7 +69,7 @@ app.get('/callback', function(req, res) {
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
 
-            res.redirect('/db/addRecord?aT=' + conn.accessToken + '?iUrl=' + conn.instanceUrl + '?rT=' + conn.refreshToken;
+            res.redirect('/db/addRecord?aT=' + conn.accessToken.toString() + '?iUrl=' + conn.instanceUrl.toString() + '?rT=' + conn.refreshToken.toString();
         // } esle {
         //     res.redirect('/accounts');
         // }
