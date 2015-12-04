@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var url = require('url') ;
 
+var conn;
 var attIds;
 var accesToken;
 var refreshToken;
@@ -55,7 +56,7 @@ app.listen(app.get('port'), function() {
 });
 
 app.get('/callback', function(req, res) {
-    var conn = new sf.Connection({ oauth2 : oauth2 });
+    conn = new sf.Connection({ oauth2 : oauth2 });
     var code = req.query.code;
 
     conn.authorize(code, function(err, userInfo) {
