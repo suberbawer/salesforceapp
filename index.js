@@ -1,4 +1,4 @@
-var sf = require('node-salesforce');
+var sf = require('jsforce');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -24,6 +24,21 @@ var oauth2 = new sf.OAuth2({
     clientSecret : '4671395917099215169',
     redirectUri : 'https://salesforceapi.herokuapp.com/callback'
 });
+
+// var conn = new jsforce.Connection({
+//     oauth2 : {
+//         clientId : '<your Salesforce OAuth2 client ID is here>',
+//         clientSecret : '<your Salesforce OAuth2 client secret is here>',
+//         redirectUri : '<your Salesforce OAuth2 redirect URI is here>'
+//     },
+//         instanceUrl : '<your Salesforce server URL (e.g. https://na1.salesforce.com) is here>',
+//         accessToken : '<your Salesforrce OAuth2 access token is here>',
+//         refreshToken : '<your Salesforce OAuth2 refresh token is here>'
+//     });
+//     conn.on("refresh", function(accessToken, res) {
+//         // Refresh event will be fired when renewed access token
+//         // to store it in your storage for next request
+//     });
 
 // Get authz url and redirect to it.
 app.get('/oauth2/auth', function(req, res) {
