@@ -20,16 +20,16 @@ module.exports = {
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
 
-        console.log('Access Token: ' + req.query.aT);
-        console.log('Instance URL: ' + req.query.iUrl);
-        console.log('Refresh token: ' + req.query.rT);
 
         var client = new pg.Client(conString);
         client.connect();
 
+        // var query = client.query("insert into login_data (access_token, refresh_token, instance_url) "+
+        //                         "values ('"+req.query.aT+"','"+req.query.rT+"','"+req.query.iUrl+"')");
+
         var query = client.query("insert into login_data (access_token, refresh_token, instance_url) "+
-                                "values ('"+req.query.aT+"','"+req.query.rT+"','"+
-                                    req.query.iUrl+"')");
+                                "values ('atoken','rtoken','https://buenas.com')");
+
 
         query.on("end", function (result) {
             client.end();
