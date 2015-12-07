@@ -7,19 +7,21 @@ module.exports = {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("select * from loggin_data");
+        var aux;
         // var results = [];
 
         query.on("row", function (row, result) {
             result.addRow(row);
         });
 
-        return query.on("end", function (result) {
+        query.on("end", function (result) {
             client.end();
             // res.writeHead(200, {'Content-Type': 'text/plain'});
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
-            return JSON.stringify(result.rows);
+            aux = JSON.stringify(result.rows);
         });
+        return aux;
         // console.log('results field', res.json(results).access_token);
     },
     addRecord : function(req, res){
