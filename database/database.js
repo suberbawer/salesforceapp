@@ -18,8 +18,7 @@ module.exports = {
             // res.writeHead(200, {'Content-Type': 'text/plain'});
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
-            console.log('results', result);
-            console.log('results size', result.rows);
+            // console.log('results', result);
             console.log('results obj', JSON.stringify(result.rows));
             return JSON.stringify(result.rows);
         });
