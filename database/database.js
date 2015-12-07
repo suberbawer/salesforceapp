@@ -17,8 +17,8 @@ module.exports = {
             client.end();
             // res.writeHead(200, {'Content-Type': 'text/plain'});
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
-            res.end();
             setNewInstance(result.rows);
+            res.end();
             return res.json(result.rows);
         });
     },
