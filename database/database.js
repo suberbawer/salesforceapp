@@ -10,7 +10,6 @@ module.exports = {
 
         query.on("row", function (row, result) {
             result.addRow(row);
-             f_result = result;
         });
 
         query.on("end", function (result) {
@@ -18,10 +17,11 @@ module.exports = {
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
+            f_result = JSON.stringify(result.rows, null, "    ") + "\n";
         });
-        console.log('resulttttttttt', f_result);
-        console.log('resulttttttttt', f_result.rows.length);
-        return f_result.rows;
+        console.log('resulttttttttt1', f_result);
+        // console.log('resulttttttttt', f_result.rows.length);
+        return f_result;
     },
     addRecord : function(req, res){
         var pg = require('pg');
