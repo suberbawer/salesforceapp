@@ -32,20 +32,21 @@ var oauth2 = new sf.OAuth2({
     redirectUri : 'https://salesforceapi.herokuapp.com/callback'
 });
 
-// var conn = new jsforce.Connection({
-//     oauth2 : {
-//         clientId : '<your Salesforce OAuth2 client ID is here>',
-//         clientSecret : '<your Salesforce OAuth2 client secret is here>',
-//         redirectUri : '<your Salesforce OAuth2 redirect URI is here>'
-//     },
-//         instanceUrl : '<your Salesforce server URL (e.g. https://na1.salesforce.com) is here>',
-//         accessToken : '<your Salesforrce OAuth2 access token is here>',
-//         refreshToken : '<your Salesforce OAuth2 refresh token is here>'
-//     });
-//     conn.on("refresh", function(accessToken, res) {
-//         // Refresh event will be fired when renewed access token
-//         // to store it in your storage for next request
-//     });
+var conn = new jsforce.Connection({
+    oauth2 : {
+        clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
+        clientSecret : '4671395917099215169',
+        redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+    },
+        instanceUrl : instanceUrl,
+        accessToken : accessToken,
+        refreshToken : refreshToken
+    });
+    conn.on("refresh", function(accessToken, res) {
+        // Refresh event will be fired when renewed access token
+        // to store it in your storage for next request
+        console.log('refreshhhhhhh**************');
+    });
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
@@ -85,6 +86,7 @@ app.get('/callback', function(req, res) {
 
         var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
         console.log('url 555555555v', url);
+        var test1 = dbOperations.getRecords(req, res);
         console.log('**************getrecords ', dbOperations.getRecords(req,res));
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
@@ -103,10 +105,10 @@ app.get('/accounts', function(req, res) {
 
     var query = "SELECT Id, Name FROM Account";
     // open connection with client's stored OAuth details
-    var conn = new jsforce.Connection({
-        accessToken: req.session.accesToken,
-        instanceUrl: req.session.instanceUrl
-    });
+    // var conn = new jsforce.Connection({
+    //     accessToken: req.session.accesToken,
+    //     instanceUrl: req.session.instanceUrl
+    // });
 
     conn.query(query, function(err, result) {
         if (err) {

@@ -19,7 +19,7 @@ module.exports = {
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             setNewInstance(result.rows);
             res.end();
-            return res.json(result.rows);
+            accesToken = res.json(result.rows);
         });
     },
     setNewInstance: function(result) {
