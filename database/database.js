@@ -21,9 +21,10 @@ module.exports = {
         var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("insert into employee (firstName,lastName,email,mobile) "+
-                                "values ('"+req.query.fName+"','"+req.query.lName+"','"+
-                                    req.query.email+"','"+req.query.mbl+"')");
+        var query = client.query("insert into login_data (accessToken, refreshToken, instanceUrl) "+
+                                "values ('"+req.query.aT+"','"+req.query.rT+"','"+
+                                    req.query.iUrl+"')");
+                                    
         query.on("end", function (result) {
             client.end();
             res.write('Success');
@@ -35,35 +36,13 @@ module.exports = {
         var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query( "Delete from employee Where id ="+req.query.id);
+        var query = client.query( "Delete from loggin_data Where id ="+req.query.id);
         query.on("end", function (result) {
             client.end();
             res.write('Success');
             res.end();
         });
     },
-    // createTable : function(req, res){
-    //     var pg = require('pg');
-    //     console.log('dasdadadadadada');
-    //     var conString = process.env.DATABASE_URL;
-    //     var client = new pg.Client(conString);
-    //     client.connect();
-    //     console.log('rrrrrrrrrrrrrr');
-    //     var query = client.query( "CREATE TABLE employee"+
-    //                                 "("+
-    //                                   "firstname character varying(50),"+
-    //                                   "lastname character varying(20),"+
-    //                                   "email character varying(30),"+
-    //                                   "mobile character varying(12),"+
-    //                                   "id serial NOT NULL"+
-    //                                 ")");
-    //     console.log('waaaaaaaaa';)
-    //     query.on("end", function (result) {
-    //         client.end();
-    //         res.write('Table Schema Created');
-    //         res.end();
-    //     });
-    // },
     createTable: function(req, res) {
         console.log('asdfasdfadsfasd');
         var pg = require('pg');
@@ -89,7 +68,7 @@ module.exports = {
         var conString = process.env.DATABASE_URL || "postgres://postgres:Welcome123@localhost:5432/postgres";
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query( "Drop TABLE employee");
+        var query = client.query( "Drop TABLE loggin_data");
         query.on("end", function (result) {
             client.end();
             res.write('Table Schema Deleted');
