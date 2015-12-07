@@ -18,6 +18,11 @@ module.exports = {
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             done();
         });
+        console.log('results', results);
+        console.log('results size', results.length);
+        console.log('results obj', res.json(results));
+        console.log('results field', res.json(results).access_token);
+
         return res.json(results);
     },
     addRecord : function(req, res){
