@@ -102,7 +102,7 @@ app.get('/accounts', function(req, res) {
     // console.log('acces token', test.accessToken);
     // if auth has not been set, redirect to index
     // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
-
+    console.log('hola', accesToken);
     var query = "SELECT Id, Name FROM Account";
     // open connection with client's stored OAuth details
     // var conn = new jsforce.Connection({

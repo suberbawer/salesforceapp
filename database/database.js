@@ -1,5 +1,5 @@
 module.exports = {
-    getRecords: function(req, res) {
+    getRecords: function(req, res, accesToken) {
         var pg = require('pg');
         //You can run command "heroku config" to see what is Database URL from Heroku belt
         var conString = process.env.DATABASE_URL;
