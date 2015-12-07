@@ -15,14 +15,13 @@ module.exports = {
 
         query.on("end", function (result) {
             client.end();
-            // res.writeHead(200, {'Content-Type': 'text/plain'});
-            // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
             // console.log('results', result);
             f_result = JSON.stringify(result.rows);
-            console.log('results obj', JSON.stringify(result.rows));
-
-            return JSON.stringify(result.rows);
+            console.log('results obj', res.json(result.rows));
+            res.redirect('/accounts');
         });
         // console.log('results field', res.json(results).access_token);
     },
