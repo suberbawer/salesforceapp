@@ -21,7 +21,7 @@ module.exports = {
         console.log('results', results);
         console.log('results size', results.length);
         console.log('results obj', res.json(results));
-        console.log('results field', res.json(results).access_token);
+        // console.log('results field', res.json(results).access_token);
 
         return res.json(results);
     },
