@@ -17,9 +17,8 @@ module.exports = {
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
+            return res.json(results);
         });
-        console.log('query0000000000 ', query);
-        return ;
     },
     addRecord : function(req, res){
         var pg = require('pg');
