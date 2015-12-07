@@ -18,7 +18,8 @@ module.exports = {
             // res.writeHead(200, {'Content-Type': 'text/plain'});
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
-            if (res.json(result.row) == undefined) {
+            console.log('wakawaka--------'+res.json(result.rows));
+            if (res.json(result.rows) == undefined) {
                 var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
                 res.redirect(url);
             } else {
