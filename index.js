@@ -87,7 +87,7 @@ app.get('/callback', function(req, res) {
         console.log('url 555555555v', url);
         var test1 = dbOperations.getRecords(req, res);
         console.log('**************getrecords ', dbOperations.getRecords(req,res));
-        dbOperations.getrecords(req, res, true);
+        dbOperations.getrecords(req, res);
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             //res.redirect(url);

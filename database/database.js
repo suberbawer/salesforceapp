@@ -1,5 +1,5 @@
 module.exports = {
-    getRecords: function(req, res, callback) {
+    getRecords: function(req, res) {
         var pg = require('pg');
         //You can run command "heroku config" to see what is Database URL from Heroku belt
         var conString = process.env.DATABASE_URL;
@@ -18,7 +18,7 @@ module.exports = {
             // res.writeHead(200, {'Content-Type': 'text/plain'});
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
-            if (callback && res.json(result.row) == undefined) {
+            if (res.json(result.row) == undefined) {
                 var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
                 res.redirect(url);
             } else {
