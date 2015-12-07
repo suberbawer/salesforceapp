@@ -14,14 +14,12 @@ module.exports = {
 
         query.on("end", function (result) {
             client.end();
-            f_result = JSON.stringify(result.rows, null, "    ") + "\n";
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
         });
-        console.log('resulttttttttt1', f_result);
-        // console.log('resulttttttttt', f_result.rows.length);
-        return f_result;
+        console.log('query0000000000 ', query);
+        return ;
     },
     addRecord : function(req, res){
         var pg = require('pg');
