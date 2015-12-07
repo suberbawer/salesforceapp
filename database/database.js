@@ -67,12 +67,22 @@ module.exports = {
     createTable: function(req, res) {
         console.log('asdfasdfadsfasd');
         var pg = require('pg');
-        var connectionString = process.env.DATABASE_URL;
-
-        var client = new pg.Client(connectionString);
+        var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
+        var client = new pg.Client(conString);
         client.connect();
-        var query = client.query('CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
-        query.on('end', function() { client.end(); });
+        var query = client.query( "CREATE TABLE employee"+
+                                    "("+
+                                      "firstname character varying(50),"+
+                                      "lastname character varying(20),"+
+                                      "email character varying(30),"+
+                                      "mobile character varying(12),"+
+                                      "id serial NOT NULL"+
+                                    ")");
+        query.on("end", function (result) {
+            client.end();
+            res.write('Table Schema Created');
+            res.end();
+        });
     },
     dropTable : function(req, res){
         var pg = require('pg');
