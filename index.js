@@ -136,9 +136,6 @@ app.post('/test', function(req, res) {
 app.get('/db/readRecords', function(req,res){
     dbOperations.getRecords(req,res);
 });
-app.get('/chupamela', function(req,res){
-    //dbOperations.pirate(req,res);
-});
 app.get('/db/addRecord', function(req,res){
     dbOperations.addRecord(req,res);
 });

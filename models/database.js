@@ -44,17 +44,6 @@ module.exports = {
             res.end();
         });
     },
-
-    // pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    //   client.query('SELECT * FROM test_table', function(err, result) {
-    //     done();
-    //     if (err)
-    //      { console.error(err); response.send("Error " + err); }
-    //     else
-    //     { console.log(result.rows) ; }
-    //
-    //   });
-    // });
     createTable : function(req, res){
         var pg = require('pg');
         var conString = process.env.DATABASE_URL || 'postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8';
