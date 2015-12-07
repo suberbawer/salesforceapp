@@ -32,21 +32,20 @@ var oauth2 = new sf.OAuth2({
     redirectUri : 'https://salesforceapi.herokuapp.com/callback'
 });
 
-var conn = new jsforce.Connection({
-    oauth2 : {
-        clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
-        clientSecret : '4671395917099215169',
-        redirectUri : 'https://salesforceapi.herokuapp.com/callback'
-    },
-        instanceUrl : instanceUrl,
-        accessToken : accessToken,
-        refreshToken : refreshToken
-    });
-    conn.on("refresh", function(accessToken, res) {
-        // Refresh event will be fired when renewed access token
-        // to store it in your storage for next request
-        console.log('refreshhhhhhh**************');
-    });
+// var conn = new jsforce.Connection({
+//     oauth2 : {
+//         clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
+//         clientSecret : '4671395917099215169',
+//         redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+//     },
+//         instanceUrl : instanceUrl,
+//         accessToken : accessToken,
+//         refreshToken : refreshToken
+//     });
+//     conn.on("refresh", function(accessToken, res) {
+//         // Refresh event will be fired when renewed access token
+//         // to store it in your storage for next request
+//     });
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
@@ -88,6 +87,7 @@ app.get('/callback', function(req, res) {
         console.log('url 555555555v', url);
         var test1 = dbOperations.getRecords(req, res);
         console.log('**************getrecords ', dbOperations.getRecords(req,res));
+        dbOperations.getrecords(req, res, true);
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             //res.redirect(url);
@@ -102,13 +102,13 @@ app.get('/accounts', function(req, res) {
     // console.log('acces token', test.accessToken);
     // if auth has not been set, redirect to index
     // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
-    console.log('hola', accesToken);
+    console.log('res----------', res);
     var query = "SELECT Id, Name FROM Account";
     // open connection with client's stored OAuth details
-    // var conn = new jsforce.Connection({
-    //     accessToken: req.session.accesToken,
-    //     instanceUrl: req.session.instanceUrl
-    // });
+    var conn = new jsforce.Connection({
+        accessToken: access_token,
+        instanceUrl: instance_url
+    });
 
     conn.query(query, function(err, result) {
         if (err) {
