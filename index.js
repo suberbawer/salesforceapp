@@ -138,9 +138,9 @@ app.get('/db/readRecords', function(req,res){
     dbOperations.getRecords(req,res);
 });
 app.get('/db/addRecord', function(req,res){
-    console.log('Access Token: ' + req.query.aT);
-    console.log('Instance URL: ' + req.query.iUrl);
-    console.log('Refresh token: ' + req.query.rT);
+    // console.log('Access Token: ' + req.query.aT);
+    // console.log('Instance URL: ' + req.query.iUrl);
+    // console.log('Refresh token: ' + req.query.rT);
 
     dbOperations.addRecord(req,res);
 });
