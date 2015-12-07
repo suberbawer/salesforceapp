@@ -2,7 +2,7 @@ module.exports = {
     getRecords: function(req, res) {
         var pg = require('pg');
         //You can run command "heroku config" to see what is Database URL from Heroku belt
-        var conString = "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
+        var conString = process.env.DATABASE_URL || "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
         var login_data = new pg.Client(conString);
         login_data.connect();
         var query = login_data.query("select * from login_data");
@@ -19,13 +19,17 @@ module.exports = {
 
     addRecord : function(req, res){
         var pg = require('pg');
-        var conString = "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
+        var conString = process.env.DATABASE_URL || "postgres://kobwxuzwrdnfbw:c8BBmA8e6B8euXT02JEmMvVTft@ec2-54-197-247-170.compute-1.amazonaws.com:5432/d3cdt1vo5k63j8";
         var login_data = new pg.Client(conString);
         login_data.connect();
-        console.log('*************asdasd ', req.query.aT);
+        console.log('*************aT ', req.query.aT);
+        console.log('*************rT ', req.query.rT);
+        console.log('*************iUrl ', req.query.iUrl);
+
         var query = login_data.query("insert into login_data (accessToken, refreshToken, instanceUrl) "+
                                 "values ('"+req.query.aT+"','"+req.query.rT+"','"+
                                     req.query.iUrl+"')");
+
         query.on("end", function (result) {
             login_data.end();
             res.write('Success');
