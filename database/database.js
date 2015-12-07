@@ -24,12 +24,11 @@ module.exports = {
         var client = new pg.Client(conString);
         client.connect();
 
-        // var query = client.query("insert into login_data (access_token, refresh_token, instance_url) "+
-        //                         "values ('"+req.query.aT+"','"+req.query.rT+"','"+req.query.iUrl+"')");
+        console.log('Access Token: ' + req.query.aT);
+        console.log('Instance URL: ' + req.query.iUrl);
+        console.log('Refresh token: ' + req.query.rT);
 
-        // var query = client.query("INSERT INTO loggin_data(access_token, refresh_token, instance_url) values($1, $2, $3)", [req.query.aT, req.query.rT, req.query.iUrl]);
-
-        var query = client.query("INSERT INTO loggin_data(access_token, refresh_token, instance_url) values($1, $2, $3)", ['hola', 'chau', 'direccion']);
+        var query = client.query("INSERT INTO loggin_data(access_token, refresh_token, instance_url) values($1, $2, $3)", [req.query.aT, req.query.rT, req.query.iUrl]);
 
         query.on("end", function (result) {
             client.end();
