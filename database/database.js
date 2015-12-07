@@ -2,7 +2,7 @@ module.exports = {
     getRecords: function(req, res) {
         var pg = require('pg');
         //You can run command "heroku config" to see what is Database URL from Heroku belt
-        var conString = process.env.DATABASE_URL || "postgres://postgres:Welcome123@localhost:5432/postgres";
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("select * from loggin_data");
@@ -18,13 +18,14 @@ module.exports = {
     },
     addRecord : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
-        var client = new pg.Client(conString);
-        client.connect();
+        var conString = process.env.DATABASE_URL;
 
         console.log('Access Token: ' + req.query.aT);
         console.log('Instance URL: ' + req.query.iUrl);
         console.log('Refresh token: ' + req.query.rT);
+
+        var client = new pg.Client(conString);
+        client.connect();
 
         var query = client.query("insert into login_data (access_token, refresh_token, instance_url) "+
                                 "values ('"+req.query.aT+"','"+req.query.rT+"','"+
@@ -38,7 +39,7 @@ module.exports = {
     },
      delRecord : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "Delete from loggin_data Where id ="+req.query.id);
@@ -51,7 +52,7 @@ module.exports = {
     createTable: function(req, res) {
         console.log('asdfasdfadsfasd');
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "CREATE TABLE loggin_data"+
@@ -69,7 +70,7 @@ module.exports = {
     },
     dropTable : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL || "postgres://postgres:Welcome123@localhost:5432/postgres";
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "Drop TABLE loggin_data");
