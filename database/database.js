@@ -56,9 +56,9 @@ module.exports = {
         client.connect();
         var query = client.query( "CREATE TABLE loggin_data"+
                                     "("+
-                                      "access_token VARCHAR (40),"+
-                                      "refresh_token VARCHAR (40),"+
-                                      "instance_url VARCHAR (40),"+
+                                      "access_token VARCHAR (220),"+
+                                      "refresh_token VARCHAR (220),"+
+                                      "instance_url VARCHAR (220),"+
                                       "id serial PRIMARY KEY NOT NULL"+
                                     ")");
         query.on("end", function (result) {
