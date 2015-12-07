@@ -13,10 +13,9 @@ module.exports = {
         });
 
         query.on("end", function (result) {
-            client.end();
             // res.writeHead(200, {'Content-Type': 'text/plain'});
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
-            res.end();
+            done();
             return res.json(result);
         });
     },
