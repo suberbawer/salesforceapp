@@ -79,11 +79,6 @@ app.get('/callback', function(req, res) {
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.error(err); }
 
-        console.log('Access Token: ' + conn.accessToken);
-        console.log('Instance URL: ' + conn.instanceUrl);
-        console.log('User ID: ' + userInfo.id);
-        console.log('Org ID: ' + userInfo.organizationId);
-
         var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
         var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
         var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
