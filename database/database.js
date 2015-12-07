@@ -19,9 +19,9 @@ module.exports = {
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
             console.log('results', result);
-            console.log('results size', result.length);
-            console.log('results obj', res.json(result));
-            return res.json(result);
+            console.log('results size', result.rows);
+            console.log('results obj', JSON.stringify(result.rows));
+            return JSON.stringify(result.rows);
         });
         // console.log('results field', res.json(results).access_token);
     },
