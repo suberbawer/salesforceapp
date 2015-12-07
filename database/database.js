@@ -14,10 +14,10 @@ module.exports = {
 
         query.on("end", function (result) {
             client.end();
+            f_result = JSON.stringify(result.rows, null, "    ") + "\n";
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
-            f_result = JSON.stringify(result.rows, null, "    ") + "\n";
         });
         console.log('resulttttttttt1', f_result);
         // console.log('resulttttttttt', f_result.rows.length);
