@@ -3,12 +3,14 @@ module.exports = {
         var pg = require('pg');
         //You can run command "heroku config" to see what is Database URL from Heroku belt
         var conString = process.env.DATABASE_URL;
+        var f_result;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("select * from loggin_data");
 
         query.on("row", function (row, result) {
             result.addRow(row);
+             f_result = result;
         });
 
         query.on("end", function (result) {
@@ -17,9 +19,9 @@ module.exports = {
             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
         });
-        console.log('resulttttttttt', result.rows);
-        console.log('resulttttttttt', result.rows.length);        
-        return result.rows;
+        console.log('resulttttttttt', f_result);
+        console.log('resulttttttttt', f_result.rows.length);
+        return f_result.rows;
     },
     addRecord : function(req, res){
         var pg = require('pg');
