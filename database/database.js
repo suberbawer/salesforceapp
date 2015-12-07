@@ -1,6 +1,6 @@
 module.exports = {
     getRecords: function(req, res) {
-        var pg = require('pg');        
+        var pg = require('pg');
         //You can run command "heroku config" to see what is Database URL from Heroku belt
         var conString = process.env.DATABASE_URL || "postgres://postgres:Welcome123@localhost:5432/postgres";
         var client = new pg.Client(conString);
@@ -42,24 +42,36 @@ module.exports = {
             res.end();
         });
     },
-    createTable : function(req, res){
+    // createTable : function(req, res){
+    //     var pg = require('pg');
+    //     console.log('dasdadadadadada');
+    //     var conString = process.env.DATABASE_URL;
+    //     var client = new pg.Client(conString);
+    //     client.connect();
+    //     console.log('rrrrrrrrrrrrrr');
+    //     var query = client.query( "CREATE TABLE employee"+
+    //                                 "("+
+    //                                   "firstname character varying(50),"+
+    //                                   "lastname character varying(20),"+
+    //                                   "email character varying(30),"+
+    //                                   "mobile character varying(12),"+
+    //                                   "id serial NOT NULL"+
+    //                                 ")");
+    //     console.log('waaaaaaaaa';)
+    //     query.on("end", function (result) {
+    //         client.end();
+    //         res.write('Table Schema Created');
+    //         res.end();
+    //     });
+    // },
+    createTable: function() {
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
-        var client = new pg.Client(conString);
+        var connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/todo';
+
+        var client = new pg.Client(connectionString);
         client.connect();
-        var query = client.query( "CREATE TABLE employee"+
-                                    "("+
-                                      "firstname character varying(50),"+
-                                      "lastname character varying(20),"+
-                                      "email character varying(30),"+
-                                      "mobile character varying(12),"+
-                                      "id serial NOT NULL"+
-                                    ")");
-        query.on("end", function (result) {
-            client.end();
-            res.write('Table Schema Created');
-            res.end();
-        });
+        var query = client.query('CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
+        query.on('end', function() { client.end(); });
     },
     dropTable : function(req, res){
         var pg = require('pg');
