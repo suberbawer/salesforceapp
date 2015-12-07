@@ -84,9 +84,9 @@ app.get('/callback', function(req, res) {
         console.log('User ID: ' + userInfo.id);
         console.log('Org ID: ' + userInfo.organizationId);
 
-        var aT = encodeURIComponent(conn.accessToken);
-        var iUrl = encodeURIComponent(conn.instanceUrl);
-        var rT = encodeURIComponent(conn.refreshToken);
+        var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
+        var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
+        var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
 
         var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
         //console.log('**************getrecords ', dbOperations.getRecords(req,res));
