@@ -65,6 +65,7 @@ module.exports = {
     //     });
     // },
     createTable: function(req, res) {
+        console.log('asdfasdfadsfasd');
         var pg = require('pg');
         var connectionString = process.env.DATABASE_URL;
 
