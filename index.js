@@ -79,11 +79,11 @@ app.get('/callback', function(req, res) {
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.error(err); }
 
-        var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
-        var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
-        var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
+        // var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
+        // var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
+        // var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
 
-        var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
+        // var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
         res.redirect('/db/readRecords');
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
