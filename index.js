@@ -92,7 +92,7 @@ app.get('/callback', function(req, res) {
         console.log('url 555555555v', url);
         console.log('**************getrecords ', dbOperations.getRecords(req,res));
         if ( dbOperations.getRecords(req,res) == undefined) {
-            add tokens and user data
+            //add tokens and user data
             res.redirect(url);
         } else {
             //res.redirect('/accounts');
