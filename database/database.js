@@ -21,10 +21,10 @@ module.exports = {
         var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("insert into login_data (accessToken, refreshToken, instanceUrl) "+
+        var query = client.query("insert into login_data (access_token, refresh_token, instance_url) "+
                                 "values ('"+req.query.aT+"','"+req.query.rT+"','"+
                                     req.query.iUrl+"')");
-                                    
+
         query.on("end", function (result) {
             client.end();
             res.write('Success');
@@ -53,8 +53,7 @@ module.exports = {
                                     "("+
                                       "access_token character varying(200),"+
                                       "refresh_token character varying(200),"+
-                                      "instanceUrl character varying(200),"+
-                                      "mobile character varying(12),"+
+                                      "instance_url character varying(200),"+
                                       "id serial NOT NULL"+
                                     ")");
         query.on("end", function (result) {
