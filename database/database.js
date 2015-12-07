@@ -4,7 +4,7 @@ module.exports = {
         //You can run command "heroku config" to see what is Database URL from Heroku belt
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
-        client.connect();
+        // client.connect();
         var query = client.query("select * from loggin_data");
         // query.on("row", function (row, result) {
         //     result.addRow(row);
