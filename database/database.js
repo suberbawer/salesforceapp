@@ -27,7 +27,7 @@ module.exports = {
         // var query = client.query("insert into login_data (access_token, refresh_token, instance_url) "+
         //                         "values ('"+req.query.aT+"','"+req.query.rT+"','"+req.query.iUrl+"')");
 
-        var query = client.query("INSERT INTO items(access_token, refresh_token, instance_url) values($1, $2)", ['atoken','rtoken','https://buenas.com']);
+        var query = client.query("INSERT INTO login_data(access_token, refresh_token, instance_url) values($1, $2, $3)", ['atoken','rtoken','https://buenas.com']);
 
         query.on("end", function (result) {
             client.end();
