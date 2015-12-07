@@ -20,9 +20,9 @@ module.exports = {
 
         pg.connect(conString, function(err, client, done) {
             client.query('select * from loggin_data', function(err, result) {
-              console.log('brianc-----------', result.rows);
+              console.log('brianc-----------', res.json(result.rows));
               done();  // client idles for 30 seconds before closing
-              return result.rows;
+              return res.json(result.rows);
             });
         });
     },
