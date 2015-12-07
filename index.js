@@ -79,12 +79,14 @@ app.get('/callback', function(req, res) {
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.error(err); }
 
-        // var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
-        // var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
-        // var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
+        var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
+        var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
+        var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
 
-        // var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
-        res.redirect('/db/readRecords');
+        var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
+        console.log('url 555555555v', url);
+        var test1 = dbOperations.getRecords(req, res);
+        console.log('**************getrecords ', dbOperations.getRecords(req,res));
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             //res.redirect(url);
@@ -99,12 +101,12 @@ app.get('/accounts', function(req, res) {
     // console.log('acces token', test.accessToken);
     // if auth has not been set, redirect to index
     // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
-    console.log('res----------', res);
+
     var query = "SELECT Id, Name FROM Account";
     // open connection with client's stored OAuth details
     var conn = new jsforce.Connection({
-        accessToken: access_token,
-        instanceUrl: instance_url
+        accessToken: accessToken,
+        instanceUrl: instanceUrl
     });
 
     conn.query(query, function(err, result) {
