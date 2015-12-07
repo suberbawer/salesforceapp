@@ -131,9 +131,9 @@ app.post('/test', function(req, res) {
 });
 
 // // DATABAES OPERATIONS
-app.get('/db/readRecords', function(req,res){
-    dbOperations.getRecords(req,res);
-});
+// app.get('/db/readRecords', function(req,res){
+//     dbOperations.getRecords(req,res);
+// });
 app.get('/db/addRecord', function(req,res){
     dbOperations.addRecord(req,res);
 });
