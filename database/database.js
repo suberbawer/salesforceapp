@@ -6,24 +6,26 @@ module.exports = {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("select * from loggin_data");
+
         query.on("row", function (row, result) {
             result.addRow(row);
         });
+
         query.on("end", function (result) {
             client.end();
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
         });
+        console.log('resulttttttttt', result.rows);
+        console.log('resulttttttttt', result.rows.length);        
+        return result.rows;
     },
     addRecord : function(req, res){
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
-
-
         var client = new pg.Client(conString);
         client.connect();
-
         var query = client.query("INSERT INTO loggin_data(access_token, refresh_token, instance_url) values($1, $2, $3)", [req.query.aT, req.query.rT, req.query.iUrl]);
 
         query.on("end", function (result) {
@@ -38,6 +40,7 @@ module.exports = {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "Delete from loggin_data Where id ="+req.query.id);
+
         query.on("end", function (result) {
             client.end();
             res.write('Success');
@@ -45,7 +48,6 @@ module.exports = {
         });
     },
     createTable: function(req, res) {
-        console.log('asdfasdfadsfasd');
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
@@ -57,6 +59,7 @@ module.exports = {
                                       "instance_url VARCHAR (220),"+
                                       "id serial PRIMARY KEY NOT NULL"+
                                     ")");
+
         query.on("end", function (result) {
             client.end();
             res.write('Table Schema Created');
@@ -69,6 +72,7 @@ module.exports = {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "Drop TABLE loggin_data");
+
         query.on("end", function (result) {
             client.end();
             res.write('Table Schema Deleted');
