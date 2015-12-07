@@ -20,7 +20,7 @@ module.exports = {
             res.end();
             return JSON.stringify(result.rows);
         });
-        console.log('fresult------ ', f_result);
+        console.log('fresult------ ', f_result._result);
         return f_result;
         // console.log('results field', res.json(results).access_token);
     },
