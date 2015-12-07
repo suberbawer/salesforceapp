@@ -24,7 +24,6 @@ module.exports = {
 
             return JSON.stringify(result.rows);
         });
-        return
         // console.log('results field', res.json(results).access_token);
     },
     addRecord : function(req, res){
