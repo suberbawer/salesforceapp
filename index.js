@@ -84,7 +84,7 @@ app.get('/callback', function(req, res) {
         var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
 
         var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
-        res.redirect('/readRecords');
+        res.redirect('/db/readRecords');
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             //res.redirect(url);
