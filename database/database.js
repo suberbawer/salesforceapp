@@ -4,24 +4,10 @@ module.exports = {
         //You can run command "heroku config" to see what is Database URL from Heroku belt
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
-        // client.connect();
-        var query = client.query("select * from loggin_data");
-        // query.on("row", function (row, result) {
-        //     result.addRow(row);
-        // });
-        //
-        // query.on("end", function (result) {
-        //     client.end();
-        //     // res.writeHead(200, {'Content-Type': 'text/plain'});
-        //     // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
-        //     res.end();
-        //     return res.json(result.rows);
-        // });
-
         pg.connect(conString, function(err, client, done) {
             client.query('select * from loggin_data', function(err, result) {
-              console.log('brianc-----------', res.json(result.rows));
               done();  // client idles for 30 seconds before closing
+              console.log('brianc-----------', res.json(result.rows));
               return res.json(result.rows);
             });
         });
