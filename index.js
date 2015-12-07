@@ -87,7 +87,7 @@ app.get('/callback', function(req, res) {
         console.log('url 555555555v', url);
         var test1 = dbOperations.getRecords(req, res);
         console.log('**************getrecords ', dbOperations.getRecords(req,res));
-        dbOperations.getrecords(req, res);
+        res.redirect('/readRecords');
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             //res.redirect(url);
@@ -131,9 +131,9 @@ app.post('/test', function(req, res) {
 });
 
 // // DATABAES OPERATIONS
-// app.get('/db/readRecords', function(req,res){
-//     dbOperations.getRecords(req,res);
-// });
+app.get('/db/readRecords', function(req,res){
+    dbOperations.getRecords(req,res);
+});
 app.get('/db/addRecord', function(req,res){
     dbOperations.addRecord(req,res);
 });
