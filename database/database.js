@@ -18,15 +18,7 @@ module.exports = {
             // res.writeHead(200, {'Content-Type': 'text/plain'});
             // res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
-            console.log('wakawaka--------'+res.json(result.rows));
-            // if (res.json(result.rows) == undefined) {
-            //     var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
-            //     res.redirect(url);
-            // } else {
-                res.redirect('/accounts');
-                // res.json(result.row).access_token;
-                // res.json(result.row).instance_url;
-            // }
+            return res.json(result.rows);
         });
     },
     addRecord : function(req, res){
