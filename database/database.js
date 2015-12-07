@@ -70,11 +70,11 @@ module.exports = {
         var conString = process.env.DATABASE_URL ||  "postgres://postgres:Welcome123@localhost:5432/postgres";
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query( "CREATE TABLE employee"+
+        var query = client.query( "CREATE TABLE loggin_data"+
                                     "("+
-                                      "firstname character varying(50),"+
-                                      "lastname character varying(20),"+
-                                      "email character varying(30),"+
+                                      "access_token character varying(200),"+
+                                      "refresh_token character varying(200),"+
+                                      "instanceUrl character varying(200),"+
                                       "mobile character varying(12),"+
                                       "id serial NOT NULL"+
                                     ")");
