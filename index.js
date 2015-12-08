@@ -185,10 +185,10 @@ app.get('/accounts', function(req, res) {
         conn.bulk.query(query, function(err, result) {
             if (err) {
                 return console.error('error en la query', err);
-            } else {
-                console.log("total : " + result.totalSize);
-                console.log("fetched : " + result.records.length);
             }
+                // console.log("total : " + result.totalSize);
+                console.log('result', result)
+                console.log('fetched', result.records);
         });
     }
 });
