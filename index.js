@@ -181,7 +181,7 @@ app.get('/accounts', function(req, res) {
         //     instanceUrl: req.session.instanceUrl,
         //     accessToken: req.session.accessToken
         // });
-        conn.bulk.query(query, function(err, result) {
+        conn.query(query, function(err, result) {
             if (err) {
                 return console.error('error en la query', err);
             }
