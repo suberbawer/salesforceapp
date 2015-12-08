@@ -52,7 +52,7 @@ var oauth2 = new sf.OAuth2({
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
     console.log('---------------------- estoy adentro de la autorizacion');
-    res.redirect(oauth2.getAuthorizationUrl({'api id web refresh_token'}));
+    res.redirect(oauth2.getAuthorizationUrl());
 });
 
 
