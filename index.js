@@ -98,20 +98,20 @@ app.get('/postchatt', function(req, res) {
         accessToken: req.session.accessToken
     });
     conn.chatter.resource('/feed-elements').create({
-        body: {
-            messageSegments: [{
-                type: 'Text',
-                text: 'This is new post'
-            }]
+        "body":{
+            "messageSegments":[{
+                "type":"Text",
+                "text":"Please accept this receipt."
+             }]
         },
-        capabilities: {
-            content: [{
-                description: 'Receipt for expenses',
-                title: 'receipt.pdf'
-            }]
+        "capabilities":{
+            "content":{
+                "description":"Receipt for expenses",
+                "title":"receipt.pdf"
+            }
         },
-        feedElementType : 'FeedItem',
-        subjectId: 'me'
+        "feedElementType":"FeedItem",
+        "subjectId":"me"
         }, function(err, result) {
             if (err) { return console.error(err); }
             console.log("Id: " + result.id);
