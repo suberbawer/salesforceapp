@@ -96,12 +96,13 @@ app.get('/postchatter', function(req, res) {
         instanceUrl: req.session.instanceUrl,
         accessToken: req.session.accessToken
     });
-    var record_url = req.param('record_url');
+    var record_url = req.param('record_url').split("/");
+    var id = record_url[record_url.length - 1];
     conn.chatter.resource('/feed-elements').create({
         "body":{
             "messageSegments":[{
                 "type":"Text",
-                "text":"Testing chatter api " + record_url
+                "text":"Testing chatter api record id:" + id
              }]
         },
         "feedElementType":"FeedItem",
