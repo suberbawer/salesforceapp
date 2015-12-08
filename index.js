@@ -91,7 +91,7 @@ app.get('/callback', function(req, res) {
             // add tokens and user data
             //res.redirect(url);
         // } else {
-            res.redirect('/accounts');
+            res.redirect('/accounts?aT=' + aT + '&iUrl=' + iUrl);
         // }
     });
     console.log('outside1',conn.accesToken);
@@ -107,11 +107,12 @@ app.get('/accounts', function(req, res) {
     // open connection with client's stored OAuth details
     // accessToken: req.session.accesToken,
     // instanceUrl: req.session.instanceUrl
-    console.log('outside2',conn.accesToken);
+    console.log('outside2',req.query.aT);
+    console.log('outside2',req.query.iUrl);
 
     conn = new sf.Connection({
-        accessToken: '00D15000000Ev0D!ARIAQMEB5eoFlQJAJp1DDv8f6wsTl_6h9YGy.SGWjFvLg.LeWVci.KRj3NON9W6iQGgfr0pDPP3jQRcHTwGJrkF7JTtLqdkY',
-        instanceUrl: 'https://na22.salesforce.com'
+        accessToken: req.query.aT,
+        instanceUrl: req.query.iUrl
     });
 
     // conn.query(query, function(err, result) {
