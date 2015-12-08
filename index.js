@@ -123,9 +123,6 @@ app.post('/test', function(req, res) {
         message = 'SUCCESS';
     }
     res.send(message);
-    if (attIds) {
-        res.redirect('/');
-    }
 });
 
 // // DATABAES OPERATIONS
