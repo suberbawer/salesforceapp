@@ -87,7 +87,7 @@ app.get('/callback', function(req, res) {
 
         var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
         console.log('url 555555555v', url);
-        res.redirect('/accounts');
+        //res.redirect('/accounts');
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             //res.redirect(url);
