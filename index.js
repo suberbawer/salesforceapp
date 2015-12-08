@@ -174,8 +174,8 @@ app.get('/accounts', function(req, res) {
         res.redirect('/');
     } else {
         var query = 'SELECT Id FROM Document__c LIMIT 1000';
-        console.log('sesion de req-------', req.session.accessToken);
-        console.log('sesion de req-------', req.session.instanceUrl);
+        console.log('sesion de req1-------', req.session.accessToken);
+        console.log('sesion de req2-------', req.session.instanceUrl);
         // open connection with client's stored OAuth details
         // var conn = new sf.Connection({
         //     instanceUrl: req.session.instanceUrl,
