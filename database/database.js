@@ -19,9 +19,7 @@ module.exports = {
             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
             // console.log('results', result);
-            f_result = JSON.stringify(result.rows);
-            console.log('results obj', res.json(result.rows));
-            res.redirect('/accounts');
+            console.log(JSON.stringify(result.rows));
         });
         // console.log('results field', res.json(results).access_token);
     },
