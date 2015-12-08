@@ -119,7 +119,7 @@ app.get('/accounts', function(req, res) {
     //     console.log('resultado de query ', result);
     //     //res.render('accounts', {title: 'Accounts List', accounts: result.records});
     // });
-    conn = new sf.connection({ oauth2 : oauth2});
+    conn = new sf.Connection({ oauth2 : oauth2});
     var records = [];
     conn.query("SELECT Id FROM Account LIMIT 1000", function(err, result) {
       if (err) { return console.error(err); }
