@@ -76,7 +76,7 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-// app.get('/callback', function(req, res) {
+    // app.get('/callback', function(req, res) {
 //     conn = new sf.Connection({ oauth2 : oauth2 });
 //     var code = req.query.code;
 //
@@ -186,9 +186,9 @@ app.get('/accounts', function(req, res) {
                 return console.error('error en la query', err);
             }
                 // console.log("total : " + result.totalSize);
-                console.log('result', result)
-                console.log('fetched', result.records);
-                res.redirect('http://google.com.uy?records='+result.records);
+                console.log('result-----------', result)
+                console.log('fetched----------', result.records);
+                //res.redirect('http://google.com.uy?records='+result.records);
         });
     }
 });
