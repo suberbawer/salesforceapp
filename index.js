@@ -32,21 +32,21 @@ var oauth2 = new sf.OAuth2({
     redirectUri : 'https://salesforceapi.herokuapp.com/callback'
 });
 
-//
-// var conn = new jsforce.Connection({
-//   oauth2 : {
-//       clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
-//       clientSecret : '4671395917099215169',
-//       redirectUri : 'https://salesforceapi.herokuapp.com/callback'
-//   },
-//   accessToken: '00D15000000Ev0D!ARIAQKW6xJgwhyNVxXXv9fJ6AZ9twovcSPmzifvsOYw3kwj325_MMdBgaBcA772sVspJUXWt2obujofIcgAQZx91E839MGVM',
-//   instanceUrl: 'https://na22.salesforce.com',
-//   refreshToken : '5Aep861O8xCPABpkD6A0AY5T.SVV3h_eTfvx1.IS41u6Rhz6ymV8Ghjjuehc9pWPhrOIBSVtfCogyKasr3x2d7F'
-// });
-// conn.on("refresh", function(accessToken, res) {
-//   // Refresh event will be fired when renewed access token
-//   // to store it in your storage for next request
-// });
+
+conn = new sf.Connection({
+  oauth2 : {
+      clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
+      clientSecret : '4671395917099215169',
+      redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+  },
+  accessToken: '00D15000000Ev0D!ARIAQKW6xJgwhyNVxXXv9fJ6AZ9twovcSPmzifvsOYw3kwj325_MMdBgaBcA772sVspJUXWt2obujofIcgAQZx91E839MGVM',
+  instanceUrl: 'https://na22.salesforce.com',
+  refreshToken : '5Aep861O8xCPABpkD6A0AY5T.SVV3h_eTfvx1.IS41u6Rhz6ymV8Ghjjuehc9pWPhrOIBSVtfCogyKasr3x2d7F'
+});
+conn.on("refresh", function(accessToken, res) {
+  // Refresh event will be fired when renewed access token
+  // to store it in your storage for next request
+});
 
 
 // Get authz url and redirect to it.
@@ -75,7 +75,7 @@ app.listen(app.get('port'), function() {
 });
 
 app.get('/callback', function(req, res) {
-    conn = new jsforce.Connection({ oauth2 : oauth2 });
+    //conn = new jsforce.Connection({ oauth2 : oauth2 });
     var code = req.query.code;
 
     conn.authorize(code, function(err, userInfo) {
