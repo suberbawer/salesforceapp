@@ -94,6 +94,7 @@ app.get('/callback', function(req, res) {
             res.redirect('/accounts');
         // }
     });
+    console.log('outside1',conn.accesToken);
 });
 
 app.get('/accounts', function(req, res) {
@@ -106,6 +107,8 @@ app.get('/accounts', function(req, res) {
     // open connection with client's stored OAuth details
     // accessToken: req.session.accesToken,
     // instanceUrl: req.session.instanceUrl
+    console.log('outside2',conn.accesToken);
+
     conn = new sf.Connection({
         accessToken: '00D15000000Ev0D!ARIAQMEB5eoFlQJAJp1DDv8f6wsTl_6h9YGy.SGWjFvLg.LeWVci.KRj3NON9W6iQGgfr0pDPP3jQRcHTwGJrkF7JTtLqdkY',
         instanceUrl: 'https://na22.salesforce.com'
