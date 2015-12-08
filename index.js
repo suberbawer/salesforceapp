@@ -97,19 +97,12 @@ app.get('/postchatt', function(req, res) {
         instanceUrl: req.session.instanceUrl,
         accessToken: req.session.accessToken
     });
-
     conn.chatter.resource('/feed-elements').create({
         "body":{
             "messageSegments":[{
                 "type":"Text",
                 "text":"Please accept this receipt."
              }]
-        },
-        "capabilities":{
-           "content":{
-              "description":"Receipt for expenses",
-              "title":"test.pdf"
-           }
         },
         "feedElementType":"FeedItem",
         "subjectId":"me"
@@ -120,23 +113,6 @@ app.get('/postchatt', function(req, res) {
             console.log("Body: " + result.body.messageSegments[0].text);
             console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
         });
-    // conn.chatter.resource("/feed-elements").create({
-    //   body: {
-    //     messageSegments: [{
-    //       type: 'Text',
-    //       text: 'This is new post'
-    //     }]
-    //   },
-    //   feedElementType : "FeedItem",
-    //   subjectId: "me"
-    // }, function(err, result) {
-    //   if (err) { throw err; }
-    //   assert.ok(_.isString(result.id));
-    //   assert.ok(result.type === 'TextPost');
-    //   assert.ok(_.isString(result.url) && result.url[0] === '/');
-    //   assert.ok(_.isObject(result.body));
-    //   feedElementUrl = result.url;
-    // }.check(done));
 });
 
 app.post('/test', function(req, res) {
@@ -145,6 +121,7 @@ app.post('/test', function(req, res) {
     console.log('attachments ids+++++++++ ', attIds);
     if (attIds) {
         message = 'SUCCESS';
+        res.redirect('/');
     }
     res.send(message);
 });
