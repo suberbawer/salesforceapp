@@ -185,10 +185,9 @@ app.get('/accounts', function(req, res) {
             if (err) {
                 return console.error('error en la query', err);
             }
-                // console.log("total : " + result.totalSize);
-                console.log('result-----------', result)
-                console.log('fetched----------', result.records);
-                //res.redirect('http://google.com.uy?records='+result.records);
+            console.log('result-----------', result.totalSize)
+            console.log('fetched----------', result.records.length);
+            //res.redirect('http://google.com.uy?records='+result.records);
         });
     }
 });
