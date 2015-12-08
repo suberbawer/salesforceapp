@@ -177,10 +177,10 @@ app.get('/accounts', function(req, res) {
         console.log('sesion de req-------', req.session.accessToken);
         console.log('sesion de req-------', req.session.instanceUrl);
         // open connection with client's stored OAuth details
-        var conn = new sf.Connection({
-            instanceUrl: req.session.instanceUrl,
-            accessToken: req.session.accessToken
-        });
+        // var conn = new sf.Connection({
+        //     instanceUrl: req.session.instanceUrl,
+        //     accessToken: req.session.accessToken
+        // });
         conn.bulk.query(query, function(err, result) {
             if (err) {
                 return console.error('error en la query', err);
