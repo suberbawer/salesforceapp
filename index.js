@@ -151,22 +151,23 @@ app.get('/callback', function(req, res) {
     conn.authorize(code, function(err, userInfo) {
         if (err) {
             return console.error(err);
+        } else {
+            console.log('refreshtoken', conn.refreshToken);
+            console.log('toke', conn.accessToken);
+            console.log('url', conn.instanceUrl);
+            console.log('user ', userInfo.id);
+
+            req.session.accessToken = conn.accessToken;
+            req.session.instanceUrl = conn.instanceUrl;
+            req.session.refreshToken = conn.refreshToken;
+
+            var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
+            filesystem.appendFile('sfdc_auth_02.txt', JSON.stringify(app_json) + ',', function (err) {
+                if (err) throw err;
+            });
+            // URL = "URL which I'm using for oauth"
+            res.redirect('/accounts');
         }
-        console.log('refreshtoken', conn.refreshToken);
-        console.log('toke', conn.accessToken);
-        console.log('url', conn.instanceUrl);
-        console.log('user ', userInfo.id);
-
-        req.session.accessToken = conn.accessToken;
-        req.session.instanceUrl = conn.instanceUrl;
-        req.session.refreshToken = conn.refreshToken;
-        // var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
-
-        // filesystem.appendFile('sfdc_auth_02.txt', JSON.stringify(app_json) + ',', function (err) {
-        //     if (err) throw err;
-        // });
-        // URL = "URL which I'm using for oauth"
-        res.redirect('/accounts');
     });
 });
 
@@ -176,7 +177,7 @@ app.get('/accounts', function(req, res) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
-        var query = 'SELECT Id FROM Account LIMIT 1000';
+        var query = 'SELECT Id FROM Document__c LIMIT 1000';
         console.log('sesion de req-------', req.session.accessToken);
         console.log('sesion de req-------', req.session.instanceUrl);
         // open connection with client's stored OAuth details
@@ -186,9 +187,12 @@ app.get('/accounts', function(req, res) {
         });
 
         conn.query(query, function(err, result) {
-            if (err) { return console.error(err); }
-            console.log("total : " + result.totalSize);
-            console.log("fetched : " + result.records.length);
+            if (err) {
+                return console.error('error en la query', err);
+            } else {
+                console.log("total : " + result.totalSize);
+                console.log("fetched : " + result.records.length);
+            }
         });
     }
 });
