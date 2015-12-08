@@ -104,11 +104,11 @@ app.get('/postchatt', function(req, res) {
                 text: 'This is new post'
             }]
         },
-        capabilities:{
-            content:{
-                description: "Receipt for expenses",
-                title: "receipt.pdf"
-            }
+        capabilities: {
+            content: [{
+                description: 'Receipt for expenses',
+                title: 'receipt.pdf'
+            }]
         },
         feedElementType : 'FeedItem',
         subjectId: 'me'
