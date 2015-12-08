@@ -80,7 +80,7 @@ app.get('/callback', function(req, res) {
 
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.error(err); }
-        console.log('accesToken', conn.accesToken);
+        console.log('accesToken', conn.accessToken);
         var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
         var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
         var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
