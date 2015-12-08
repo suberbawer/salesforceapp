@@ -104,12 +104,6 @@ app.get('/postchatt', function(req, res) {
                 "text":"Please accept this receipt."
              }]
         },
-        "capabilities":{
-            "content":{
-                "description":"Receipt for expenses",
-                "title":"receipt.pdf"
-            }
-        },
         "feedElementType":"FeedItem",
         "subjectId":"me"
         }, function(err, result) {
