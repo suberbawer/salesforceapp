@@ -121,9 +121,11 @@ app.post('/test', function(req, res) {
     console.log('attachments ids+++++++++ ', attIds);
     if (attIds) {
         message = 'SUCCESS';
-        res.redirect('/');
     }
     res.send(message);
+    if (attIds) {
+        res.redirect('/');
+    }
 });
 
 // // DATABAES OPERATIONS
