@@ -107,7 +107,7 @@ app.get('/accounts', function(req, res) {
     // accessToken: req.session.accesToken,
     // instanceUrl: req.session.instanceUrl
     conn = new sf.Connection({
-        accessToken: '00D15000000Ev0D!ARIAQKW6xJgwhyNVxXXv9fJ6AZ9twovcSPmzifvsOYw3kwj325_MMdBgaBcA772sVspJUXWt2obujofIcgAQZx91E839MGVM',
+        accessToken: '00D15000000Ev0D!ARIAQMEB5eoFlQJAJp1DDv8f6wsTl_6h9YGy.SGWjFvLg.LeWVci.KRj3NON9W6iQGgfr0pDPP3jQRcHTwGJrkF7JTtLqdkY',
         instanceUrl: 'https://na22.salesforce.com'
     });
 
