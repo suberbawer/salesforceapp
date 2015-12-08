@@ -178,8 +178,8 @@ app.get('/accounts', function(req, res) {
         console.log('sesion de req-------', req.session.instanceUrl);
         // open connection with client's stored OAuth details
         var conn = new sf.Connection({
-            accessToken: req.session.accessToken,
-            instanceUrl: req.session.instanceUrl
+            instanceUrl: req.session.instanceUrl,
+            accessToken: req.session.accessToken
         });
 
         conn.query(query, function(err, result) {
