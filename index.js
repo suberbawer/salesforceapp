@@ -183,7 +183,8 @@ app.get('/accounts', function(req, res) {
             console.log("total : " + result.totalSize);
             console.log("fetched : " + result.records.length);
         });
-}
+    }
+});
 
 app.post('/test', function(req, res) {
     var message = 'ERROR';
