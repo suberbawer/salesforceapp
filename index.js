@@ -83,7 +83,6 @@ app.get('/attachments', function(req, res) {
                 return console.error('error en la query', err);
             }
             console.log('result-----------', result.totalSize);
-            console.log('result2-----------', result.records[0].attributes.url);
             console.log('fetched----------', result.records.length);
             res.redirect('/postchatter?record_url='+result.records[0].attributes.url);
         });
