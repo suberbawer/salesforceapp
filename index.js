@@ -52,7 +52,7 @@ var oauth2 = new sf.OAuth2({
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
     console.log('---------------------- estoy adentro de la autorizacion');
-    res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
+    res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web refresh_token' }));
 });
 
 
@@ -74,32 +74,32 @@ app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
-app.get('/callback', function(req, res) {
-    conn = new sf.Connection({ oauth2 : oauth2 });
-    var code = req.query.code;
+// app.get('/callback', function(req, res) {
+//     conn = new sf.Connection({ oauth2 : oauth2 });
+//     var code = req.query.code;
+//
+//     conn.authorize(code, function(err, userInfo) {
+//         if (err) { return console.error(err); }
+//         console.log('accesToken', conn.accessToken);
+//         console.log('accesToken', userInfo.id);
+//
+//         var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
+//         var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
+//         var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
+//
+//         var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
+//         console.log('url 555555555v', url);
+//         if ( dbOperations.getRecords(req,res) == undefined) {
+//             add tokens and user data
+//             res.redirect(url);
+//         } else {
+//             res.redirect('/accounts?aT=' + aT + '&iUrl=' + iUrl);
+//         }
+//     });
+//     console.log('outside1',conn.accesToken);
+// });
 
-    conn.authorize(code, function(err, userInfo) {
-        if (err) { return console.error(err); }
-        console.log('accesToken', conn.accessToken);
-        console.log('accesToken', userInfo);
-
-        // var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
-        // var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
-        // var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
-        //
-        // var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
-        // console.log('url 555555555v', url);
-        // if ( dbOperations.getRecords(req,res) == undefined) {
-            // add tokens and user data
-            //res.redirect(url);
-        // } else {
-            //res.redirect('/accounts?aT=' + aT + '&iUrl=' + iUrl);
-        // }
-    });
-    console.log('outside1',conn.accesToken);
-});
-
-app.get('/accounts', function(req, res) {
+// app.get('/accounts', function(req, res) {
     // var test = res.redirect('/db/readRecords');
     // console.log('acces token', test.accessToken);
     // if auth has not been set, redirect to index
@@ -109,8 +109,8 @@ app.get('/accounts', function(req, res) {
     // open connection with client's stored OAuth details
     // accessToken: req.session.accesToken,
     // instanceUrl: req.session.instanceUrl
-    console.log('outside2',req.query.aT);
-    console.log('outside2',req.query.iUrl);
+    // console.log('outside2',req.query.aT);
+    // console.log('outside2',req.query.iUrl);
 
     // conn = new sf.Connection({
     //     accessToken: req.query.aT,
@@ -125,19 +125,65 @@ app.get('/accounts', function(req, res) {
     //     console.log('resultado de query ', result);
     //     //res.render('accounts', {title: 'Accounts List', accounts: result.records});
     // });
-    var records = [];
-    conn.query("SELECT Id FROM Account LIMIT 1000", function(err, result) {
-      if (err) { return console.error(err); }
-      console.log("total : " + result.totalSize);
-      console.log("fetched : " + result.records.length);
-    //   console.log("done ? : " + result.done);
-    //   if (!result.done) {
-    //     // you can use the locator to fetch next records set.
-    //     // Connection#queryMore()
-    //     console.log("next records URL : " + result.nextRecordsUrl);
-    //   }
+//     var records = [];
+//     conn.query("SELECT Id FROM Account LIMIT 1000", function(err, result) {
+//       if (err) { return console.error(err); }
+//       console.log("total : " + result.totalSize);
+//       console.log("fetched : " + result.records.length);
+//       console.log("done ? : " + result.done);
+//       if (!result.done) {
+//         // you can use the locator to fetch next records set.
+//         // Connection#queryMore()
+//         console.log("next records URL : " + result.nextRecordsUrl);
+//       }
+//     });
+// });
+
+
+/* OAuth callback from SF, pass received auth code and get access token */
+
+app.get('/callback', function(req, res) {
+    var conn = new sf.Connection({oauth2: oauth2});
+    var code = req.param('code');
+    conn.authorize(code, function(err, userInfo) {
+        if (err) {
+            return console.error(err);
+        }
+        req.session.accessToken = conn.accessToken;
+        req.session.instanceUrl = conn.instanceUrl;
+        req.session.refreshToken = conn.refreshToken;
+        console.log('refreshtoken', conn.refreshToken);
+        var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
+
+        filesystem.appendFile('sfdc_auth_02.txt', JSON.stringify(app_json) + ',', function (err) {
+            if (err) throw err;
+        });
+        // URL = "URL which I'm using for oauth"
+        res.redirect('/accounts');
     });
 });
+
+app.get('/accounts', function(req, res) {
+    console.log('token', req.session.accessToken);
+    // if auth has not been set, redirect to index
+    if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
+        console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
+        res.redirect('/');
+    } else {
+        var query = 'SELECT CaseNumber, Subject, Origin FROM case LIMIT 10';
+
+        // open connection with client's stored OAuth details
+        var conn = new sforce.Connection({
+            accessToken: req.session.accessToken,
+            instanceUrl: req.session.instanceUrl
+        });
+
+        conn.query("SELECT Id FROM Account LIMIT 1000", function(err, result) {
+            if (err) { return console.error(err); }
+            console.log("total : " + result.totalSize);
+            console.log("fetched : " + result.records.length);
+        });
+}
 
 app.post('/test', function(req, res) {
     var message = 'ERROR';
