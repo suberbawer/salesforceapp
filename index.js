@@ -149,11 +149,13 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         }
-        req.session.accessToken = conn.accessToken;
-        req.session.instanceUrl = conn.instanceUrl;
-        req.session.refreshToken = conn.refreshToken;
         console.log('refreshtoken', conn.refreshToken);
-        var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
+        console.log('refreshtoken', req.session);
+
+        // req.session.accessToken = conn.accessToken;
+        // req.session.instanceUrl = conn.instanceUrl;
+        // req.session.refreshToken = conn.refreshToken;
+        // var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
 
         // filesystem.appendFile('sfdc_auth_02.txt', JSON.stringify(app_json) + ',', function (err) {
         //     if (err) throw err;
