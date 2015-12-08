@@ -1,5 +1,6 @@
 var sf = require('jsforce');
 var express = require('express');
+var session = require('express-session');
 var app = express();
 var bodyParser = require('body-parser');
 var url = require('url') ;
@@ -12,6 +13,7 @@ var accesToken;
 var refreshToken;
 var instanceUrl;
 
+app.use(session({secret: 'demosalesforceapi'}));
 app.use(bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -145,16 +147,21 @@ app.listen(app.get('port'), function() {
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({oauth2: oauth2});
     var code = req.param('code');
+    console.log('code-----', code);
     conn.authorize(code, function(err, userInfo) {
         if (err) {
             return console.error(err);
         }
         console.log('refreshtoken', conn.refreshToken);
-        console.log('refreshtoken', req);
+        console.log('toke', conn.accessToken);
+        console.log('url', conn.instanceUrl);
+        console.log('user ', userInfo.id);
 
-        // req.session.accessToken = conn.accessToken;
-        // req.session.instanceUrl = conn.instanceUrl;
-        // req.session.refreshToken = conn.refreshToken;
+        console.log('req', req.session);
+
+        req.session.accessToken = conn.accessToken;
+        req.session.instanceUrl = conn.instanceUrl;
+        req.session.refreshToken = conn.refreshToken;
         // var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
 
         // filesystem.appendFile('sfdc_auth_02.txt', JSON.stringify(app_json) + ',', function (err) {
@@ -173,7 +180,7 @@ app.get('/accounts', function(req, res) {
         res.redirect('/');
     } else {
         var query = 'SELECT Id FROM Account LIMIT 1000';
-
+        console.log('sesion de req-------', req.session.accesToken);
         // open connection with client's stored OAuth details
         var conn = new sf.Connection({
             accessToken: req.session.accessToken,
