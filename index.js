@@ -157,8 +157,6 @@ app.get('/callback', function(req, res) {
         console.log('url', conn.instanceUrl);
         console.log('user ', userInfo.id);
 
-        console.log('req', req.session);
-
         req.session.accessToken = conn.accessToken;
         req.session.instanceUrl = conn.instanceUrl;
         req.session.refreshToken = conn.refreshToken;
@@ -173,21 +171,21 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/accounts', function(req, res) {
-    console.log('token', req.session.accessToken);
     // if auth has not been set, redirect to index
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
         var query = 'SELECT Id FROM Account LIMIT 1000';
-        console.log('sesion de req-------', req.session.accesToken);
+        console.log('sesion de req-------', req.session.accessToken);
+        console.log('sesion de req-------', req.session.instanceUrl);
         // open connection with client's stored OAuth details
         var conn = new sf.Connection({
             accessToken: req.session.accessToken,
             instanceUrl: req.session.instanceUrl
         });
 
-        conn.query("SELECT Id FROM Account LIMIT 1000", function(err, result) {
+        conn.query(query, function(err, result) {
             if (err) { return console.error(err); }
             console.log("total : " + result.totalSize);
             console.log("fetched : " + result.records.length);
