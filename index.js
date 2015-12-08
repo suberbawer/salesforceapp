@@ -102,7 +102,7 @@ app.get('/postchatter', function(req, res) {
         "body":{
             "messageSegments":[{
                 "type":"Text",
-                "text":"Testing chatter api record id:" + id
+                "text":"Testing chatter api, retrieved record id: " + id
              }]
         },
         "feedElementType":"FeedItem",
