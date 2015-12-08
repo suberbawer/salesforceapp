@@ -103,22 +103,34 @@ app.get('/accounts', function(req, res) {
     // if auth has not been set, redirect to index
     // if (accessToken == null || instanceUrl == null) { res.redirect('/'); }
 
-    var query = "SELECT Id, Name FROM Account";
+    // var query = "SELECT Id, Name FROM Account";
     // open connection with client's stored OAuth details
     // accessToken: req.session.accesToken,
     // instanceUrl: req.session.instanceUrl
-    var conn = new jsforce.Connection({
-        accessToken: '00D15000000Ev0D!ARIAQKW6xJgwhyNVxXXv9fJ6AZ9twovcSPmzifvsOYw3kwj325_MMdBgaBcA772sVspJUXWt2obujofIcgAQZx91E839MGVM',
-        instanceUrl: 'https://na22.salesforce.com'
-    });
+    // var conn = new jsforce.Connection({
+    //     accessToken: '00D15000000Ev0D!ARIAQKW6xJgwhyNVxXXv9fJ6AZ9twovcSPmzifvsOYw3kwj325_MMdBgaBcA772sVspJUXWt2obujofIcgAQZx91E839MGVM',
+    //     instanceUrl: 'https://na22.salesforce.com'
+    // });
 
-    conn.query(query, function(err, result) {
-        if (err) {
-            console.error('error-----', err);
-            res.redirect('/');
-        }
-        console.log('resultado de query ', result);
-        //res.render('accounts', {title: 'Accounts List', accounts: result.records});
+    // conn.query(query, function(err, result) {
+    //     if (err) {
+    //         console.error('error-----', err);
+    //         res.redirect('/');
+    //     }
+    //     console.log('resultado de query ', result);
+    //     //res.render('accounts', {title: 'Accounts List', accounts: result.records});
+    // });
+    var records = [];
+    conn.query("SELECT Id, Name FROM Account", function(err, result) {
+      if (err) { return console.error(err); }
+      console.log("total : " + result.totalSize);
+      console.log("fetched : " + result.records.length);
+      console.log("done ? : " + result.done);
+      if (!result.done) {
+        // you can use the locator to fetch next records set.
+        // Connection#queryMore()
+        console.log("next records URL : " + result.nextRecordsUrl);
+      }
     });
 });
 
