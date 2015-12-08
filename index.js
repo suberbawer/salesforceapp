@@ -162,10 +162,6 @@ app.get('/callback', function(req, res) {
             req.session.refreshToken = conn.refreshToken;
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
-            filesystem.appendFile('sfdc_auth_02.txt', JSON.stringify(app_json) + ',', function (err) {
-                if (err) throw err;
-            });
-            // URL = "URL which I'm using for oauth"
             res.redirect('/accounts');
         }
     });
