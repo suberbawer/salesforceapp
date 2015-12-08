@@ -100,13 +100,51 @@ app.get('/postchatter', function(req, res) {
     conn.chatter.resource('/feed-elements').create({
         "body":{
             "messageSegments":[{
-                "type":"Text",
+                "type":"Content",
                 "text":"Testing chatter api, retrieved record id: " + id
              }]
         },
         "feedElementType":"FeedItem",
         "subjectId":"me"
         }, function(err, result) {
+            if (err) { return console.error(err); }
+            // console.log("Id: " + result.id);
+            // console.log("URL: " + result.url);
+            // console.log("Body: " + result.body.messageSegments[0].text);
+            // console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
+            res.write('Check Chatter to see message');
+            res.end();
+        });
+});
+
+app.get('/postchatter', function(req, res) {
+    // open connection with client's stored OAuth details
+    conn = new sf.Connection({
+        instanceUrl: req.session.instanceUrl,
+        accessToken: req.session.accessToken
+    });
+    var record_url = req.param('record_url').split("/");
+    var id = record_url[record_url.length - 1];
+    var item = {
+        "body":{
+            "messageSegments":[{
+                "type":"Content",
+                "text":"Testing chatter api, retrieved record id: " + id
+             }]
+        },
+        "feedElementType":"FeedItem",
+        "subjectId":"me"
+    };
+
+    item.capabilities =
+    {
+        "content" :
+        {
+            "description": "File attachment from Clienteling",
+            "title": "Some File"
+        }
+    };
+    conn.chatter.resource('/feed-elements').create(JSON.stringify(item), function(err, result) {
             if (err) { return console.error(err); }
             // console.log("Id: " + result.id);
             // console.log("URL: " + result.url);
