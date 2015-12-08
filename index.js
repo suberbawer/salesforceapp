@@ -100,7 +100,7 @@ app.get('/postchatter', function(req, res) {
         "body":{
             "messageSegments":[{
                 "type":"Text",
-                "text":"Please accept this receipt."
+                "text":"Testing chatter api"
              }]
         },
         "feedElementType":"FeedItem",
@@ -111,6 +111,8 @@ app.get('/postchatter', function(req, res) {
             // console.log("URL: " + result.url);
             // console.log("Body: " + result.body.messageSegments[0].text);
             // console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
+            res.write('Check Chatter to see message');
+            res.end();
         });
 });
 
