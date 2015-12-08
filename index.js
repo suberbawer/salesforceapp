@@ -109,7 +109,7 @@ app.get('/accounts', function(req, res) {
     // instanceUrl: req.session.instanceUrl
     var conn = new jsforce.Connection({
         accessToken: '00D15000000Ev0D!ARIAQKW6xJgwhyNVxXXv9fJ6AZ9twovcSPmzifvsOYw3kwj325_MMdBgaBcA772sVspJUXWt2obujofIcgAQZx91E839MGVM',
-        instanceUrl: 'https://na22.salesforce.com';
+        instanceUrl: 'https://na22.salesforce.com'
     });
 
     conn.query(query, function(err, result) {
