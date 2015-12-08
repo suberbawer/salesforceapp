@@ -93,6 +93,11 @@ app.get('/accounts', function(req, res) {
 });
 
 app.get('/postchatt', function(req, res) {
+    // open connection with client's stored OAuth details
+    conn = new sf.Connection({
+        instanceUrl: req.session.instanceUrl,
+        accessToken: req.session.accessToken
+    });
     conn.chatter.resource('/feed-elements').create({
         body: {
             messageSegments: [{
