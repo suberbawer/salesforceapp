@@ -18,10 +18,8 @@ module.exports = {
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.write(JSON.stringify(result.rows, null, "    ") + "\n");
             res.end();
-            // console.log('results', result);
             console.log(JSON.stringify(result.rows));
         });
-        // console.log('results field', res.json(results).access_token);
     },
     addRecord : function(req, res){
         var pg = require('pg');

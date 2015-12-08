@@ -44,7 +44,6 @@ app.listen(app.get('port'), function() {
 });
 
 /* OAuth callback from SF, pass received auth code and get access token */
-
 app.get('/callback', function(req, res) {
     conn = new sf.Connection({oauth2: oauth2});
     var code = req.param('code');
@@ -62,12 +61,12 @@ app.get('/callback', function(req, res) {
             req.session.refreshToken = conn.refreshToken;
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
-            res.redirect('/accounts');
+            res.redirect('/attachments');
         }
     });
 });
 
-app.get('/accounts', function(req, res) {
+app.get('/attachments', function(req, res) {
     // if auth has not been set, redirect to index
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
@@ -86,12 +85,12 @@ app.get('/accounts', function(req, res) {
             console.log('result-----------', result.totalSize);
             console.log('result2-----------', result.records[0].attributes.url);
             console.log('fetched----------', result.records.length);
-            res.redirect('/postchatt');
+            res.redirect('/postchatter');
         });
     }
 });
 
-app.get('/postchatt', function(req, res) {
+app.get('/postchatter', function(req, res) {
     // open connection with client's stored OAuth details
     conn = new sf.Connection({
         instanceUrl: req.session.instanceUrl,
@@ -108,10 +107,10 @@ app.get('/postchatt', function(req, res) {
         "subjectId":"me"
         }, function(err, result) {
             if (err) { return console.error(err); }
-            console.log("Id: " + result.id);
-            console.log("URL: " + result.url);
-            console.log("Body: " + result.body.messageSegments[0].text);
-            console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
+            // console.log("Id: " + result.id);
+            // console.log("URL: " + result.url);
+            // console.log("Body: " + result.body.messageSegments[0].text);
+            // console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
         });
 });
 
