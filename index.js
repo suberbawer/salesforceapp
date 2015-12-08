@@ -46,7 +46,7 @@ app.listen(app.get('port'), function() {
 /* OAuth callback from SF, pass received auth code and get access token */
 
 app.get('/callback', function(req, res) {
-    var conn = new sf.Connection({oauth2: oauth2});
+    conn = new sf.Connection({oauth2: oauth2});
     var code = req.param('code');
     conn.authorize(code, function(err, userInfo) {
         if (err) {
@@ -75,7 +75,7 @@ app.get('/accounts', function(req, res) {
     } else {
         var query = 'SELECT Id FROM Document__c';
         // open connection with client's stored OAuth details
-        var conn = new sf.Connection({
+        conn = new sf.Connection({
             instanceUrl: req.session.instanceUrl,
             accessToken: req.session.accessToken
         });
@@ -86,9 +86,46 @@ app.get('/accounts', function(req, res) {
             console.log('result-----------', result.totalSize);
             console.log('result2-----------', result.records[0].attributes.url);
             console.log('fetched----------', result.records.length);
+            res.redirect('/postchatt');
             //res.redirect('http://google.com.uy?records='+result.records);
         });
     }
+});
+
+app.get('/postchatt', function(req, res) {
+    conn.chatter.resource('/feed-elements').create({
+        body: {
+            messageSegments: [{
+                type: 'Text',
+                text: 'This is new post'
+            }]
+        },
+            feedElementType : 'FeedItem',
+            subjectId: 'me'
+        }, function(err, result) {
+            if (err) { return console.error(err); }
+            console.log("Id: " + result.id);
+            console.log("URL: " + result.url);
+            console.log("Body: " + result.body.messageSegments[0].text);
+            console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
+        });
+    // conn.chatter.resource("/feed-elements").create({
+    //   body: {
+    //     messageSegments: [{
+    //       type: 'Text',
+    //       text: 'This is new post'
+    //     }]
+    //   },
+    //   feedElementType : "FeedItem",
+    //   subjectId: "me"
+    // }, function(err, result) {
+    //   if (err) { throw err; }
+    //   assert.ok(_.isString(result.id));
+    //   assert.ok(result.type === 'TextPost');
+    //   assert.ok(_.isString(result.url) && result.url[0] === '/');
+    //   assert.ok(_.isObject(result.body));
+    //   feedElementUrl = result.url;
+    // }.check(done));
 });
 
 app.post('/test', function(req, res) {
