@@ -187,8 +187,8 @@ app.get('/accounts', function(req, res) {
             }
             console.log('result-----------', result.totalSize);
             console.log('result2-----------', result.records[0].attributes);
-            console.log('result2-----------', result.records[0].type);
-
+            console.log('result3-----------', result.records[0].attributes.type);
+            console.log('result4-----------', result.records[0].attributes.url);
             console.log('fetched----------', result.records.length);
             //res.redirect('http://google.com.uy?records='+result.records);
         });
