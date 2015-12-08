@@ -86,7 +86,7 @@ app.get('/accounts', function(req, res) {
             console.log('result-----------', result.totalSize);
             console.log('result2-----------', result.records[0].attributes.url);
             console.log('fetched----------', result.records.length);
-            res.redirect('/postchatt?');
+            res.redirect('/postchatt');
         });
     }
 });
@@ -97,12 +97,19 @@ app.get('/postchatt', function(req, res) {
         instanceUrl: req.session.instanceUrl,
         accessToken: req.session.accessToken
     });
+
     conn.chatter.resource('/feed-elements').create({
         "body":{
             "messageSegments":[{
                 "type":"Text",
                 "text":"Please accept this receipt."
              }]
+        },
+        "capabilities":{
+           "content":{
+              "description":"Receipt for expenses",
+              "title":"test.pdf"
+           }
         },
         "feedElementType":"FeedItem",
         "subjectId":"me"
