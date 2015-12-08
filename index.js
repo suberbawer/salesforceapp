@@ -86,7 +86,7 @@ app.get('/accounts', function(req, res) {
             console.log('result-----------', result.totalSize);
             console.log('result2-----------', result.records[0].attributes.url);
             console.log('fetched----------', result.records.length);
-            res.redirect('/postchatt');
+            res.redirect('/postchatt?');
         });
     }
 });
