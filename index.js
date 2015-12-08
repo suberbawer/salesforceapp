@@ -186,7 +186,7 @@ app.get('/accounts', function(req, res) {
                 return console.error('error en la query', err);
             }
             console.log('result-----------', result.totalSize);
-            console.log('result2-----------', result.records[0]);
+            console.log('result2-----------', result.records[0].attributes);
             console.log('fetched----------', result.records.length);
             //res.redirect('http://google.com.uy?records='+result.records);
         });
