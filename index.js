@@ -146,7 +146,7 @@ app.get('/postchatter', function(req, res) {
     // };
     console.log('---------- item', item);
 
-    conn.chatter.resource('/feed-elements').create(JSON.stringify(item), function(err, result) {
+    conn.chatter.resource('/feed-elements').create(item, function(err, result) {
             if (err) { return console.error(err); }
             // console.log("Id: " + result.id);
             // console.log("URL: " + result.url);
