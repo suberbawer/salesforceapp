@@ -150,7 +150,7 @@ app.get('/callback', function(req, res) {
             return console.error(err);
         }
         console.log('refreshtoken', conn.refreshToken);
-        console.log('refreshtoken', req.session);
+        console.log('refreshtoken', req);
 
         // req.session.accessToken = conn.accessToken;
         // req.session.instanceUrl = conn.instanceUrl;
