@@ -85,7 +85,7 @@ app.get('/attachments', function(req, res) {
             console.log('result-----------', result.totalSize);
             console.log('result2-----------', result.records[0].attributes.url);
             console.log('fetched----------', result.records.length);
-            res.redirect('/postchatter');
+            res.redirect('/postchatter?record_url='+result.records[0].attributes.url);
         });
     }
 });
@@ -96,11 +96,12 @@ app.get('/postchatter', function(req, res) {
         instanceUrl: req.session.instanceUrl,
         accessToken: req.session.accessToken
     });
+    var record_url = req.param('record_url');
     conn.chatter.resource('/feed-elements').create({
         "body":{
             "messageSegments":[{
                 "type":"Text",
-                "text":"Testing chatter api"
+                "text":"Testing chatter api " + record_url
              }]
         },
         "feedElementType":"FeedItem",
