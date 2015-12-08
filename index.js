@@ -87,7 +87,6 @@ app.get('/accounts', function(req, res) {
             console.log('result2-----------', result.records[0].attributes.url);
             console.log('fetched----------', result.records.length);
             res.redirect('/postchatt');
-            //res.redirect('http://google.com.uy?records='+result.records);
         });
     }
 });
@@ -105,8 +104,14 @@ app.get('/postchatt', function(req, res) {
                 text: 'This is new post'
             }]
         },
-            feedElementType : 'FeedItem',
-            subjectId: 'me'
+        capabilities:{
+            content:{
+                description: "Receipt for expenses",
+                title: "receipt.pdf"
+            }
+        },
+        feedElementType : 'FeedItem',
+        subjectId: 'me'
         }, function(err, result) {
             if (err) { return console.error(err); }
             console.log("Id: " + result.id);
