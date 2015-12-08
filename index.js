@@ -80,7 +80,7 @@ app.get('/callback', function(req, res) {
 
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.error(err); }
-
+        console.log('accesToken', conn.accesToken);
         var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
         var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
         var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
@@ -106,10 +106,10 @@ app.get('/accounts', function(req, res) {
     // open connection with client's stored OAuth details
     // accessToken: req.session.accesToken,
     // instanceUrl: req.session.instanceUrl
-    // conn = new sf.Connection({
-    //     accessToken: '00D15000000Ev0D!ARIAQKW6xJgwhyNVxXXv9fJ6AZ9twovcSPmzifvsOYw3kwj325_MMdBgaBcA772sVspJUXWt2obujofIcgAQZx91E839MGVM',
-    //     instanceUrl: 'https://na22.salesforce.com'
-    // });
+    conn = new sf.Connection({
+        accessToken: '00D15000000Ev0D!ARIAQKW6xJgwhyNVxXXv9fJ6AZ9twovcSPmzifvsOYw3kwj325_MMdBgaBcA772sVspJUXWt2obujofIcgAQZx91E839MGVM',
+        instanceUrl: 'https://na22.salesforce.com'
+    });
 
     // conn.query(query, function(err, result) {
     //     if (err) {
@@ -119,7 +119,6 @@ app.get('/accounts', function(req, res) {
     //     console.log('resultado de query ', result);
     //     //res.render('accounts', {title: 'Accounts List', accounts: result.records});
     // });
-    conn = new sf.Connection({ oauth2 : oauth2});
     var records = [];
     conn.query("SELECT Id FROM Account LIMIT 1000", function(err, result) {
       if (err) { return console.error(err); }
