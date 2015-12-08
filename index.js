@@ -121,16 +121,16 @@ app.get('/accounts', function(req, res) {
     //     //res.render('accounts', {title: 'Accounts List', accounts: result.records});
     // });
     var records = [];
-    conn.query("SELECT Id, Name FROM Account", function(err, result) {
+    conn.query("SELECT Id FROM Account LIMIT 1000", function(err, result) {
       if (err) { return console.error(err); }
       console.log("total : " + result.totalSize);
       console.log("fetched : " + result.records.length);
-      console.log("done ? : " + result.done);
-      if (!result.done) {
-        // you can use the locator to fetch next records set.
-        // Connection#queryMore()
-        console.log("next records URL : " + result.nextRecordsUrl);
-      }
+    //   console.log("done ? : " + result.done);
+    //   if (!result.done) {
+    //     // you can use the locator to fetch next records set.
+    //     // Connection#queryMore()
+    //     console.log("next records URL : " + result.nextRecordsUrl);
+    //   }
     });
 });
 
