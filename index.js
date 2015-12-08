@@ -128,7 +128,7 @@ app.get('/postchatter', function(req, res) {
     var item = {
         "body":{
             "messageSegments":[{
-                "type":"Content",
+                "type":"Text",
                 "text":"Testing chatter api, retrieved record id: " + id
              }]
         },
@@ -136,17 +136,17 @@ app.get('/postchatter', function(req, res) {
         "subjectId":"me"
     };
 
-    // item.capabilities =
-    // {
-    //     "content" :
-    //     {
-    //         "description": "File attachment from Clienteling",
-    //         "title": "Some File"
-    //     }
-    // };
+    item.capabilities =
+    {
+        "content" :
+        {
+            "description": "File attachment from Clienteling",
+            "title": "Some File"
+        }
+    };
     console.log('---------- item', item);
 
-    conn.chatter.resource('/feed-elements').create(item, function(err, result) {
+    conn.chatter.resource('/feed-elements').create(JSON.stringify(item), function(err, result) {
             if (err) { return console.error(err); }
             // console.log("Id: " + result.id);
             // console.log("URL: " + result.url);
