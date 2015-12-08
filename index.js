@@ -23,14 +23,14 @@ app.use(express.static(__dirname + '/public'));
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-
-var oauth2 = new sf.OAuth2({
-    // we can change loginUrl to connect to sandbox or prerelease env.
-    // loginUrl : 'https://test.salesforce.com',
-    clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
-    clientSecret : '4671395917099215169',
-    redirectUri : 'https://salesforceapi.herokuapp.com/callback'
-});
+//
+// var oauth2 = new sf.OAuth2({
+//     // we can change loginUrl to connect to sandbox or prerelease env.
+//     // loginUrl : 'https://test.salesforce.com',
+//     clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
+//     clientSecret : '4671395917099215169',
+//     redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+// });
 
 var conn = new jsforce.Connection({
     oauth2 : {
@@ -51,7 +51,7 @@ var conn = new jsforce.Connection({
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
     console.log('---------------------- estoy adentro de la autorizacion');
-    res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
+    res.redirect(conn.oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 });
 
 
