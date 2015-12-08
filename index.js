@@ -173,7 +173,7 @@ app.get('/accounts', function(req, res) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
-        var query = 'SELECT Id FROM Document__c LIMIT 1000';
+        var query = 'SELECT Id FROM Document__c';
         console.log('sesion de req1-------', req.session.accessToken);
         console.log('sesion de req2-------', req.session.instanceUrl);
         // open connection with client's stored OAuth details
@@ -185,7 +185,8 @@ app.get('/accounts', function(req, res) {
             if (err) {
                 return console.error('error en la query', err);
             }
-            console.log('result-----------', result.totalSize)
+            console.log('result-----------', result.totalSize);
+            console.log('result2-----------', result.records[0]);
             console.log('fetched----------', result.records.length);
             //res.redirect('http://google.com.uy?records='+result.records);
         });
