@@ -93,11 +93,6 @@ app.get('/callback', function(req, res) {
         // } else {
             //res.redirect('/accounts?aT=' + aT + '&iUrl=' + iUrl);
         // }
-        conn.query("SELECT Id FROM Account LIMIT 1000", function(err, result) {
-          if (err) { return console.error(err); }
-          console.log("total : " + result.totalSize);
-          console.log("fetched : " + result.records.length);
-      });
     });
     console.log('outside1',conn.accesToken);
 });
