@@ -81,12 +81,14 @@ app.get('/callback', function(req, res) {
     conn.authorize(code, function(err, userInfo) {
         if (err) { return console.error(err); }
         console.log('accesToken', conn.accessToken);
-        var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
-        var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
-        var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
+        console.log('accesToken', userInfo);
 
-        var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
-        console.log('url 555555555v', url);
+        // var aT = conn.accessToken != undefined ? encodeURIComponent(conn.accessToken) : '';
+        // var iUrl = conn.instanceUrl != undefined ? encodeURIComponent(conn.instanceUrl) : '';
+        // var rT = conn.refreshToken != undefined ? encodeURIComponent(conn.refreshToken) : '';
+        //
+        // var url = '/db/addRecord?aT=' + aT + '&iUrl=' + iUrl + '&rT=' + rT;
+        // console.log('url 555555555v', url);
         // if ( dbOperations.getRecords(req,res) == undefined) {
             // add tokens and user data
             //res.redirect(url);
@@ -110,10 +112,10 @@ app.get('/accounts', function(req, res) {
     console.log('outside2',req.query.aT);
     console.log('outside2',req.query.iUrl);
 
-    conn = new sf.Connection({
-        accessToken: req.query.aT,
-        instanceUrl: req.query.iUrl
-    });
+    // conn = new sf.Connection({
+    //     accessToken: req.query.aT,
+    //     instanceUrl: req.query.iUrl
+    // });
 
     // conn.query(query, function(err, result) {
     //     if (err) {
