@@ -188,6 +188,7 @@ app.get('/accounts', function(req, res) {
                 // console.log("total : " + result.totalSize);
                 console.log('result', result)
                 console.log('fetched', result.records);
+                res.redirect('http://google.com.uy?records='+result.records);
         });
     }
 });
