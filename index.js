@@ -52,7 +52,7 @@ var oauth2 = new sf.OAuth2({
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
     console.log('---------------------- estoy adentro de la autorizacion');
-    res.redirect(oauth2.getAuthorizationUrl());
+    res.redirect(oauth2.getAuthorizationUrl({'api id web refresh_token'}));
 });
 
 
@@ -170,10 +170,10 @@ app.get('/accounts', function(req, res) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
-        var query = 'SELECT CaseNumber, Subject, Origin FROM case LIMIT 10';
+        var query = 'SELECT Id FROM Account LIMIT 1000';
 
         // open connection with client's stored OAuth details
-        var conn = new sforce.Connection({
+        var conn = new sf.Connection({
             accessToken: req.session.accessToken,
             instanceUrl: req.session.instanceUrl
         });
