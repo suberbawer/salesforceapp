@@ -144,17 +144,33 @@ app.get('/postchatter', function(req, res) {
             "title": "Some File"
         }
     };
+    
     console.log('---------- item', item);
 
-    conn.chatter.resource('/feed-elements').create(JSON.stringify(item), function(err, result) {
-            if (err) { return console.error(err); }
-            // console.log("Id: " + result.id);
-            // console.log("URL: " + result.url);
-            // console.log("Body: " + result.body.messageSegments[0].text);
-            // console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
-            res.write('Check Chatter to see message');
-            res.end();
-        });
+    var data = new FormData();
+    data.append("feedElement", JSON.stringify(item));
+    data.append("feedElementFileUpload", fileData);
+
+    var req = new XMLHttpRequest();
+
+    req.addEventListener("load", function(event)
+       {
+           success(req);
+       }, false);
+    req.addEventListener("error", fail, false);
+
+    req.open("POST","/feed-elements", true);
+    // req.setRequestHeader("Authorization", self.bearer);
+    req.send(data);
+    // conn.chatter.resource('/feed-elements').create(JSON.stringify(item), function(err, result) {
+    //         if (err) { return console.error(err); }
+    //         // console.log("Id: " + result.id);
+    //         // console.log("URL: " + result.url);
+    //         // console.log("Body: " + result.body.messageSegments[0].text);
+    //         // console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
+    //         res.write('Check Chatter to see message');
+    //         res.end();
+    //     });
 });
 
 app.post('/test', function(req, res) {
