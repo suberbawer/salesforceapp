@@ -47,6 +47,7 @@ var conn = new jsforce.Connection({
         // Refresh event will be fired when renewed access token
         // to store it in your storage for next request
     });
+});
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
