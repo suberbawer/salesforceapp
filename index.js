@@ -186,7 +186,7 @@ app.get('/attachments', function(req, res) {
 // });
 
 function sendToChatter(files) {
-    console.log('token en chatter', req.session.accesToken);
+    //console.log('token en chatter', req.session.accesToken);
     var CRLF = '\r\n';
     var form = new FormData();
 
