@@ -93,13 +93,13 @@ app.get('/attachments', function(req, res) {
                 console.log('result-----------', result.totalSize);
                 console.log('fetched----------', result.records.length);
                 console.log('record-----------', result.records[0]);
+
                 for (var pos = 0; pos < result.records.length; pos++) {
-                    console.log('file att------',result.records[pos]);
                     if (result.records[pos].FileType == 'PDF') {
                         pdf_results.push(result.records[pos]);
                     }
                 }
-                console.log('pdfresults------------', pdf_results);
+                console.log('pdfresults------------', pdf_results.length);
                 if (result.done && pdf_results.length > 0) {
                     res.redirect('/postchatter?attachments=' + pdf_results);
                 }
