@@ -98,8 +98,8 @@ app.get('/attachments', function(req, res) {
                     }
                     // console.log('pdfresults------------', pdf_results.length);
                     if (result.done && pdf_results.length > 0) {
-                        sendToChatter(pdf_results);
-                        //res.redirect('/postchatter?attachments=' + pdf_results);
+                        //sendToChatter(pdf_results);
+                        res.redirect('/postchatter?attachments=' + pdf_results);
                     }
                 }
             });
@@ -185,7 +185,7 @@ app.get('/attachments', function(req, res) {
 //     req.send(data);
 // });
 
-function sendToChatter(attachments){
+app.get('/postchatter', function(req, res) {
     //var attachments = req.param('attachments');
     console.log('atts-----------', attachments[0]);
     //var data = fs.readFileSync(attachments[0]);
@@ -254,7 +254,7 @@ function sendToChatter(attachments){
             console.log("end");
         });
     });
-}
+});
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
