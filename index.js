@@ -84,7 +84,7 @@ app.get('/attachments', function(req, res) {
             }
             console.log('result-----------', result.totalSize);
             console.log('fetched----------', result.records.length);
-            console.log('sfasdfasdfadsf', result.records[0].attributes.Content_Id__c);
+            console.log('sfasdfasdfadsf', result.records[0].attributes);
             res.redirect('/postchatter?documents='+result.records);
         });
     }
