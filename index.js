@@ -74,7 +74,7 @@ app.get('/attachments', function(req, res) {
     } else {
         if (attIds && attIds.length > 0) {
             var attachmentIds = [];
-            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id IN :'+ attIds;
+            var query = 'SELECT Id, Content_Id__c FROM Document__c';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -90,7 +90,7 @@ app.get('/attachments', function(req, res) {
                         attachmentIds.push(doc.Content_Id__c);
                     }
                     if (attachmentIds.length > 0) {
-                        query = 'SELECT Id, FileType FROM ContentDocument where Id IN :'+ attachmentIds;
+                        query = 'SELECT Id, FileType FROM ContentDocument';
                         conn.query(query, function(err, result){
                             if (err) {
                                 return console.error('Content query error');
