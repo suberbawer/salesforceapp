@@ -78,7 +78,7 @@ app.get('/attachments', function(req, res) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
-        if (docIds && docIds.length > 0) {
+        if (waka && waka.id.length > 0) {
             var attachmentIds = [];
             var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id = a061500000Uk1LdAAJ';
             // open connection with client's stored OAuth details
