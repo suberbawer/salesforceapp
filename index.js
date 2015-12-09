@@ -52,11 +52,6 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
-            console.log('refreshtoken', conn.refreshToken);
-            console.log('toke', conn.accessToken);
-            console.log('url', conn.instanceUrl);
-            console.log('user ', userInfo.id);
-
             req.session.accessToken = conn.accessToken;
             req.session.instanceUrl = conn.instanceUrl;
             req.session.refreshToken = conn.refreshToken;
@@ -71,7 +66,6 @@ app.get('/attachments', function(req, res) {
     docIds = 'just to execute'; // hardcoded to demo
     // if auth has not been set, redirect to index
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
-        console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
         if (docIds) {
@@ -147,7 +141,7 @@ app.get('/postchatter', function(req, res) {
     });
     // pdf attachments to zip
     var attachments = req.param('attachments');
-
+    console.log('atts--------', attachments)
     var item = {
         "body":{
             "messageSegments":[{
@@ -173,17 +167,17 @@ app.get('/postchatter', function(req, res) {
     console.log('attachment pdf-----------', attachments[0]);
     data.append("feedElementFileUpload", base64_encode(attachments[0]));
 
-    var req = new XMLHttpRequest();
-
-    req.addEventListener("load", function(event)
-       {
-           success(req);
-       }, false);
-    req.addEventListener("error", fail, false);
-
-    req.open("POST","/feed-elements", true);
-    req.setRequestHeader("Authorization", oauth2);
-    req.send(data);
+    // var req = new XMLHttpRequest();
+    //
+    // req.addEventListener("load", function(event)
+    //    {
+    //        success(req);
+    //    }, false);
+    // req.addEventListener("error", fail, false);
+    //
+    // req.open("POST","/feed-elements", true);
+    // req.setRequestHeader("Authorization", oauth2);
+    // req.send(data);
 });
 
 // Recieve contet ids from salesforce
