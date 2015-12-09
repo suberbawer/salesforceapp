@@ -76,7 +76,7 @@ app.get('/attachments', function(req, res) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, FileType FROM ContentDocument';
+            var query = 'SELECT Id, FileType, Title FROM ContentDocument';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -186,7 +186,7 @@ app.get('/attachments', function(req, res) {
 // });
 
 app.get('/postchatter', function(req, res) {
-    //var attachments = req.param('attachments');
+    var attachments = req.param('attachments');
     console.log('atts-----------', attachments[0]);
     //var data = fs.readFileSync(attachments[0]);
     var data = attachments[0];
