@@ -72,20 +72,37 @@ app.get('/attachments', function(req, res) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
-        var query = 'SELECT Id, Content_Id__c FROM Document__c';
-        // open connection with client's stored OAuth details
-        conn = new sf.Connection({
-            instanceUrl: req.session.instanceUrl,
-            accessToken: req.session.accessToken
-        });
-        conn.query(query, function(err, result) {
-            if (err) {
-                return console.error('error en la query', err);
+        if (attIds && attIds.length > 0) {
+            var attachmentIds = [];
+            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id IN :'+ attIds;
+            // open connection with client's stored OAuth details
+            conn = new sf.Connection({
+                instanceUrl: req.session.instanceUrl,
+                accessToken: req.session.accessToken
+            });
+            // First query on documents then into content documents to retrieve the file
+            conn.query(query, function(err, result) {
+                if (err) {
+                    return console.error('error en la query', err);
+                }
+                for (var doc in resut.records) {
+                    attachmentIds.push(doc.Content_Id__c);
+                }
+                if (attachmentIds.length > 0) {
+                    var query = 'SELECT Id, FileType FROM ContentDocument where Id IN :'+ attachmentIds;
+                    conn.query(query, function(err, result){
+                        if (err) {
+                            return console.error('Content query error');
+                        }
+                        console.log('result-----------', result.totalSize);
+                        console.log('fetched----------', result.records.length);
+                        console.log('sfasdfasdfadsf', result.records[0].Content_Id__c);
+                        res.redirect('/postchatter?documents='+result.records);
+                    });
+                }
+            } else {
+                res.write('NO DOCUMENTS IN THIS REVISION')
             }
-            console.log('result-----------', result.totalSize);
-            console.log('fetched----------', result.records.length);
-            console.log('sfasdfasdfadsf', result.records[0].Content_Id__c);
-            res.redirect('/postchatter?documents='+result.records);
         });
     }
 });
