@@ -73,7 +73,7 @@ app.get('/attachments', function(req, res) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, FileType, Title FROM ContentDocument';
+            var query = 'SELECT Id, FileType FROM ContentDocument';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
