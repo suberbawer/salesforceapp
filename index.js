@@ -92,8 +92,6 @@ app.get('/attachments', function(req, res) {
 
                     for (var pos = 0; pos < result.records.length; pos++) {
                         if (result.records[pos].FileType == 'PDF') {
-                            console.log('pdf****************', result.records[pos]);
-                            console.log('pdf****************', base64_encode(result.records[pos]));
                             pdf_results.push(result.records[pos]);
                         }
                     }
@@ -191,70 +189,70 @@ function sendToChatter(attachments){
     console.log('atts-----------', attachments[0]);
     var data = fs.readFileSync(attachments[0]);
     console.log('readfile sync----------', data);
-    // var client;
-    // var req;
-    //
-    // /* As per http://www.w3.org/Protocols/rfc1341/7_2_Multipart.html */
-    // var crlf = "\r\n";
-    // var boundary = '---------------------------10102754414578508781458777923'; // Boundary: "--" + up to 70 ASCII chars + "\r\n"
-    // var delimiter = crlf + "--" + boundary;
-    // var preamble = ""; // ignored. a good place for non-standard mime info
-    // var epilogue = ""; // ignored. a good place to place a checksum, etc
-    // var headers = [
-    //   'Content-Disposition: form-data; name="feedElementFileUpload"; filename="test.pdf"' + crlf,
-    //   'Content-Type: application/octet-stream; charset=ISO-8859-1' + crlf,
-    // ];
-    //
-    // var closeDelimiter = delimiter + "--";
-    // var multipartBody; // = preamble + encapsulation + closeDelimiter + epilogue + crlf /* node doesn't add this */;
-    //
-    // multipartBody = Buffer.concat(
-    //     new Buffer(preamble + delimiter + crlf + headers.join('') + crlf),
-    //     data,
-    //     new Buffer(closeDelimiter + epilogue)
-    // );
-    // console.log(multipartBody.length);
-    //
-    //
-    // // client = http.createClient(80, "www.phpletter.com");
-    // /* headers copied from a browser request logged in wireshark */
-    // req = http.request('POST', '/services/data/v34.0/chatter/feed-elements', {
-    //     'Host': 'heroku',
-    //     'User-Agent': 'Node.JS',
-    //     'Authorization': req.session.accessToken,
-    //     //'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    //     //'Accept-Language': 'en-us,en;q=0.5',
-    //     // 'Accept-Encoding': 'gzip,deflate',
-    //     //'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-    //     //'Keep-Alive': 115,
-    //     //'Connection': 'keep-alive',
-    //     //'Referer': 'http://www.phpletter.com/Demo/AjaxFileUpload-Demo/',
-    //     //'Cookie': 'PHPSESSID=vrunqnvon9kv3675pq6r9ponb1; __utma=158605435.700113097.1294360062.1294360062.1294360062.1; __utmb=158605435; __utmc=158605435; __utmz=158605435.1294360062.1.1.utmccn=(organic)|utmcsr=google|utmctr=http+upload+demo|utmcmd=organic',
-    //     'Content-Type': 'multipart/form-data; boundary=' + boundary,
-    //     //'Content-Length': 258707
-    //     'Content-Length': multipartBody.length
-    // });
-    //
-    // req.write(multipartBody);
-    // req.end();
-    //
-    // req.on('error', function (err) {
-    //     console.log(err);
-    // });
-    //
-    // req.on('response', function (response) {
-    //     console.log('response');
-    //
-    //     response.setEncoding('utf8');
-    //
-    //     response.on('data', function (chunk) {
-    //         console.log(chunk.toString());
-    //     });
-    //
-    //     response.on('end', function () {
-    //         console.log("end");
-    //     });
-    // });
+    var client;
+    var req;
+
+    /* As per http://www.w3.org/Protocols/rfc1341/7_2_Multipart.html */
+    var crlf = "\r\n";
+    var boundary = '---------------------------10102754414578508781458777923'; // Boundary: "--" + up to 70 ASCII chars + "\r\n"
+    var delimiter = crlf + "--" + boundary;
+    var preamble = ""; // ignored. a good place for non-standard mime info
+    var epilogue = ""; // ignored. a good place to place a checksum, etc
+    var headers = [
+      'Content-Disposition: form-data; name="feedElementFileUpload"; filename="test.pdf"' + crlf,
+      'Content-Type: application/octet-stream; charset=ISO-8859-1' + crlf,
+    ];
+
+    var closeDelimiter = delimiter + "--";
+    var multipartBody; // = preamble + encapsulation + closeDelimiter + epilogue + crlf /* node doesn't add this */;
+
+    multipartBody = Buffer.concat(
+        new Buffer(preamble + delimiter + crlf + headers.join('') + crlf),
+        data,
+        new Buffer(closeDelimiter + epilogue)
+    );
+    console.log(multipartBody.length);
+
+
+    // client = http.createClient(80, "www.phpletter.com");
+    /* headers copied from a browser request logged in wireshark */
+    req = http.request('POST', '/services/data/v34.0/chatter/feed-elements', {
+        'Host': 'heroku',
+        'User-Agent': 'Node.JS',
+        'Authorization': req.session.accessToken,
+        //'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        //'Accept-Language': 'en-us,en;q=0.5',
+        // 'Accept-Encoding': 'gzip,deflate',
+        //'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+        //'Keep-Alive': 115,
+        //'Connection': 'keep-alive',
+        //'Referer': 'http://www.phpletter.com/Demo/AjaxFileUpload-Demo/',
+        //'Cookie': 'PHPSESSID=vrunqnvon9kv3675pq6r9ponb1; __utma=158605435.700113097.1294360062.1294360062.1294360062.1; __utmb=158605435; __utmc=158605435; __utmz=158605435.1294360062.1.1.utmccn=(organic)|utmcsr=google|utmctr=http+upload+demo|utmcmd=organic',
+        'Content-Type': 'multipart/form-data; boundary=' + boundary,
+        //'Content-Length': 258707
+        'Content-Length': multipartBody.length
+    });
+
+    req.write(multipartBody);
+    req.end();
+
+    req.on('error', function (err) {
+        console.log(err);
+    });
+
+    req.on('response', function (response) {
+        console.log('response');
+
+        response.setEncoding('utf8');
+
+        response.on('data', function (chunk) {
+            console.log(chunk.toString());
+        });
+
+        response.on('end', function () {
+            console.log("end");
+        });
+    });
 }
 
 // Recieve contet ids from salesforce
