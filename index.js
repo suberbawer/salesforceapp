@@ -83,7 +83,7 @@ app.get('/attachments', function(req, res) {
             // First query on documents then into content documents to retrieve the file
             conn.query(query, function(err, result) {
                 if (err) {
-                    return console.error('error en la query', err);
+                    return console.error('Document query error: ', err);
                 }
                 if (result.done) {
                     for (var doc in resut.records) {
@@ -93,19 +93,21 @@ app.get('/attachments', function(req, res) {
                         query = 'SELECT Id, FileType FROM ContentDocument';
                         conn.query(query, function(err, result){
                             if (err) {
-                                return console.error('Content query error');
+                                return console.error('Content query error: ', err);
                             }
                             console.log('result-----------', result.totalSize);
                             console.log('fetched----------', result.records.length);
                             console.log('sfasdfasdfadsf', result.records[0].Content_Id__c);
                             res.redirect('/postchatter?documents='+result.records);
                         });
+                    } else {
+                        res.write('NO ATTACHMENTS IN DOCUMENTS');
                     }
                 }
-            } else {
-                res.write('NO DOCUMENTS IN THIS REVISION')
-            }
-        });
+            });
+        } else {
+            res.write('NO DOCUMENTS IN THIS REVISION');
+        }
     }
 });
 
