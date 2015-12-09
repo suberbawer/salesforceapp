@@ -102,6 +102,7 @@ app.get('/attachments', function(req, res) {
                     }
                 }
             });
+            res.end();
         } else {
             res.write('NO ATTACHMENTS IN THIS DOCUMENT  ');
             res.end();
@@ -234,8 +235,7 @@ function sendToChatter(attachments){
     });
 
     req.write(multipartBody);
-    req.end();
-
+    console.log('asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf');
     req.on('error', function (err) {
         console.log(err);
     });
