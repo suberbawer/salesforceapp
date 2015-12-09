@@ -203,7 +203,7 @@ function sendToChatter(files) {
             host: 'test',
             port: process.env.PORT,
             path: '/services/data/v34.0/chatter/feed-elements',
-            auth: req.session.accesToken
+            auth: 'req.session.accesToken'
             }, function(err, res) {
                 if (err) throw err;
                 console.log('Done');
