@@ -7,7 +7,7 @@ var url = require('url') ;
 var pg = require('pg');
 var fs = require('fs');
 var http = require('http');
-// var FormData = require('form-data');
+var formData = require('form-data');
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -185,6 +185,31 @@ app.get('/attachments', function(req, res) {
 //     req.send(data);
 // });
 
+function sendToChatter(files) {
+    console.log('token en chatter', req.session.accesToken);
+    var CRLF = '\r\n';
+    var form = new FormData();
+
+    var options = {
+        header: '--' + form.getBoundary() +
+                CRLF + 'Content-Disposition: form-data; name="file"; filename="test.pdf"'+
+                CRLF + 'Content-Type: application/octet-stream' +
+                CRLF + CRLF
+        };
+
+    form.append('file', fs.readFileSync(files[0]), options);
+
+    form.submit({
+            host: 'test',
+            port: process.env.PORT,
+            path: '/services/data/v34.0/chatter/feed-elements',
+            auth: req.session.accesToken
+            }, function(err, res) {
+                if (err) throw err;
+                console.log('Done');
+                console.log(res);
+            });
+}
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
