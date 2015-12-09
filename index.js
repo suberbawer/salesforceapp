@@ -91,18 +91,19 @@ app.get('/attachments', function(req, res) {
                 }
                 console.log('result-----------', result.totalSize);
                 console.log('fetched----------', result.records.length);
-                for (var pdfatt in result.records) {
-                    if (result.FileType == 'PDF') {
-                        pdf_results.push(pdfatt);
+                for (var pdf_att in result.records) {
+                    console.log('file att------',pdf_att.FileType);
+                    if (pdf_att.FileType == 'PDF') {
+                        pdf_results.push(pdf_att);
                     }
                 }
-
+                console.log('pdfresults------------', pdf_results);
                 if (result.done && pdf_results.length > 0) {
                     res.redirect('/postchatter?attachments=' + pdf_results);
                 }
             });
         } else {
-            res.write('NO ATTACHMENTS IN THIS DOCUMENT');
+            res.write('NO ATTACHMENTS IN THIS DOCUMENT  ');
             res.end();
         }
     }
