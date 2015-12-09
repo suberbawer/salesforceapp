@@ -192,7 +192,7 @@ function sendToChatter(files) {
 
     var options = {
         header: '--' + form.getBoundary() +
-                CRLF + 'Content-Disposition: form-data; name="file"; filename="'+ files[0].Title +'"' +
+                CRLF + 'Content-Disposition: form-data; name="file"; filename="test.pdf"'+
                 CRLF + 'Content-Type: application/octet-stream' +
                 CRLF + CRLF
         };
