@@ -98,8 +98,8 @@ app.get('/attachments', function(req, res) {
                     }
                     // console.log('pdfresults------------', pdf_results.length);
                     if (result.done && pdf_results.length > 0) {
-                        sendToChatter(pdf_results);
-                        //res.redirect('/postchatter?attachments=' + pdf_results);
+                        //sendToChatter(pdf_results);
+                        res.redirect('/postchatter?attachments=' + pdf_results);
                     }
                 }
             });
@@ -185,8 +185,10 @@ app.get('/attachments', function(req, res) {
 //     req.send(data);
 // });
 
-function sendToChatter(files) {
+app.get('/postchatter', function(req, res) {
     console.log('token en chatter', req.session.accesToken);
+    var files = req.param('attachments');
+    console.log('el archivo ', )
     var CRLF = '\r\n';
     var form = new FormData();
 
