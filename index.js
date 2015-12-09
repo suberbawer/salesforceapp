@@ -89,7 +89,7 @@ app.get('/attachments', function(req, res) {
                     attachmentIds.push(doc.Content_Id__c);
                 }
                 if (attachmentIds.length > 0) {
-                    var query = 'SELECT Id, FileType FROM ContentDocument where Id IN :'+ attachmentIds;
+                    query = 'SELECT Id, FileType FROM ContentDocument where Id IN :'+ attachmentIds;
                     conn.query(query, function(err, result){
                         if (err) {
                             return console.error('Content query error');
