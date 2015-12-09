@@ -88,14 +88,14 @@ app.get('/attachments', function(req, res) {
                 }
                 console.log('result-----------', result.totalSize);
                 console.log('fetched----------', result.records.length);
-                console.log('record-----------', result.records[0]);
+                // console.log('record-----------', result.records[0]);
 
                 for (var pos = 0; pos < result.records.length; pos++) {
                     if (result.records[pos].FileType == 'PDF') {
                         pdf_results.push(result.records[pos]);
                     }
                 }
-                console.log('pdfresults------------', pdf_results.length);
+                // console.log('pdfresults------------', pdf_results.length);
                 if (result.done && pdf_results.length > 0) {
                     res.redirect('/postchatter?atts=' + pdf_results);
                 }
@@ -212,15 +212,15 @@ app.get('/postchatter', function(req, res) {
     console.log(multipartBody.length);
 
 
-    client = http.createClient(80, "www.phpletter.com");
+    // client = http.createClient(80, "www.phpletter.com");
     /* headers copied from a browser request logged in wireshark */
-    request = client.request('POST', '/services/data/v34.0/chatter/feed-elements', {
-        'Host': 'www.phpletter.com',
+    request = http.request('POST', '/services/data/v34.0/chatter/feed-elements', {
+        'Host': 'heroku',
         'User-Agent': 'Node.JS',
         'Authorization': req.session.accessToken,
         //'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         //'Accept-Language': 'en-us,en;q=0.5',
-        'Accept-Encoding': 'gzip,deflate',
+        // 'Accept-Encoding': 'gzip,deflate',
         //'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
         //'Keep-Alive': 115,
         //'Connection': 'keep-alive',
