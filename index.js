@@ -97,7 +97,7 @@ app.get('/attachments', function(req, res) {
                     }
                     // console.log('pdfresults------------', pdf_results.length);
                     if (result.done && pdf_results.length > 0) {
-                        res.redirect('/postchatter?atts=' + pdf_results);
+                        res.redirect('/postchatter?attachments=' + pdf_results);
                     }
                 }
             });
@@ -184,8 +184,9 @@ app.get('/attachments', function(req, res) {
 // });
 
 app.get('/postchatter', function(req, res) {
-    var attachments = req.param('atts');
+    var attachments = req.param('attachments');
     console.log('atts-----------', attachments[0]);
+    res.end();
     // var data = fs.readFileSync(attachments[0]);
     // console.log('readfile sync----------', data);
     // var client;
