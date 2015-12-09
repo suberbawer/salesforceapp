@@ -218,7 +218,7 @@ app.get('/postchatter', function(req, res) {
 
     // client = http.createClient(80, "www.phpletter.com");
     /* headers copied from a browser request logged in wireshark */
-    req = request.post('/services/data/v34.0/chatter/feed-elements', {
+    req = http.request('POST', '/services/data/v34.0/chatter/feed-elements', {
         'Host': 'heroku',
         'User-Agent': 'Node.JS',
         'Authorization': req.session.accessToken,
