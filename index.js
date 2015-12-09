@@ -188,7 +188,8 @@ app.get('/attachments', function(req, res) {
 function sendToChatter(attachments){
     //var attachments = req.param('attachments');
     console.log('atts-----------', attachments[0]);
-    var data = fs.readFileSync(attachments[0]);
+    //var data = fs.readFileSync(attachments[0]);
+    var data = attachments[0];
     console.log('readfile sync----------', data);
     var client;
     var req;
