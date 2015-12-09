@@ -126,44 +126,44 @@ app.get('/postchatter', function(req, res) {
     // var record_url = req.param('record_url').split("/");
     // var id = record_url[record_url.length - 1];
     var docs = req.param('documents');
-    console.log('documents--------- ', docs);
-    // var item = {
-    //     "body":{
-    //         "messageSegments":[{
-    //             "type":"Text",
-    //             "text":"Testing chatter api, retrieved record id: " + id
-    //          }]
-    //     },
-    //     "feedElementType":"FeedItem",
-    //     "subjectId":"me"
-    // };
-    //
-    // item.capabilities =
-    // {
-    //     "content" :
-    //     {
-    //         "description": "File attachment from Clienteling",
-    //         "title": "Some File"
-    //     }
-    // };
-    //
-    // console.log('---------- item', item);
-    //
-    // var data = new FormData();
-    // data.append("feedElement", JSON.stringify(item));
-    // //data.append("feedElementFileUpload", fileData);
-    //
-    // var req = new XMLHttpRequest();
-    //
-    // req.addEventListener("load", function(event)
-    //    {
-    //        success(req);
-    //    }, false);
-    // req.addEventListener("error", fail, false);
-    //
-    // req.open("POST","/feed-elements", true);
-    // req.setRequestHeader("Authorization", oauth2);
-    // req.send(data);
+    console.log('documents--------- ', docs[0].id);
+    var item = {
+        "body":{
+            "messageSegments":[{
+                "type":"Text",
+                "text":"Testing chatter api, retrieved record id: "
+             }]
+        },
+        "feedElementType":"FeedItem",
+        "subjectId":"me"
+    };
+
+    item.capabilities =
+    {
+        "content" :
+        {
+            "description": "File attachment from Clienteling",
+            "title": "Some File"
+        }
+    };
+
+    console.log('---------- item', item);
+
+    var data = new FormData();
+    data.append("feedElement", JSON.stringify(item));
+    //data.append("feedElementFileUpload", fileData);
+
+    var req = new XMLHttpRequest();
+
+    req.addEventListener("load", function(event)
+       {
+           success(req);
+       }, false);
+    req.addEventListener("error", fail, false);
+
+    req.open("POST","/feed-elements", true);
+    req.setRequestHeader("Authorization", oauth2);
+    req.send(data);
     // conn.chatter.resource('/feed-elements').create(JSON.stringify(item), function(err, result) {
     //         if (err) { return console.error(err); }
     //         // console.log("Id: " + result.id);
