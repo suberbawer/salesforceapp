@@ -188,7 +188,7 @@ app.get('/attachments', function(req, res) {
 app.get('/postchatter', function(req, res) {
     console.log('token en chatter', req.session.accesToken);
     var files = req.param('attachments');
-    console.log('el archivo ', )
+    console.log('el archivo ');
     var CRLF = '\r\n';
     var form = new FormData();
 
