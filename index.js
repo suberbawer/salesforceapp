@@ -67,7 +67,7 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/attachments', function(req, res) {
-    docIds = 'just to execute';
+    docIds = 'just to execute'; // hardcoded to demo
     // if auth has not been set, redirect to index
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
@@ -144,9 +144,9 @@ app.get('/postchatter', function(req, res) {
         instanceUrl: req.session.instanceUrl,
         accessToken: req.session.accessToken
     });
-    // var record_url = req.param('record_url').split("/");
-    // var id = record_url[record_url.length - 1];
-    var docs = req.param('documents');
+    // pdf attachments to zip
+    var attachments = req.param('attachments');
+
     var item = {
         "body":{
             "messageSegments":[{
@@ -184,15 +184,6 @@ app.get('/postchatter', function(req, res) {
     req.open("POST","/feed-elements", true);
     req.setRequestHeader("Authorization", oauth2);
     req.send(data);
-    // conn.chatter.resource('/feed-elements').create(JSON.stringify(item), function(err, result) {
-    //         if (err) { return console.error(err); }
-    //         // console.log("Id: " + result.id);
-    //         // console.log("URL: " + result.url);
-    //         // console.log("Body: " + result.body.messageSegments[0].text);
-    //         // console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
-    //         res.write('Check Chatter to see message');
-    //         res.end();
-    //     });
 });
 
 // Recieve contet ids from salesforce
