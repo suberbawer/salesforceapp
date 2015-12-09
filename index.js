@@ -96,7 +96,8 @@ app.get('/attachments', function(req, res) {
                             pdf_results.push(result.records[pos]);
                         }
                     }
-                    // console.log('pdfresults------------', pdf_results.length);
+                    console.log('pdfresults------------', pdf_results.length );
+                    console.log('pdfresults------------', result.done );
                     if (result.done && pdf_results.length > 0) {
                         //sendToChatter(pdf_results);
                         res.redirect('/postchatter?attachments=' + pdf_results);
