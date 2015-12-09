@@ -72,7 +72,7 @@ app.get('/attachments', function(req, res) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
-        var query = 'SELECT Id FROM Document__c';
+        var query = 'SELECT Id, Content_Id__c FROM Document__c';
         // open connection with client's stored OAuth details
         conn = new sf.Connection({
             instanceUrl: req.session.instanceUrl,
@@ -84,7 +84,7 @@ app.get('/attachments', function(req, res) {
             }
             console.log('result-----------', result.totalSize);
             console.log('fetched----------', result.records.length);
-            console.log('sfasdfasdfadsf', result.records[0]);
+            console.log('sfasdfasdfadsf', result.records[0].attributes.Content_Id__c);
             res.redirect('/postchatter?documents='+result.records);
         });
     }
