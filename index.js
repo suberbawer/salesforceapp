@@ -103,7 +103,6 @@ app.get('/attachments', function(req, res) {
                     }
                 }
             });
-            res.end();
         } else {
             res.write('NO ATTACHMENTS IN THIS DOCUMENT  ');
             res.end();
