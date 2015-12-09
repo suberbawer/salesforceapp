@@ -55,7 +55,7 @@ app.get('/callback', function(req, res) {
             req.session.accessToken = conn.accessToken;
             req.session.instanceUrl = conn.instanceUrl;
             req.session.refreshToken = conn.refreshToken;
-            console.log('tokenpppppppppppp ', conn.access_token);
+            console.log('tokenpppppppppppp ', conn.accessToken)
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
             res.redirect('/attachments');
@@ -176,9 +176,9 @@ app.get('/postchatter', function(req, res) {
     //    }, false);
     // req.addEventListener("error", fail, false);
     //
-    // req.open("POST", "/services/data/v34.0/chatter/feed-elements", true);
-    // req.setRequestHeader("Authorization", "OAuth " + req.session.access_token);
-    // req.send(data);
+    req.open("POST", "/services/data/v34.0/chatter/feed-elements", true);
+    req.setRequestHeader("Authorization", "OAuth " + req.session.accesToken);
+    req.send(data);
 });
 
 // Recieve contet ids from salesforce
