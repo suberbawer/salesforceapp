@@ -94,30 +94,30 @@ app.get('/attachments', function(req, res) {
                 console.log('result-----------', result.totalSize);
                 console.log('fetched----------', result.records.length);
 
-                if (result.done) {
-                    console.log('resultdone-----------', result.totalSize);
-
-                    for (var doc in resut.records) {
-                        attachmentIds.push(doc.Content_Id__c);
-                    }
-                    if (attachmentIds.length > 0) {
-                        query = 'SELECT Id, FileType FROM ContentDocument WHERE Id IN :attachmentIds';
-                        conn.query(query, function(err, result){
-                            if (err) {
-                                return console.error('Content query error: ', err);
-                            }
-                            console.log('result2-----------', result.totalSize);
-                            console.log('fetched2----------', result.records.length);
-                            console.log('sfasdfasdfadsf2', result.records[0].Content_Id__c);
-                            //res.redirect('/postchatter?documents='+result.records);
-                            res.write('great');
-                            res.end();
-                        });
-                    } else {
-                        res.write('NO ATTACHMENTS IN DOCUMENTS');
-                        res.end();
-                    }
-                }
+                // if (result.done) {
+                //     console.log('resultdone-----------', result.totalSize);
+                //
+                //     for (var doc in resut.records) {
+                //         attachmentIds.push(doc.Content_Id__c);
+                //     }
+                //     if (attachmentIds.length > 0) {
+                //         query = 'SELECT Id, FileType FROM ContentDocument WHERE Id IN :attachmentIds';
+                //         conn.query(query, function(err, result){
+                //             if (err) {
+                //                 return console.error('Content query error: ', err);
+                //             }
+                //             console.log('result2-----------', result.totalSize);
+                //             console.log('fetched2----------', result.records.length);
+                //             console.log('sfasdfasdfadsf2', result.records[0].Content_Id__c);
+                //             //res.redirect('/postchatter?documents='+result.records);
+                //             res.write('great');
+                //             res.end();
+                //         });
+                //     } else {
+                //         res.write('NO ATTACHMENTS IN DOCUMENTS');
+                //         res.end();
+                //     }
+                // }
             });
         } else {
             res.write('NO DOCUMENTS IN THIS REVISION');
