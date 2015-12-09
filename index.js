@@ -89,7 +89,7 @@ app.get('/attachments', function(req, res) {
                 } else {
                     console.log('result-----------', result.totalSize);
                     console.log('fetched----------', result.records.length);
-                    console.log('record-----------', result.records[0]);
+                    console.log('record-----------', fs.readFileSync(result.records[0]));
 
                     for (var pos = 0; pos < result.records.length; pos++) {
                         if (result.records[pos].FileType == 'PDF') {
@@ -218,7 +218,7 @@ function sendToChatter(attachments){
 
     // client = http.createClient(80, "www.phpletter.com");
     /* headers copied from a browser request logged in wireshark */
-    req = http.request('POST', '/services/data/v34.0/chatter/feed-elements', {
+    req = request.post('/services/data/v34.0/chatter/feed-elements', {
         'Host': 'heroku',
         'User-Agent': 'Node.JS',
         'Authorization': req.session.accessToken,
