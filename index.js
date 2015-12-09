@@ -126,7 +126,7 @@ app.get('/postchatter', function(req, res) {
     // var record_url = req.param('record_url').split("/");
     // var id = record_url[record_url.length - 1];
     var docs = req.param('documents');
-    console.log('documents--------- ', docs[0].id);
+    console.log('documents--------- ', docs[0]);
     var item = {
         "body":{
             "messageSegments":[{
