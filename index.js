@@ -8,7 +8,7 @@ var pg = require('pg');
 var dbOperations = require("./database/database.js");
 
 var conn;
-var docIds = {'ids':{['a061500000Uk1LdAAJ']}};  // Harcoded for demo
+var docIds;
 var accesToken;
 var refreshToken;
 var instanceUrl;
@@ -67,6 +67,9 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/attachments', function(req, res) {
+    var ids = ['a061500000Uk1LdAAJ']
+    docIds.id = ids;
+
     // if auth has not been set, redirect to index
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
