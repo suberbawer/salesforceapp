@@ -67,20 +67,18 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/attachments', function(req, res) {
-    var ids = ['a061500000Uk1LdAAJ'];
-
-    var waka = {};
-    waka.id = ids;
-    console.log('docids----', docIds);
-
+    docIds = 'just to execute';
     // if auth has not been set, redirect to index
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
-        if (waka && waka.id.length > 0) {
-            var attachmentIds = [];
-            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id = :a061500000Uk1LdAAJ';
+        if (docIds) {
+            var pdf_results = [];
+            //
+            // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
+            //
+            var query = 'SELECT Id, FileType FROM ContentDocument';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -93,34 +91,18 @@ app.get('/attachments', function(req, res) {
                 }
                 console.log('result-----------', result.totalSize);
                 console.log('fetched----------', result.records.length);
+                for (var pdfatt in result.records) {
+                    if (result.FileType == 'PDF') {
+                        pdf_results.push(pdfatt);
+                    }
+                }
 
-                // if (result.done) {
-                //     console.log('resultdone-----------', result.totalSize);
-                //
-                //     for (var doc in resut.records) {
-                //         attachmentIds.push(doc.Content_Id__c);
-                //     }
-                //     if (attachmentIds.length > 0) {
-                //         query = 'SELECT Id, FileType FROM ContentDocument WHERE Id IN :attachmentIds';
-                //         conn.query(query, function(err, result){
-                //             if (err) {
-                //                 return console.error('Content query error: ', err);
-                //             }
-                //             console.log('result2-----------', result.totalSize);
-                //             console.log('fetched2----------', result.records.length);
-                //             console.log('sfasdfasdfadsf2', result.records[0].Content_Id__c);
-                //             //res.redirect('/postchatter?documents='+result.records);
-                //             res.write('great');
-                //             res.end();
-                //         });
-                //     } else {
-                //         res.write('NO ATTACHMENTS IN DOCUMENTS');
-                //         res.end();
-                //     }
-                // }
+                if (result.done && pdf_results.length > 0) {
+                    res.redirect('/postchatter?attachments=' + pdf_results);
+                }
             });
         } else {
-            res.write('NO DOCUMENTS IN THIS REVISION');
+            res.write('NO ATTACHMENTS IN THIS DOCUMENT');
             res.end();
         }
     }
@@ -211,6 +193,7 @@ app.get('/postchatter', function(req, res) {
     //     });
 });
 
+// Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
     var message = 'ERROR';
     docIds = req.body;
