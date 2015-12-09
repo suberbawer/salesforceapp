@@ -12,6 +12,9 @@ var dbOperations = require("./database/database.js");
 
 var conn;
 var docIds;
+var accesToken;
+var refreshToken;
+var instanceUrl;
 
 app.use(session({secret: 'demosalesforceapi'}));
 app.use(bodyParser());
@@ -73,7 +76,7 @@ app.get('/attachments', function(req, res) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, FileType FROM ContentDocument';
+            var query = 'SELECT Id, FileType, Title FROM ContentDocument';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -96,7 +99,7 @@ app.get('/attachments', function(req, res) {
                     // console.log('pdfresults------------', pdf_results.length);
                     if (result.done && pdf_results.length > 0) {
                         //sendToChatter(pdf_results);
-                        //res.redirect('/postchatter?attachments=' + pdf_results);
+                        res.redirect('/postchatter?attachments=' + pdf_results);
                     }
                 }
             });
@@ -182,31 +185,6 @@ app.get('/attachments', function(req, res) {
 //     req.send(data);
 // });
 
-// function sendToChatter(files) {
-//     //console.log('token en chatter', req.session.accesToken);
-//     var CRLF = '\r\n';
-//     var form = new FormData();
-//
-//     var options = {
-//         header: '--' + form.getBoundary() +
-//                 CRLF + 'Content-Disposition: form-data; name="file"; filename="test.pdf"'+
-//                 CRLF + 'Content-Type: application/octet-stream' +
-//                 CRLF + CRLF
-//         };
-//
-//     form.append('file', fs.readFileSync('/sss/ddd/sss'), options);
-//
-//     form.submit({
-//             host: 'test',
-//             port: process.env.PORT,
-//             path: '/services/data/v34.0/chatter/feed-elements',
-//             auth: 'req.session.accesToken'
-//             }, function(err, res) {
-//                 if (err) throw err;
-//                 console.log('Done');
-//                 console.log(res);
-//             });
-// }
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
