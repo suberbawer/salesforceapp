@@ -100,7 +100,6 @@ app.get('/attachments', function(req, res) {
                     // console.log('pdfresults------------', pdf_results.length);
                     if (result.done && pdf_results.length > 0) {
                         sendToChatter(pdf_results);
-                        res.end();
                         //res.redirect('/postchatter?attachments=' + pdf_results);
                     }
                 }
