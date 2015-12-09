@@ -142,30 +142,30 @@ app.get('/postchatter', function(req, res) {
     // pdf attachments to zip
     var attachments = req.param('attachments');
     console.log('atts--------', attachments)
-    var item = {
-        "body":{
-            "messageSegments":[{
-                "type":"Text",
-                "text":"Testing chatter api, retrieved record id: "
-             }]
-        },
-        "feedElementType":"FeedItem",
-        "subjectId":"me"
-    };
-
-    item.capabilities =
-    {
-        "content" :
-        {
-            "description": "File attachment from Clienteling",
-            "title": "Some File"
-        }
-    };
-
-    var data = new FormData();
-    data.append("feedElement", JSON.stringify(item));
-    console.log('attachment pdf-----------', attachments[0]);
-    data.append("feedElementFileUpload", base64_encode(attachments[0]));
+    // var item = {
+    //     "body":{
+    //         "messageSegments":[{
+    //             "type":"Text",
+    //             "text":"Testing chatter api, retrieved record id: "
+    //          }]
+    //     },
+    //     "feedElementType":"FeedItem",
+    //     "subjectId":"me"
+    // };
+    //
+    // item.capabilities =
+    // {
+    //     "content" :
+    //     {
+    //         "description": "File attachment from Clienteling",
+    //         "title": "Some File"
+    //     }
+    // };
+    //
+    // var data = new FormData();
+    // data.append("feedElement", JSON.stringify(item));
+    // console.log('attachment pdf-----------', attachments[0]);
+    // data.append("feedElementFileUpload", base64_encode(attachments[0]));
 
     // var req = new XMLHttpRequest();
     //
