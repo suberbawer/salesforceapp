@@ -67,8 +67,10 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/attachments', function(req, res) {
-    var ids = ['a061500000Uk1LdAAJ']
-    docIds.id = ids;
+    var ids = ['a061500000Uk1LdAAJ'];
+
+    var waka;
+    waka.id = ids;
     console.log('docids----', docIds);
 
     // if auth has not been set, redirect to index
