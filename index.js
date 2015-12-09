@@ -7,6 +7,7 @@ var url = require('url') ;
 var pg = require('pg');
 var fs = require('fs');
 var http = require('http');
+require('buffer-concat');
 var dbOperations = require("./database/database.js");
 
 var conn;
