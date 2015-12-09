@@ -210,7 +210,7 @@ app.get('/postchatter', function(req, res) {
                 console.log('Done');
                 console.log(res);
             });
-}
+});
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
