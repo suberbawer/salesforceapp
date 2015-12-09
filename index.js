@@ -249,7 +249,7 @@ app.get('/postchatter', function(req, res) {
             console.log("end");
         });
     });
-};
+});
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
