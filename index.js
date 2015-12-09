@@ -84,6 +84,7 @@ app.get('/attachments', function(req, res) {
             }
             console.log('result-----------', result.totalSize);
             console.log('fetched----------', result.records.length);
+            console.log('sfasdfasdfadsf', result.records[0]);
             res.redirect('/postchatter?documents='+result.records);
         });
     }
@@ -126,7 +127,6 @@ app.get('/postchatter', function(req, res) {
     // var record_url = req.param('record_url').split("/");
     // var id = record_url[record_url.length - 1];
     var docs = req.param('documents');
-    console.log('documents--------- ', docs[0]);
     var item = {
         "body":{
             "messageSegments":[{
