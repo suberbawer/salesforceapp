@@ -12,9 +12,6 @@ var dbOperations = require("./database/database.js");
 
 var conn;
 var docIds;
-var accesToken;
-var refreshToken;
-var instanceUrl;
 
 app.use(session({secret: 'demosalesforceapi'}));
 app.use(bodyParser());
@@ -197,7 +194,7 @@ function sendToChatter(files) {
                 CRLF + CRLF
         };
 
-    form.append('file', fs.readFileSync(files[0]), options);
+    form.append('file', fs.readFileSync('/sss/ddd/sss'), options);
 
     form.submit({
             host: 'test',
