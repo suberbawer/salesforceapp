@@ -5,6 +5,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var url = require('url') ;
 var pg = require('pg');
+var fs = require('fs');
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -171,7 +172,7 @@ app.get('/postchatter', function(req, res) {
 
     var data = new FormData();
     data.append("feedElement", JSON.stringify(item));
-    //data.append("feedElementFileUpload", fileData);
+    data.append("feedElementFileUpload", base64_encode(attachments[0]));
 
     var req = new XMLHttpRequest();
 
@@ -213,3 +214,21 @@ app.get('/db/createTable', function(req,res){
 app.get('/db/dropTable', function(req,res){
     dbOperations.dropTable(req,res);
 });
+
+// BASE 64 FUNCTIONS
+// function to encode file data to base64 encoded string
+function base64_encode(file) {
+    // read binary data
+    var bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString('base64');
+}
+
+// function to create file from base64 encoded string
+function base64_decode(base64str, file) {
+    // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
+    var bitmap = new Buffer(base64str, 'base64');
+    // write buffer to file
+    fs.writeFileSync(file, bitmap);
+    console.log('******** File created from base64 encoded string ********');
+}
