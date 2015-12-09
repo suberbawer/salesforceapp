@@ -55,6 +55,7 @@ app.get('/callback', function(req, res) {
             req.session.accessToken = conn.accessToken;
             req.session.instanceUrl = conn.instanceUrl;
             req.session.refreshToken = conn.refreshToken;
+            console.log('tokenpppppppppppp ', conn.access_token);
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
             res.redirect('/attachments');
@@ -95,7 +96,7 @@ app.get('/attachments', function(req, res) {
                 }
                 console.log('pdfresults------------', pdf_results.length);
                 if (result.done && pdf_results.length > 0) {
-                    res.redirect('/postchatter?attachments=' + pdf_results);
+                    res.redirect('/postchatter?atts=' + pdf_results);
                 }
             });
         } else {
@@ -140,7 +141,7 @@ app.get('/postchatter', function(req, res) {
         accessToken: req.session.accessToken
     });
     // pdf attachments to zip
-    var attachments = req.param('attachments');
+    var attachments = req.param('atts');
     console.log('atts--------', attachments)
     var item = {
         "body":{
@@ -176,7 +177,7 @@ app.get('/postchatter', function(req, res) {
     // req.addEventListener("error", fail, false);
     //
     req.open("POST", "/services/data/v34.0/chatter/feed-elements", true);
-    req.setRequestHeader("Authorization", req.session.access_token);
+    req.setRequestHeader("Authorization", "OAuth " + req.session.access_token);
     req.send(data);
 });
 
