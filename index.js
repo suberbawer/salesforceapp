@@ -88,10 +88,12 @@ app.get('/attachments', function(req, res) {
                 } else {
                     console.log('result-----------', result.totalSize);
                     console.log('fetched----------', result.records.length);
-                    // console.log('record-----------', result.records[0]);
+                    console.log('record-----------', result.records[0]);
 
                     for (var pos = 0; pos < result.records.length; pos++) {
                         if (result.records[pos].FileType == 'PDF') {
+                            console.log('pdf****************', result.records[pos]);
+                            console.log('pdf****************', base64_encode(result.records[pos]));
                             pdf_results.push(result.records[pos]);
                         }
                     }
