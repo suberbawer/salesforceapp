@@ -92,10 +92,10 @@ app.get('/attachments', function(req, res) {
                 console.log('result-----------', result.totalSize);
                 console.log('fetched----------', result.records.length);
                 console.log('record-----------', result.records[0]);
-                for (var pdf_att in result.records) {
-                    console.log('file att------',pdf_att.FileType);
-                    if (pdf_att.FileType == 'PDF') {
-                        pdf_results.push(pdf_att);
+                for (var pos = 0; pos < result.records.length; pos++) {
+                    console.log('file att------',result.records[pos]);
+                    if (result.records[pos].FileType == 'PDF') {
+                        pdf_results.push(result.records[pos]);
                     }
                 }
                 console.log('pdfresults------------', pdf_results);
