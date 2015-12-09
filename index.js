@@ -74,7 +74,7 @@ app.get('/attachments', function(req, res) {
     } else {
         if (docIds && docIds.length > 0) {
             var attachmentIds = [];
-            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id IN :'+docIds;
+            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id IN :docIds';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -90,7 +90,7 @@ app.get('/attachments', function(req, res) {
                         attachmentIds.push(doc.Content_Id__c);
                     }
                     if (attachmentIds.length > 0) {
-                        query = 'SELECT Id, FileType FROM ContentDocument WHERE Id IN :'+attachmentIds;
+                        query = 'SELECT Id, FileType FROM ContentDocument WHERE Id IN :attachmentIds';
                         conn.query(query, function(err, result){
                             if (err) {
                                 return console.error('Content query error: ', err);
@@ -102,11 +102,13 @@ app.get('/attachments', function(req, res) {
                         });
                     } else {
                         res.write('NO ATTACHMENTS IN DOCUMENTS');
+                        res.end();
                     }
                 }
             });
         } else {
             res.write('NO DOCUMENTS IN THIS REVISION');
+            res.end();
         }
     }
 });
