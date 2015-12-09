@@ -8,7 +8,7 @@ var pg = require('pg');
 var dbOperations = require("./database/database.js");
 
 var conn;
-var attIds;
+var docIds = ['a061500000Uk1LdAAJ']; // Harcoded for demo
 var accesToken;
 var refreshToken;
 var instanceUrl;
@@ -72,9 +72,9 @@ app.get('/attachments', function(req, res) {
         console.log(Date() + ' - ' + run_id + ' - Not yet authorized, so redirecting to auth');
         res.redirect('/');
     } else {
-        if (attIds && attIds.length > 0) {
+        if (docIds && docIds.length > 0) {
             var attachmentIds = [];
-            var query = 'SELECT Id, Content_Id__c FROM Document__c';
+            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id IN :'+docIds;
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -90,7 +90,7 @@ app.get('/attachments', function(req, res) {
                         attachmentIds.push(doc.Content_Id__c);
                     }
                     if (attachmentIds.length > 0) {
-                        query = 'SELECT Id, FileType FROM ContentDocument';
+                        query = 'SELECT Id, FileType FROM ContentDocument WHERE Id IN :'+attachmentIds;
                         conn.query(query, function(err, result){
                             if (err) {
                                 return console.error('Content query error: ', err);
@@ -198,9 +198,9 @@ app.get('/postchatter', function(req, res) {
 
 app.post('/test', function(req, res) {
     var message = 'ERROR';
-    attIds = req.body;
-    console.log('attachments ids+++++++++ ', attIds);
-    if (attIds) {
+    docIds = req.body;
+    console.log('attachments ids+++++++++ ', docIds);
+    if (docIds) {
         message = 'SUCCESS';
     }
     res.send(message);
