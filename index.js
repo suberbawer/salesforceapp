@@ -91,6 +91,7 @@ app.get('/attachments', function(req, res) {
                 }
                 console.log('result-----------', result.totalSize);
                 console.log('fetched----------', result.records.length);
+                console.log('record-----------', result.records[0]);
                 for (var pdf_att in result.records) {
                     console.log('file att------',pdf_att.FileType);
                     if (pdf_att.FileType == 'PDF') {
