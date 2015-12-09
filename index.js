@@ -164,7 +164,7 @@ app.get('/postchatter', function(req, res) {
     //
     // var data = new FormData();
     // data.append("feedElement", JSON.stringify(item));
-    // console.log('attachment pdf-----------', attachments[0]);
+    console.log('attachment pdf-----------', attachments[0]);
     // data.append("feedElementFileUpload", base64_encode(attachments[0]));
 
     // var req = new XMLHttpRequest();
