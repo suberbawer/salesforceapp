@@ -8,7 +8,7 @@ var pg = require('pg');
 var dbOperations = require("./database/database.js");
 
 var conn;
-var docIds = ['a061500000Uk1LdAAJ']; // Harcoded for demo
+var docIds = {'a061500000Uk1LdAAJ'}; // Harcoded for demo
 var accesToken;
 var refreshToken;
 var instanceUrl;
@@ -74,7 +74,7 @@ app.get('/attachments', function(req, res) {
     } else {
         if (docIds && docIds.length > 0) {
             var attachmentIds = [];
-            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id IN :docIds';
+            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id IN :' + docIds;
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
