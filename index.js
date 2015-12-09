@@ -186,8 +186,8 @@ app.get('/attachments', function(req, res) {
 app.get('/postchatter', function(req, res) {
     var attachments = req.param('atts');
     console.log('atts-----------', attachments[0]);
-    var data = fs.readFileSync(attachments[0]);
-    console.log('readfile sync----------', data);
+    // var data = fs.readFileSync(attachments[0]);
+    // console.log('readfile sync----------', data);
     // var client;
     // var req;
     //
