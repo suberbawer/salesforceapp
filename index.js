@@ -7,7 +7,7 @@ var url = require('url') ;
 var pg = require('pg');
 var fs = require('fs');
 var http = require('http');
-require('buffer-concat');
+var FormData = require('form-data');
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -98,8 +98,8 @@ app.get('/attachments', function(req, res) {
                     }
                     // console.log('pdfresults------------', pdf_results.length);
                     if (result.done && pdf_results.length > 0) {
-                        //sendToChatter(pdf_results);
-                        res.redirect('/postchatter?attachments=' + pdf_results);
+                        sendToChatter(pdf_results);
+                        //res.redirect('/postchatter?attachments=' + pdf_results);
                     }
                 }
             });
@@ -185,76 +185,31 @@ app.get('/attachments', function(req, res) {
 //     req.send(data);
 // });
 
-app.get('/postchatter', function(req, res) {
-    var attachments = req.param('attachments');
-    console.log('atts-----------', attachments[0]);
-    //var data = fs.readFileSync(attachments[0]);
-    var data = attachments[0];
-    console.log('readfile sync----------', data);
-    var client;
-    var req;
+function sendToChatter(files) {
+    console.log('token en chatter', req.session.accesToken);
+    var CRLF = '\r\n';
+    var form = new FormData();
 
-    /* As per http://www.w3.org/Protocols/rfc1341/7_2_Multipart.html */
-    var crlf = "\r\n";
-    var boundary = '---------------------------10102754414578508781458777923'; // Boundary: "--" + up to 70 ASCII chars + "\r\n"
-    var delimiter = crlf + "--" + boundary;
-    var preamble = ""; // ignored. a good place for non-standard mime info
-    var epilogue = ""; // ignored. a good place to place a checksum, etc
-    var headers = [
-      'Content-Disposition: form-data; name="feedElementFileUpload"; filename="test.pdf"' + crlf,
-      'Content-Type: application/octet-stream; charset=ISO-8859-1' + crlf,
-    ];
+    var options = {
+        header: '--' + form.getBoundary() +
+                CRLF + 'Content-Disposition: form-data; name="file"; filename="'+ files[0].title +'"' +
+                CRLF + 'Content-Type: application/octet-stream' +
+                CRLF + CRLF
+        };
 
-    var closeDelimiter = delimiter + "--";
-    var multipartBody; // = preamble + encapsulation + closeDelimiter + epilogue + crlf /* node doesn't add this */;
+    form.append('file', fs.readFileSync(files[0]), options);
 
-    multipartBody = Buffer.concat(
-        new Buffer(preamble + delimiter + crlf + headers.join('') + crlf),
-        data,
-        new Buffer(closeDelimiter + epilogue)
-    );
-    console.log(multipartBody.length);
-
-
-    // client = http.createClient(80, "www.phpletter.com");
-    /* headers copied from a browser request logged in wireshark */
-    req = http.request('POST', '/services/data/v34.0/chatter/feed-elements', {
-        'Host': 'heroku',
-        'User-Agent': 'Node.JS',
-        'Authorization': req.session.accessToken,
-        //'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        //'Accept-Language': 'en-us,en;q=0.5',
-        // 'Accept-Encoding': 'gzip,deflate',
-        //'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-        //'Keep-Alive': 115,
-        //'Connection': 'keep-alive',
-        //'Referer': 'http://www.phpletter.com/Demo/AjaxFileUpload-Demo/',
-        //'Cookie': 'PHPSESSID=vrunqnvon9kv3675pq6r9ponb1; __utma=158605435.700113097.1294360062.1294360062.1294360062.1; __utmb=158605435; __utmc=158605435; __utmz=158605435.1294360062.1.1.utmccn=(organic)|utmcsr=google|utmctr=http+upload+demo|utmcmd=organic',
-        'Content-Type': 'multipart/form-data; boundary=' + boundary,
-        //'Content-Length': 258707
-        'Content-Length': multipartBody.length
-    });
-
-    req.write(multipartBody);
-    console.log('asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf');
-    req.on('error', function (err) {
-        console.log(err);
-    });
-
-    req.on('response', function (response) {
-        console.log('response');
-
-        response.setEncoding('utf8');
-
-        response.on('data', function (chunk) {
-            console.log(chunk.toString());
-        });
-
-        response.on('end', function () {
-            console.log("end");
-        });
-    });
-});
+    form.submit({
+            host: 'test',
+            port: process.env.PORT,
+            path: '/services/data/v34.0/chatter/feed-elements',
+            auth: req.session.accesToken
+            }, function(err, res) {
+                if (err) throw err;
+                console.log('Done');
+                console.log(res);
+            });
+}
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
