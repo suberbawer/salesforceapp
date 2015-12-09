@@ -84,7 +84,7 @@ app.get('/attachments', function(req, res) {
             }
             console.log('result-----------', result.totalSize);
             console.log('fetched----------', result.records.length);
-            res.redirect('/postchatter?record_url='+result.records[0].attributes.url);
+            res.redirect('/postchatter?documents='+result.records);
         });
     }
 });
@@ -123,8 +123,10 @@ app.get('/postchatter', function(req, res) {
         instanceUrl: req.session.instanceUrl,
         accessToken: req.session.accessToken
     });
-    var record_url = req.param('record_url').split("/");
-    var id = record_url[record_url.length - 1];
+    // var record_url = req.param('record_url').split("/");
+    // var id = record_url[record_url.length - 1];
+    var docs = req.param('documents');
+    console.log('documents--------- ', docs);
     var item = {
         "body":{
             "messageSegments":[{
@@ -144,12 +146,12 @@ app.get('/postchatter', function(req, res) {
             "title": "Some File"
         }
     };
-    
+
     console.log('---------- item', item);
 
     var data = new FormData();
     data.append("feedElement", JSON.stringify(item));
-    data.append("feedElementFileUpload", fileData);
+    //data.append("feedElementFileUpload", fileData);
 
     var req = new XMLHttpRequest();
 
@@ -160,7 +162,7 @@ app.get('/postchatter', function(req, res) {
     req.addEventListener("error", fail, false);
 
     req.open("POST","/feed-elements", true);
-    // req.setRequestHeader("Authorization", self.bearer);
+    req.setRequestHeader("Authorization", oauth2);
     req.send(data);
     // conn.chatter.resource('/feed-elements').create(JSON.stringify(item), function(err, result) {
     //         if (err) { return console.error(err); }
