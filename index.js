@@ -8,7 +8,7 @@ var pg = require('pg');
 var dbOperations = require("./database/database.js");
 
 var conn;
-var docIds = {'a061500000Uk1LdAAJ'}; // Harcoded for demo
+var docIds = {'ids':{['a061500000Uk1LdAAJ']}}; // Harcoded for demo
 var accesToken;
 var refreshToken;
 var instanceUrl;
