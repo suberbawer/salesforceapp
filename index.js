@@ -80,7 +80,7 @@ app.get('/attachments', function(req, res) {
     } else {
         if (waka && waka.id.length > 0) {
             var attachmentIds = [];
-            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id = a061500000Uk1LdAAJ';
+            var query = 'SELECT Id, Content_Id__c FROM Document__c WHERE Id = :a061500000Uk1LdAAJ';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
