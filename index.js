@@ -69,7 +69,7 @@ app.get('/callback', function(req, res) {
 app.get('/attachments', function(req, res) {
     var ids = ['a061500000Uk1LdAAJ'];
 
-    var waka;
+    var waka = {};
     waka.id = ids;
     console.log('docids----', docIds);
 
