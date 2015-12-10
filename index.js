@@ -143,23 +143,23 @@ app.get('/postchatter', function(request, response) {
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
-    var req = http.request(options, function(res) {
-      res.on('end', function() {
-        //   res.write('Check Chatter to see message');
-        //   response.end();
-        });
-    });
-
-    // If error show message and finish response
-    req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
-        response.write('Error in request, please retry or contact your Administrator');
-        response.end();
-    });
-
-    // write data to request body
-    req.write(postData);
-    req.end();
+    // var req = http.request(options, function(res) {
+    //   res.on('end', function() {
+    //     //   res.write('Check Chatter to see message');
+    //     //   response.end();
+    //     });
+    // });
+    //
+    // // If error show message and finish response
+    // req.on('error', function(e) {
+    //     console.log('problem with request: ' + e.message);
+    //     response.write('Error in request, please retry or contact your Administrator');
+    //     response.end();
+    // });
+    //
+    // // write data to request body
+    // req.write(postData);
+    // req.end();
 });
 
 // Recieve contet ids from salesforce
