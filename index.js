@@ -264,20 +264,19 @@ app.get('/postchatter', function(request, response) {
 
     var req = http.request(options, function(res) {
       res.on('end', function() {
-        res.write('Check Chatter to see message');
-        res.end();
-        response.end();
+          console.log('end response end response');
+          res.write('Check Chatter to see message');
+          response.end();
       })
     });
 
     req.on('error', function(e) {
-      console.log('problem with request: ' + e.message);
+        console.log('problem with request: ' + e.message);
     });
 
     // write data to request body
     req.write(postData);
     req.end();
-    response.end();
 });
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
