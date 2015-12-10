@@ -95,14 +95,15 @@ app.get('/attachments', function(req, res) {
 });
 
 app.get('/postchatter', function(request, response) {
-    console.log('verions------------ ', request.session.pdf_results[0].Title);
+    console.log('verions------------ ', request.session.pdf_results[0].length);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
-        'Authorization': 'OAuth ' + request.session.accessToken
+          'Content-Length': request.session.pdf_results[0].length
+          'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
+          'Authorization': 'OAuth ' + request.session.accessToken
       }
     };
     var CRLF = '\r\n';
