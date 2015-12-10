@@ -172,7 +172,8 @@ function postToChatter(files_to_insert, access_token) {
     // write data to request body
     req.write(postData);
     req.end();
-});
+}
+
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
     var message = 'ERROR';
