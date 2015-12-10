@@ -89,6 +89,7 @@ app.get('/attachments', function(req, res) {
                 } else {
                     console.log('result-----------', result.totalSize);
                     console.log('fetched----------', result.records.length);
+                    console.log('record 2----- ', new Buffer(result.records[0]).toString('base64'));
                     console.log('record-----------', fs.readFileSync(result.records[0]));
 
                     for (var pos = 0; pos < result.records.length; pos++) {
@@ -100,6 +101,7 @@ app.get('/attachments', function(req, res) {
                     console.log('pdfresults------------', result.done );
                     if (result.done && pdf_results.length > 0) {
                         //sendToChatter(pdf_results);
+                        req.session.pdf_results = pdf_results;
                         res.redirect('/postchatter?attachments=' + pdf_results);
                     }
                 }
@@ -188,6 +190,8 @@ app.get('/attachments', function(req, res) {
 
 app.get('/postchatter', function(req, res) {
     console.log('token en chatter', req.session.accesToken);
+    console.log('token en chatter', req.session.pdf_results);
+    
     var files = req.param('attachments');
     var CRLF = '\r\n';
     var form = new FormData();
