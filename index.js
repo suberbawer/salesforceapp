@@ -12,9 +12,6 @@ var dbOperations = require("./database/database.js");
 
 var conn;
 var docIds;
-var accesToken;
-var refreshToken;
-var instanceUrl;
 
 app.use(session({secret: 'demosalesforceapi'}));
 app.use(bodyParser());
@@ -57,9 +54,7 @@ app.get('/callback', function(req, res) {
             req.session.accessToken = conn.accessToken;
             req.session.instanceUrl = conn.instanceUrl;
             req.session.refreshToken = conn.refreshToken;
-            //console.log('tokenpppppppppppp ', conn.accessToken)
-
-            var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
+            // Fetch attachments to procees in zip
             res.redirect('/attachments');
         }
     });
@@ -94,6 +89,7 @@ app.get('/attachments', function(req, res) {
                     }
                     if (result.done && pdf_results.length > 0) {
                         req.session.pdf_results = pdf_results;
+                        // Post zip to chatter
                         res.redirect('/postchatter');
                     }
                 }
@@ -114,7 +110,7 @@ app.get('/postchatter', function(request, response) {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
-        'Authorization': 'OAuth ' + request.session.accesToken
+        'Authorization': 'OAuth ' + request.session.accessToken
       }
     };
     var CRLF = '\r\n';
@@ -134,7 +130,7 @@ app.get('/postchatter', function(request, response) {
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
                  '"description":"Receipt for expenses",' + CRLF +
-                 '"title":"receipt.pdf"' + CRLF +
+                 '"title":"'+ request.session.pdf_results[0].Title +'"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -151,7 +147,6 @@ app.get('/postchatter', function(request, response) {
 
     var req = http.request(options, function(res) {
       res.on('end', function() {
-        console.log('end response end response/////////////////////////////');
         //   res.write('Check Chatter to see message');
         //   response.end();
         });
