@@ -230,39 +230,40 @@ app.get('/postchatter', function(hola, chau) {
       }
     };
     var CRLF = '\r\n';
-    var postData = '{' +
-        CRLF +
-        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq'+
-        'Content-Disposition: form-data; name="json"'+
-        'Content-Type: application/json; charset=UTF-8'+
-        CRLF+
-        '{'+
-           '"body":{'+
-              '"messageSegments":['+
-                 '{'+
-                    '"type":"Text",' +
-                    '"text":"Please accept this receipt."'+
-                 '}'+
-              ']'+
-           '},'+
-           '"capabilities":{'+
-              '"content":{'+
-                 '"description":"Receipt for expenses",'+
-                 '"title":"receipt.pdf"'+
-              '}'+
-           '},'+
-           '"feedElementType":"FeedItem",' +
-           '"subjectId":"me"' +
-        '}' +
-        CRLF+
-        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq'+
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="receipt.pdf"'+
-        'Content-Type: application/octet-stream; charset=ISO-8859-1'+
-        CRLF+
-        '...contents of receipt.pdf...'+
-        CRLF+
-        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--'+
-    '}';
+    // var postData = '{' +
+    //     CRLF +
+    //     '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq'+
+    //     'Content-Disposition: form-data; name="json"'+
+    //     'Content-Type: application/json; charset=UTF-8'+
+    //     CRLF+
+    //     '{'+
+    //        '"body":{'+
+    //           '"messageSegments":['+
+    //              '{'+
+    //                 '"type":"Text",' +
+    //                 '"text":"Please accept this receipt."'+
+    //              '}'+
+    //           ']'+
+    //        '},'+
+    //        '"capabilities":{'+
+    //           '"content":{'+
+    //              '"description":"Receipt for expenses",'+
+    //              '"title":"receipt.pdf"'+
+    //           '}'+
+    //        '},'+
+    //        '"feedElementType":"FeedItem",' +
+    //        '"subjectId":"me"' +
+    //     '}' +
+    //     CRLF+
+    //     '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq'+
+    //     'Content-Disposition: form-data; name="feedElementFileUpload"; filename="receipt.pdf"'+
+    //     'Content-Type: application/octet-stream; charset=ISO-8859-1'+
+    //     CRLF+
+    //     '...contents of receipt.pdf...'+
+    //     CRLF+
+    //     '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--'+
+    // '}';
+    var postData = 'lala';
     console.log('body------------ ', postData);
 
     var req = http.request(options, function(res) {
