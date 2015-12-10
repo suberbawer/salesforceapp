@@ -61,7 +61,8 @@ app.get('/callback', function(req, res) {
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
             //res.redirect('/attachments');
-            res.redirect('/postchatter');
+            //res.redirect('/postchatter');
+            res.end();
         }
     });
 });
