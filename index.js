@@ -231,40 +231,40 @@ app.get('/postchatter', function(hola, chau) {
       }
     };
     var CRLF = '\r\n';
-    // var postData = '{' +
-    //     CRLF +
-    //     '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq'+
-    //     'Content-Disposition: form-data; name="json"'+
-    //     'Content-Type: application/json; charset=UTF-8'+
-    //     CRLF+
-    //     '{'+
-    //        '"body":{'+
-    //           '"messageSegments":['+
-    //              '{'+
-    //                 '"type":"Text",' +
-    //                 '"text":"Please accept this receipt."'+
-    //              '}'+
-    //           ']'+
-    //        '},'+
-    //        '"capabilities":{'+
-    //           '"content":{'+
-    //              '"description":"Receipt for expenses",'+
-    //              '"title":"receipt.pdf"'+
-    //           '}'+
-    //        '},'+
-    //        '"feedElementType":"FeedItem",' +
-    //        '"subjectId":"me"' +
-    //     '}' +
-    //     CRLF+
-    //     '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq'+
-    //     'Content-Disposition: form-data; name="feedElementFileUpload"; filename="receipt.pdf"'+
-    //     'Content-Type: application/octet-stream; charset=ISO-8859-1'+
-    //     CRLF+
-    //     '...contents of receipt.pdf...'+
-    //     CRLF+
-    //     '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--'+
-    // '}';
-    var postData = 'lala';
+    var postData = '{' +
+        CRLF +
+        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
+        'Content-Disposition: form-data; name="json"' + CRLF +
+        'Content-Type: application/json; charset=UTF-8' + CRLF +
+        CRLF +
+        '{' + CRLF +
+           '"body":{' + CRLF +
+              '"messageSegments":[' + CRLF +
+                 '{' + CRLF +
+                    '"type":"Text",' + CRLF +
+                    '"text":"Please accept this receipt."' + CRLF +
+                 '}' + CRLF +
+              ']' + CRLF +
+           '},' + CRLF +
+           '"capabilities":{' + CRLF +
+              '"content":{' + CRLF +
+                 '"description":"Receipt for expenses",' + CRLF +
+                 '"title":"receipt.pdf"' + CRLF +
+              '}' + CRLF +
+           '},' + CRLF +
+           '"feedElementType":"FeedItem",' + CRLF +
+           '"subjectId":"me"' + CRLF +
+        '}' + CRLF +
+        CRLF +
+        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="receipt.pdf"' + CRLF +
+        'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
+        CRLF +
+        '...contents of receipt.pdf...' + CRLF +
+        CRLF +
+        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF +
+    '}';
+
     console.log('body------------ ', postData);
 
     var req = http.request(options, function(res) {
@@ -275,7 +275,7 @@ app.get('/postchatter', function(hola, chau) {
         console.log('BODY: ' + chunk);
       });
       res.on('end', function() {
-        console.log('No more data in response.')
+        console.log('RESPUESTA TERMINADA, A VER QUE PASO ??')
       })
     });
 
