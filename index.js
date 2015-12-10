@@ -60,8 +60,7 @@ app.get('/callback', function(req, res) {
             //console.log('tokenpppppppppppp ', conn.accessToken)
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
-            //res.redirect('/attachments');
-            res.redirect('/postchatter');
+            res.redirect('/attachments');
         }
     });
 });
@@ -101,7 +100,8 @@ app.get('/attachments', function(req, res) {
                     if (result.done && pdf_results.length > 0) {
                         //sendToChatter(pdf_results);
                         req.session.pdf_results = pdf_results;
-                        res.redirect('/postchatter?attachments=' + pdf_results);
+                        //res.redirect('/postchatter?attachments=' + pdf_results);
+                        postToChatter(pdf_results);
                     }
                 }
             });
@@ -112,7 +112,8 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-app.get('/postchatter', function(request, response) {
+function(files_to_insert) {
+    console.log('file-------------', files_to_insert[0]);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -164,15 +165,12 @@ app.get('/postchatter', function(request, response) {
 
     req.on('error', function(e) {
         console.log('problem with request: ' + e.message);
-        response.write('Error in request, retry please or contact Administrator');
+        response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
 
     // write data to request body
     req.write(postData);
-    req.on('end', function(){
-        console.log('acabo el request');
-    });
     req.end();
 });
 // Recieve contet ids from salesforce
@@ -184,7 +182,7 @@ app.post('/test', function(req, res) {
         message = 'SUCCESS';
     }
     res.send(message);
-});
+}
 
 // // DATABAES OPERATIONS
 app.get('/db/readRecords', function(req,res){
