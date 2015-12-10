@@ -4,10 +4,8 @@ var session = require('express-session');
 var app = express();
 var bodyParser = require('body-parser');
 var url = require('url') ;
-var pg = require('pg');
 var fs = require('fs');
 var http = require('https');
-var FormData = require('form-data');
 var dbOperations = require("./database/database.js");
 
 var conn;
