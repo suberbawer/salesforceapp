@@ -95,6 +95,8 @@ app.get('/attachments', function(req, res) {
 });
 
 app.get('/postchatter', function(request, response) {
+    console.log('0989087098098098098', request.session.pdf_results[0].VersionData);
+
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
