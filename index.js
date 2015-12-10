@@ -112,7 +112,7 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-function(files_to_insert) {
+function postToChatter(files_to_insert) {
     console.log('file-------------', files_to_insert[0]);
     var options = {
       hostname: 'na22.salesforce.com',
