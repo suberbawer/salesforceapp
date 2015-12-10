@@ -264,6 +264,8 @@ app.get('/postchatter', function(request, response) {
 
     var req = http.request(options, function(res) {
       res.on('end', function() {
+        res.write('Check Chatter to see message');
+        res.end();
         response.end();
       })
     });
@@ -275,6 +277,7 @@ app.get('/postchatter', function(request, response) {
     // write data to request body
     req.write(postData);
     req.end();
+    response.end();
 });
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
