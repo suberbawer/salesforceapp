@@ -165,8 +165,8 @@ function(files_to_insert) {
 
     req.on('error', function(e) {
         console.log('problem with request: ' + e.message);
-        response.write('Error in request, please retry or contact your Administrator');
-        response.end();
+        // response.write('Error in request, please retry or contact your Administrator');
+        // response.end();
     });
 
     // write data to request body
