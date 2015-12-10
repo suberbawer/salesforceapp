@@ -200,6 +200,7 @@ app.get('/postchatter', function(req, res) {
                 CRLF + 'Content-Type: application/octet-stream' +
                 CRLF + CRLF
         };
+        console.log('-------////////////////////////');
     console.log('zip-------', fs.readFileSync('./upload/2571.zip'))
     form.append('file', fs.readFileSync('./upload/2571.zip'), options);
 
