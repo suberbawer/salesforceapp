@@ -187,39 +187,103 @@ app.get('/attachments', function(req, res) {
 //     req.send(data);
 // });
 
+// app.get('/postchatter', function(req, res) {
+//     console.log('token en chatter', req.session.accessToken);
+//     console.log('zip-------', fs.readFileSync('./upload/2571.zip'));
+//
+//     //var files = req.param('attachments');
+//     var CRLF = '\r\n';
+//     var form = new FormData();
+//
+//     var options = {
+//         header: '--' + form.getBoundary() +
+//                 CRLF + 'Content-Disposition: form-data; name="file"; filename="test.pdf"'+
+//                 CRLF + 'Content-Type: application/octet-stream' +
+//                 CRLF + CRLF
+//         };
+//
+//     console.log('-------////////////////////////');
+//
+//     form.append('file', fs.readFileSync('./upload/2571.zip'), options);
+//
+//     console.log('////////// options headers', options);
+//
+//     form.submit({
+//             host: 'test',
+//             port: process.env.PORT,
+//             path: '/services/data/v34.0/chatter/feed-elements',
+//             auth: req.session.accesToken
+//             }, function(err, res) {
+//                 if (err) throw err;
+//                 console.log('Done');
+//                 console.log(res);
+//             });
+// });
 app.get('/postchatter', function(req, res) {
-    console.log('token en chatter', req.session.accessToken);
-    console.log('zip-------', fs.readFileSync('./upload/2571.zip'));
-
-    //var files = req.param('attachments');
-    var CRLF = '\r\n';
-    var form = new FormData();
-
     var options = {
-        header: '--' + form.getBoundary() +
-                CRLF + 'Content-Disposition: form-data; name="file"; filename="test.pdf"'+
-                CRLF + 'Content-Type: application/octet-stream' +
-                CRLF + CRLF
-        };
+      hostname: '/services/data/v34.0/chatter/feed-elements',
+      port: 80,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
+        'Authorization': 'OAuth ' + req.session.accessToken
+      }
+    };
+    var CRLF = '\r\n';
+    var postData = '{' +
+        CRLF +
+        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq'+
+        'Content-Disposition: form-data; name="json"'+
+        'Content-Type: application/json; charset=UTF-8'+
+        CRLF+
+        '{'+
+           '"body":{'+
+              '"messageSegments":['+
+                 '{'+
+                    '"type":"Text",' +
+                    '"text":"Please accept this receipt."'+
+                 '}'+
+              ']'+
+           '},'+
+           '"capabilities":{'+
+              '"content":{'+
+                 '"description":"Receipt for expenses",'+
+                 '"title":"receipt.pdf"'+
+              '}'+
+           '},'+
+           '"feedElementType":"FeedItem",' +
+           '"subjectId":"me"' +
+        '}' +
+        CRLF+
+        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq'+
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="receipt.pdf"'+
+        'Content-Type: application/octet-stream; charset=ISO-8859-1'+
+        CRLF+
+        '...contents of receipt.pdf...'+
+        CRLF+
+        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--'+
+    '}';
 
-    console.log('-------////////////////////////');
+    var req = http.request(options, function(res) {
+      console.log('STATUS: ' + res.statusCode);
+      console.log('HEADERS: ' + JSON.stringify(res.headers));
+      //res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+        console.log('BODY: ' + chunk);
+      });
+      res.on('end', function() {
+        console.log('No more data in response.')
+      })
+    });
 
-    form.append('file', fs.readFileSync('./upload/2571.zip'), options);
+    req.on('error', function(e) {
+      console.log('problem with request: ' + e.message);
+    });
 
-    console.log('////////// options headers', options);
-
-    form.submit({
-            host: 'test',
-            port: process.env.PORT,
-            path: '/services/data/v34.0/chatter/feed-elements',
-            auth: req.session.accesToken
-            }, function(err, res) {
-                if (err) throw err;
-                console.log('Done');
-                console.log(res);
-            });
+    // write data to request body
+    req.write(postData);
+    req.end();
 });
-
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
     var message = 'ERROR';
