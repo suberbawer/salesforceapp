@@ -219,15 +219,15 @@ app.get('/attachments', function(req, res) {
 //                 console.log(res);
 //             });
 // });
-app.get('/postchatter', function(hola, chau) {
+app.get('/postchatter', function(request, response) {
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
-        //'Authorization': 'OAuth ' + req.session.accessToken
-        'Authorization' : 'Bearer 00D15000000Ev0D!ARIAQFiM2tB4T3FV2aMlc6u7fy9_xJnygw9Cpl4O2Ln8Bi4kHTLTgNUqCnpP17Q6SuxEVSLK_F_hHXnwlL2L3D37jiID4zgK'
+        'Authorization': 'OAuth ' + request.session.accessToken
+        //'Authorization' : 'Bearer 00D15000000Ev0D!ARIAQFiM2tB4T3FV2aMlc6u7fy9_xJnygw9Cpl4O2Ln8Bi4kHTLTgNUqCnpP17Q6SuxEVSLK_F_hHXnwlL2L3D37jiID4zgK'
       }
     };
     var CRLF = '\r\n';
@@ -262,17 +262,9 @@ app.get('/postchatter', function(hola, chau) {
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
-    console.log('body------------ ', postData);
-
     var req = http.request(options, function(res) {
-      console.log('STATUS: ' + res.statusCode);
-      console.log('HEADERS: ' + JSON.stringify(res.headers));
-      //res.setEncoding('utf8');
-      res.on('data', function (chunk) {
-        console.log('BODY: ' + chunk);
-      });
       res.on('end', function() {
-        console.log('RESPUESTA TERMINADA, A VER QUE PASO ??');
+        response.end();
       })
     });
 
