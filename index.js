@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var url = require('url') ;
 var pg = require('pg');
 var fs = require('fs');
-var http = require('http');
+var http = require('https');
 var FormData = require('form-data');
 var dbOperations = require("./database/database.js");
 
@@ -221,7 +221,7 @@ app.get('/attachments', function(req, res) {
 // });
 app.get('/postchatter', function(hola, chau) {
     var options = {
-      hostname: 'https://na22.salesforce.com',
+      hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
@@ -273,7 +273,6 @@ app.get('/postchatter', function(hola, chau) {
       });
       res.on('end', function() {
         console.log('RESPUESTA TERMINADA, A VER QUE PASO ??');
-        chau.end();
       })
     });
 
