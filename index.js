@@ -112,113 +112,6 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-// app.get('/postchatter', function(req, res) {
-//     // open connection with client's stored OAuth details
-//     conn = new sf.Connection({
-//         instanceUrl: req.session.instanceUrl,
-//         accessToken: req.session.accessToken
-//     });
-//     var record_url = req.param('record_url').split("/");
-//     var id = record_url[record_url.length - 1];
-//     conn.chatter.resource('/feed-elements').create({
-//         "body":{
-//             "messageSegments":[{
-//                 "type":"Text",
-//                 "text":"Testing chatter api, retrieved record id: " + id
-//              }]
-//         },
-//         "feedElementType":"FeedItem",
-//         "subjectId":"me"
-//         }, function(err, result) {
-//             if (err) { return console.error(err); }
-//             // console.log("Id: " + result.id);
-//             // console.log("URL: " + result.url);
-//             // console.log("Body: " + result.body.messageSegments[0].text);
-//             // console.log("Comments URL: " + result.capabilities.comments.page.currentPageUrl);
-//             res.write('Check Chatter to see message');
-//             res.end();
-//         });
-// });
-
-// app.get('/postchatter', function(req, res) {
-//     // open connection with client's stored OAuth details
-//     conn = new sf.Connection({
-//         instanceUrl: req.session.instanceUrl,
-//         accessToken: req.session.accessToken
-//     });
-//     // pdf attachments to zip
-//     var attachments = req.param('atts');
-//     console.log('atts--------', attachments)
-//     var item = {
-//         "body":{
-//             "messageSegments":[{
-//                 "type":"Text",
-//                 "text":"Testing chatter api, retrieved record id: "
-//              }]
-//         },
-//         "feedElementType":"FeedItem",
-//         "subjectId":"me"
-//     };
-//
-//     item.capabilities =
-//     {
-//         "content" :
-//         {
-//             "description": "File attachment from Clienteling",
-//             "title": "Some File"
-//         }
-//     };
-//
-//     var data = new FormData();
-//     data.append("feedElement", JSON.stringify(item));
-//     console.log('attachment pdf-----------', attachments[0]);
-//     data.append("feedElementFileUpload", base64_encode(attachments[0]));
-//
-//     var req = new XMLHttpRequest();
-//     //
-//     // req.addEventListener("load", function(event)
-//     //    {
-//     //        success(req);
-//     //    }, false);
-//     // req.addEventListener("error", fail, false);
-//     //
-//     req.open("POST", "/services/data/v34.0/chatter/feed-elements", true);
-//     req.setRequestHeader("Authorization", "OAuth " + req.session.accesToken);
-//     req.send(data);
-// });
-
-// app.get('/postchatter', function(req, res) {
-//     console.log('token en chatter', req.session.accessToken);
-//     console.log('zip-------', fs.readFileSync('./upload/2571.zip'));
-//
-//     //var files = req.param('attachments');
-//     var CRLF = '\r\n';
-//     var form = new FormData();
-//
-//     var options = {
-//         header: '--' + form.getBoundary() +
-//                 CRLF + 'Content-Disposition: form-data; name="file"; filename="test.pdf"'+
-//                 CRLF + 'Content-Type: application/octet-stream' +
-//                 CRLF + CRLF
-//         };
-//
-//     console.log('-------////////////////////////');
-//
-//     form.append('file', fs.readFileSync('./upload/2571.zip'), options);
-//
-//     console.log('////////// options headers', options);
-//
-//     form.submit({
-//             host: 'test',
-//             port: process.env.PORT,
-//             path: '/services/data/v34.0/chatter/feed-elements',
-//             auth: req.session.accesToken
-//             }, function(err, res) {
-//                 if (err) throw err;
-//                 console.log('Done');
-//                 console.log(res);
-//             });
-// });
 app.get('/postchatter', function(request, response) {
     var options = {
       hostname: 'na22.salesforce.com',
@@ -227,7 +120,6 @@ app.get('/postchatter', function(request, response) {
       headers: {
         'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
         'Authorization': 'OAuth ' + request.session.accessToken
-        //'Authorization' : 'Bearer 00D15000000Ev0D!ARIAQFiM2tB4T3FV2aMlc6u7fy9_xJnygw9Cpl4O2Ln8Bi4kHTLTgNUqCnpP17Q6SuxEVSLK_F_hHXnwlL2L3D37jiID4zgK'
       }
     };
     var CRLF = '\r\n';
@@ -272,13 +164,16 @@ app.get('/postchatter', function(request, response) {
 
     req.on('error', function(e) {
         console.log('problem with request: ' + e.message);
-        response.write('Check Chatter to see message');
+        response.write('Error in request, retry please or contact Administrator');
         response.end();
     });
 
     // write data to request body
     req.write(postData);
     req.end();
+    req.on('end', function(){
+        console.log('acabo el request');
+    });
 });
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
