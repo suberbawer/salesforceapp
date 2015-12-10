@@ -69,7 +69,7 @@ app.get('/attachments', function(req, res) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, FileType, Title FROM ContentDocument';
+            var query = 'SELECT Id, Title, VersionData FROM ContentVersion';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -99,11 +99,7 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-app.get('/postchatter', function(request, response) {
-    console.log('file-------------', request.session.pdf_results[0].Title);
-    //var filestring = new Buffer(request.session.pdf_results[0], 'binary').toString('base64');
-    var buffer = fs.readFileSync(request.session.pdf_results[0]);
-    console.log('converted file', buffer.toString("base64"));
+app.get('/postchatter', function(request, response) {    
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -141,7 +137,7 @@ app.get('/postchatter', function(request, response) {
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="receipt.pdf"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF +
-        '...contents of receipt.pdf...' + CRLF +
+        request.session.pdf_results[0].VersionData + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
