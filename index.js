@@ -80,13 +80,8 @@ app.get('/attachments', function(req, res) {
                 if (err) {
                     return console.error('Document query error: ', err);
                 } else {
-                    for (var pos = 0; pos < result.records.length; pos++) {
-                        if (result.records[pos].FileType == 'PDF') {
-                            pdf_results.push(result.records[pos]);
-                        }
-                    }
-                    if (result.done && pdf_results.length > 0) {
-                        req.session.pdf_results = pdf_results;
+                    if (result.done && result.records.length > 0) {
+                        req.session.pdf_results = result.records;
                         // Post zip to chatter
                         res.redirect('/postchatter');
                     }
@@ -100,7 +95,7 @@ app.get('/attachments', function(req, res) {
 });
 
 app.get('/postchatter', function(request, response) {
-    console.log('verions------------ ', request.session.pdf_results[0].Title);    
+    console.log('verions------------ ', request.session.pdf_results[0].Title);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
