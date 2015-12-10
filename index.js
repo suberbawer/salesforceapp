@@ -87,21 +87,14 @@ app.get('/attachments', function(req, res) {
                 if (err) {
                     return console.error('Document query error: ', err);
                 } else {
-                    console.log('result-----------', result.totalSize);
-                    console.log('fetched----------', result.records[0].Title);
-
                     for (var pos = 0; pos < result.records.length; pos++) {
                         if (result.records[pos].FileType == 'PDF') {
                             pdf_results.push(result.records[pos]);
                         }
                     }
-                    console.log('pdfresults------------', pdf_results.length );
-                    console.log('pdfresults------------', result.done );
                     if (result.done && pdf_results.length > 0) {
-                        //sendToChatter(pdf_results);
                         req.session.pdf_results = pdf_results;
-                        //res.redirect('/postchatter?attachments=' + pdf_results);
-                        postToChatter(pdf_results, req.session.accesToken);
+                        res.redirect('/postchatter');
                     }
                 }
             });
@@ -112,15 +105,16 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-function postToChatter(files_to_insert, access_token) {
-    console.log('file-------------', files_to_insert[0]);
+app.get('/postchatter', function(request, response) {
+    console.log('file-------------', request.session.pdf_results[0].Title);
+
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
-        'Authorization': 'OAuth ' + access_token
+        'Authorization': 'OAuth ' + request.session.accesToken
       }
     };
     var CRLF = '\r\n';
@@ -163,16 +157,17 @@ function postToChatter(files_to_insert, access_token) {
         });
     });
 
+    // If error show message and finish response
     req.on('error', function(e) {
         console.log('problem with request: ' + e.message);
-        // response.write('Error in request, please retry or contact your Administrator');
-        // response.end();
+        response.write('Error in request, please retry or contact your Administrator');
+        response.end();
     });
 
     // write data to request body
     req.write(postData);
     req.end();
-}
+});
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
