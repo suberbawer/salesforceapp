@@ -61,8 +61,7 @@ app.get('/callback', function(req, res) {
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
             //res.redirect('/attachments');
-            //res.redirect('/postchatter');
-            res.end();
+            res.redirect('/postchatter');
         }
     });
 });
@@ -190,6 +189,7 @@ app.get('/attachments', function(req, res) {
 
 app.get('/postchatter', function(req, res) {
     console.log('token en chatter', req.session.accessToken);
+    console.log('zip-------', fs.readFileSync('./upload/2571.zip'));
 
     //var files = req.param('attachments');
     var CRLF = '\r\n';
@@ -201,8 +201,9 @@ app.get('/postchatter', function(req, res) {
                 CRLF + 'Content-Type: application/octet-stream' +
                 CRLF + CRLF
         };
-        console.log('-------////////////////////////');
-    console.log('zip-------', fs.readFileSync('./upload/2571.zip'))
+
+    console.log('-------////////////////////////');
+
     form.append('file', fs.readFileSync('./upload/2571.zip'), options);
 
     form.submit({
