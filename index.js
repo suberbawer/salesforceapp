@@ -267,7 +267,7 @@ app.get('/postchatter', function(request, response) {
         console.log('end response end response/////////////////////////////');
         //   res.write('Check Chatter to see message');
         //   response.end();
-      })
+        });
     });
 
     req.on('error', function(e) {
