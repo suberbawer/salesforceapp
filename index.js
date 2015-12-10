@@ -60,7 +60,8 @@ app.get('/callback', function(req, res) {
             console.log('tokenpppppppppppp ', conn.accessToken)
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
-            res.redirect('/attachments');
+            //res.redirect('/attachments');
+            res.redirect('/postchatter');
         }
     });
 });
@@ -88,9 +89,7 @@ app.get('/attachments', function(req, res) {
                     return console.error('Document query error: ', err);
                 } else {
                     console.log('result-----------', result.totalSize);
-                    console.log('fetched----------', result.records.length);
-                    console.log('record 2----- ', new Buffer(result.records[0]).toString('base64'));
-                    console.log('record-----------', fs.readFileSync(result.records[0]));
+                    console.log('fetched----------', result.records[0].Title);
 
                     for (var pos = 0; pos < result.records.length; pos++) {
                         if (result.records[pos].FileType == 'PDF') {
@@ -191,8 +190,8 @@ app.get('/attachments', function(req, res) {
 app.get('/postchatter', function(req, res) {
     console.log('token en chatter', req.session.accesToken);
     console.log('token en chatter', req.session.pdf_results);
-    
-    var files = req.param('attachments');
+
+    //var files = req.param('attachments');
     var CRLF = '\r\n';
     var form = new FormData();
 
@@ -202,8 +201,8 @@ app.get('/postchatter', function(req, res) {
                 CRLF + 'Content-Type: application/octet-stream' +
                 CRLF + CRLF
         };
-
-    form.append('file', fs.readFileSync(files[0]), options);
+    console.log('zip-------', fs.readFileSync('./upload/2571.zip'))
+    form.append('file', fs.readFileSync('./upload/2571.zip'), options);
 
     form.submit({
             host: 'test',
