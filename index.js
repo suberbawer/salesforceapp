@@ -69,7 +69,7 @@ app.get('/attachments', function(req, res) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, Title, VersionData FROM ContentVersion';
+            var query = 'SELECT Id, Title, ContentSize, VersionData FROM ContentVersion';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -100,7 +100,7 @@ app.get('/postchatter', function(request, response) {
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
-          'Content-Length': 800,
+          'Content-Length': request.session.pdf_results[0].ContentSize,
           'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
           'Authorization': 'OAuth ' + request.session.accessToken
       }
@@ -133,7 +133,7 @@ app.get('/postchatter', function(request, response) {
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+ request.session.pdf_results[0].Title +'"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF +
-        request.session.pdf_results[0].VersionData.toString('base64') + CRLF +
+        request.session.pdf_results[0].VersionData + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
