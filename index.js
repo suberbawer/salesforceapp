@@ -220,7 +220,7 @@ app.get('/attachments', function(req, res) {
 //             });
 // });
 app.get('/postchatter', function(req, res) {
-    console.log(' token en la nueva funcion ', req.sesssion.accessToken);
+    console.log(' token en la nueva funcion ', req.session.accessToken);
     var options = {
       hostname: '/services/data/v34.0/chatter/feed-elements',
       port: 80,
