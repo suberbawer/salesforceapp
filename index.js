@@ -57,7 +57,7 @@ app.get('/callback', function(req, res) {
             req.session.accessToken = conn.accessToken;
             req.session.instanceUrl = conn.instanceUrl;
             req.session.refreshToken = conn.refreshToken;
-            console.log('tokenpppppppppppp ', conn.accessToken)
+            //console.log('tokenpppppppppppp ', conn.accessToken)
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
             //res.redirect('/attachments');
@@ -220,6 +220,7 @@ app.get('/attachments', function(req, res) {
 //             });
 // });
 app.get('/postchatter', function(req, res) {
+    console.log(' token en la nueva funcion ', req.sesssion.accessToken);
     var options = {
       hostname: '/services/data/v34.0/chatter/feed-elements',
       port: 80,
