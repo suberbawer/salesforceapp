@@ -231,8 +231,7 @@ app.get('/postchatter', function(hola, chau) {
       }
     };
     var CRLF = '\r\n';
-    var postData = CRLF +
-        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
+    var postData = '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
         'Content-Disposition: form-data; name="json"' + CRLF +
         'Content-Type: application/json; charset=UTF-8' + CRLF +
         CRLF +
