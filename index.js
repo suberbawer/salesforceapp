@@ -101,7 +101,7 @@ app.get('/attachments', function(req, res) {
                         //sendToChatter(pdf_results);
                         req.session.pdf_results = pdf_results;
                         //res.redirect('/postchatter?attachments=' + pdf_results);
-                        postToChatter(pdf_results);
+                        postToChatter(pdf_results, req.session.accesToken);
                     }
                 }
             });
@@ -112,7 +112,7 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-function postToChatter(files_to_insert) {
+function postToChatter(files_to_insert, access_token) {
     console.log('file-------------', files_to_insert[0]);
     var options = {
       hostname: 'na22.salesforce.com',
@@ -120,7 +120,7 @@ function postToChatter(files_to_insert) {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
-        'Authorization': 'OAuth ' + request.session.accessToken
+        'Authorization': 'OAuth ' + access_token
       }
     };
     var CRLF = '\r\n';
