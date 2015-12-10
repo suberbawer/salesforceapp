@@ -220,7 +220,6 @@ app.get('/attachments', function(req, res) {
 //             });
 // });
 app.get('/postchatter', function(req, res) {
-    console.log(' token en la nueva funcion ', req.session.accessToken);
     var options = {
       hostname: 'https://na22.salesforce.com/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
@@ -264,6 +263,7 @@ app.get('/postchatter', function(req, res) {
         CRLF+
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--'+
     '}';
+    console.log('body------------ ', postData);
 
     var req = http.request(options, function(res) {
       console.log('STATUS: ' + res.statusCode);
