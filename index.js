@@ -221,7 +221,7 @@ app.get('/attachments', function(req, res) {
 // });
 app.get('/postchatter', function(hola, chau) {
     var options = {
-      hostname: 'na22.salesforce.com',
+      hostname: 'https://na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
