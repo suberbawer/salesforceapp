@@ -101,7 +101,7 @@ app.get('/attachments', function(req, res) {
 
 app.get('/postchatter', function(request, response) {
     console.log('file-------------', request.session.pdf_results[0].Title);
-    var filestring = base64_encode(request.session.pdf_results[0]);
+    var filestring = new Buffer(request.session.pdf_results[0], 'binary').toString('base64');
     console.log('converted file', filestring);
     var options = {
       hostname: 'na22.salesforce.com',
