@@ -115,13 +115,13 @@ app.get('/postchatter', function(request, response) {
               '"messageSegments":[' + CRLF +
                  '{' + CRLF +
                     '"type":"Text",' + CRLF +
-                    '"text":"Please accept this receipt."' + CRLF +
+                    '"text":""' + CRLF +
                  '}' + CRLF +
               ']' + CRLF +
            '},' + CRLF +
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
-                 '"description":"Receipt for expenses",' + CRLF +
+                 '"description":"Generated Heroku Zip Pdx",' + CRLF +
                  '"title":"'+ request.session.pdf_results[0].Title +'"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
@@ -130,10 +130,10 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="receipt.pdf"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+ request.session.pdf_results[0].Title +'"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF +
-        request.session.pdf_results[0].VersionData + CRLF +
+        request.session.pdf_results[0].VersionData.toString('base64') + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
