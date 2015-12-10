@@ -170,10 +170,10 @@ app.get('/postchatter', function(request, response) {
 
     // write data to request body
     req.write(postData);
-    req.end();
     req.on('end', function(){
         console.log('acabo el request');
     });
+    req.end();
 });
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
