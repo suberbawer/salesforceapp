@@ -7,7 +7,7 @@ var url = require('url') ;
 var pg = require('pg');
 var fs = require('fs');
 var http = require('http');
-var formData = require('form-data');
+var FormData = require('form-data');
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -193,7 +193,7 @@ app.get('/postchatter', function(req, res) {
 
     //var files = req.param('attachments');
     var CRLF = '\r\n';
-    //var form = new FormData();
+    var form = new FormData();
 
     var options = {
         header: '--' + form.getBoundary() +
