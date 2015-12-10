@@ -101,8 +101,9 @@ app.get('/attachments', function(req, res) {
 
 app.get('/postchatter', function(request, response) {
     console.log('file-------------', request.session.pdf_results[0].Title);
-    var filestring = new Buffer(request.session.pdf_results[0], 'binary').toString('base64');
-    console.log('converted file', filestring);
+    //var filestring = new Buffer(request.session.pdf_results[0], 'binary').toString('base64');
+    var buffer = fs.readFileSync(request.session.pdf_results[0]);
+    console.log('converted file', buffer.toString("base64"));
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
