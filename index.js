@@ -223,11 +223,11 @@ app.get('/postchatter', function(req, res) {
     console.log(' token en la nueva funcion ', req.session.accessToken);
     var options = {
       hostname: 'https://na22.salesforce.com/services/data/v34.0/chatter/feed-elements',
-      port: 80,
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
-        'Authorization': 'OAuth ' + req.session.accessToken
+        //'Authorization': 'OAuth ' + req.session.accessToken
+        'Authorization' : 'Bearer 00D15000000Ev0D!ARIAQFiM2tB4T3FV2aMlc6u7fy9_xJnygw9Cpl4O2Ln8Bi4kHTLTgNUqCnpP17Q6SuxEVSLK_F_hHXnwlL2L3D37jiID4zgK'
       }
     };
     var CRLF = '\r\n';
