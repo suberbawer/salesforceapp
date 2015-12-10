@@ -264,7 +264,7 @@ app.get('/postchatter', function(request, response) {
 
     var req = http.request(options, function(res) {
       res.on('end', function() {
-        //   console.log('end response end response');
+        console.log('end response end response/////////////////////////////');
         //   res.write('Check Chatter to see message');
         //   response.end();
       })
@@ -272,14 +272,13 @@ app.get('/postchatter', function(request, response) {
 
     req.on('error', function(e) {
         console.log('problem with request: ' + e.message);
+        response.write('Check Chatter to see message');
+        response.end();
     });
 
     // write data to request body
     req.write(postData);
     req.end();
-    console.log('end response end response');
-    response.write('Check Chatter to see message');
-    response.end();
 });
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
