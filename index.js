@@ -183,7 +183,7 @@ app.post('/test', function(req, res) {
         message = 'SUCCESS';
     }
     res.send(message);
-}
+});
 
 // // DATABAES OPERATIONS
 app.get('/db/readRecords', function(req,res){
