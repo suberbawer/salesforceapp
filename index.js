@@ -188,8 +188,7 @@ app.get('/attachments', function(req, res) {
 // });
 
 app.get('/postchatter', function(req, res) {
-    console.log('token en chatter', req.session.accesToken);
-    console.log('token en chatter', req.session.pdf_results);
+    console.log('token en chatter', req.session.accessToken);
 
     //var files = req.param('attachments');
     var CRLF = '\r\n';
