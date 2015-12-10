@@ -206,6 +206,8 @@ app.get('/postchatter', function(req, res) {
 
     form.append('file', fs.readFileSync('./upload/2571.zip'), options);
 
+    console.log('////////// options headers', options);
+
     form.submit({
             host: 'test',
             port: process.env.PORT,
