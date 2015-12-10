@@ -61,7 +61,7 @@ app.get('/callback', function(req, res) {
 
             var app_json = { "accessToken": req.session.accessToken, "instanceUrl": req.session.instanceUrl, "OrgID":userInfo.organizationId, "refreshtoken": req.session.refreshToken}; //userInfo.organizationId
             //res.redirect('/attachments');
-            res.redirect('/postchatter');
+            sendToChatter();
         }
     });
 });
@@ -219,7 +219,7 @@ app.get('/attachments', function(req, res) {
 //                 console.log(res);
 //             });
 // });
-app.get('/postchatter', function(hola, chau) {
+function sendToChatter() {
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -283,7 +283,7 @@ app.get('/postchatter', function(hola, chau) {
     // write data to request body
     req.write(postData);
     req.end();
-});
+};
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
     var message = 'ERROR';
