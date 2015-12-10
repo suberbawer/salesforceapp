@@ -272,7 +272,7 @@ app.get('/postchatter', function(hola, chau) {
         console.log('BODY: ' + chunk);
       });
       res.on('end', function() {
-        console.log('RESPUESTA TERMINADA, A VER QUE PASO ??')
+        console.log('RESPUESTA TERMINADA, A VER QUE PASO ??', res);
       })
     });
 
