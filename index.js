@@ -120,7 +120,7 @@ app.get('/getpdf', function(request, response) {
         });
         res.on('end', function() {
             console.log('terminamos/////////////////////');
-            request.session.pdf_results = str.toString('base64');
+            request.session.pdf_results = str;
             response.redirect('/postchatter');
         });
     });
