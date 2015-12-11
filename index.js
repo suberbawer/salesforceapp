@@ -120,8 +120,7 @@ app.get('/getpdf', function(request, response) {
             str += chunk;
         });
         res.on('end', function() {
-            console.log('finaaaaaaaa-----------------');
-            console.log('final final---------', str);
+//            console.log('final final---------', str);
             request.session.pdf_results = str;
             res.redirect('/postchatter');
         });
