@@ -116,9 +116,11 @@ app.get('/getpdf', function(request, response) {
     var req = http.request(options, function(res) {
         var str='';
         res.on('data', function (chunk) {
-            str += chunk.toString('base64');
+            var baseChunk = chunk.toString('base64');
+            str += baseChunk;
         });
         res.on('end', function() {
+            console.log('terminamos/////////////////////');
             request.session.pdf_results = str;
             response.redirect('/postchatter');
         });
@@ -133,6 +135,7 @@ app.get('/getpdf', function(request, response) {
 });
 
 app.get('/postchatter', function(request, response) {
+    console.log('empezamos//////////////');
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
