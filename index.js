@@ -94,12 +94,39 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-app.get('/getpdf', function(req, res) {
-    conn.apex.get("/services/data/v34.0/sobjects/ContentVersion/", function(err, res) {
-      if (err) { return console.error(err); }
-      console.log("response: ", res);
-      // the response object structure depends on the definition of apex class
-  });
+// app.get('/getpdf', function(req, res) {
+//     conn.apex.get("/services/data/v34.0/sobjects/ContentVersion/", function(err, res) {
+//       if (err) { return console.error(err); }
+//       console.log("response: ", res);
+//       // the response object structure depends on the definition of apex class
+//   });
+// });
+
+app.get('/getpdf', function(request, response) {
+
+    var options = {
+        hostname: 'na22.salesforce.com',
+        path: '/services/data/v34.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+        method: 'GET',
+        headers: {
+          'Authorization': 'OAuth ' + request.session.accessToken
+        }
+    };
+    var req = http.request(options, function(res) {
+        response.on('data', function (chunk) {
+            str += chunk;
+        });
+        res.on('end', function() {
+            console.log(str)
+        });
+    });
+
+    // If error show message and finish response
+    req.on('error', function(e) {
+        console.log('problem with request: ' + e.message);
+        response.write('Error in request, please retry or contact your Administrator');
+        response.end();
+    });
 });
 
 app.get('/postchatter', function(request, response) {
