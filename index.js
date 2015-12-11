@@ -119,7 +119,7 @@ app.get('/getpdf', function(request, response) {
             str += chunk;
         });
         res.on('end', function() {
-            console.log('terminamos/////////////////////');
+            console.log('terminamos///////////////////// ' + str);
             request.session.pdf_results = str;
             response.redirect('/postchatter');
         });
