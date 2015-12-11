@@ -94,6 +94,14 @@ app.get('/attachments', function(req, res) {
     }
 });
 
+app.get('/getpdf') {
+    conn.apex.get("/na22.salesforce.com/services/data/v34.0/sobjects/ContentVersion/", function(err, res) {
+      if (err) { return console.error(err); }
+      console.log("response: ", res);
+      // the response object structure depends on the definition of apex class
+  });
+}
+
 app.get('/postchatter', function(request, response) {
     console.log('0989087098098098098', request.session.pdf_results[0].VersionData);
 
