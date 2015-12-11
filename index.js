@@ -198,7 +198,8 @@ app.get('/postchatter', function(request, response) {
     // write data to request body
     req.write(postData);
     // writing bytes data
-    req.write(request.session.pdf_results);
+    var buffer = new Buffer(request.session.pdf_results);
+    req.write(buffer);
     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     req.end();
 });
