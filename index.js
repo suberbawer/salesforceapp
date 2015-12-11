@@ -117,17 +117,17 @@ app.get('/getpdf', function(request, response) {
         //res.setEncoding('null');
         var binaryData = '';
         res.on('data', function (chunk) {
-            //console.log('CHUNK----------  ', chunk.toString('base64'));
+            console.log('CHUNK----------  ', fs.readFileSync(chunk));
             //console.log('CHUNK64----------  ', base64_encode(chunk));
 
             binaryData += chunk;
         });
         res.on('end', function() {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
-            console.log('terminamos///////////////////// ' + binaryData);
+            //console.log('terminamos///////////////////// ' + binaryData);
             console.log('terminamosbase64///////////////////// ' + binaryData.toString('base64'));
 
-            request.session.pdf_results = base64_encode(binaryData);
+            request.session.pdf_results = binaryData;
             response.redirect('/postchatter');
         });
     });
@@ -180,16 +180,11 @@ app.get('/postchatter', function(request, response) {
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="GeneratedZIP.pdf"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
-//
-         //+
-        //request.session.pdf_results + CRLF +
-        //CRLF +
-        //'--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
     var req = http.request(options, function(res) {
       res.on('end', function() {
         //   res.write('Check Chatter to see message');
-        //   response.end();
+        console.log('ES EL FIN*****');
         });
     });
 
