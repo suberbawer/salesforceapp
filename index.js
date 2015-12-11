@@ -104,7 +104,7 @@ app.get('/attachments', function(req, res) {
 // });
 
 app.get('/getpdf', function(request, response) {
-
+    console.log('token****************', request.session.accessToken);
     var options = {
         hostname: 'na22.salesforce.com',
         path: '/services/data/v34.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
@@ -117,7 +117,7 @@ app.get('/getpdf', function(request, response) {
         var str='';
         res.on('data', function (chunk) {
             console.log('en el dataaaaaa-------', chunk);
-            str += chunk;
+            // str += chunk;
         });
         res.on('end', function() {
             console.log('finaaaaaaaa-----------------');
@@ -131,6 +131,7 @@ app.get('/getpdf', function(request, response) {
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
+    req.end();
 });
 
 app.get('/postchatter', function(request, response) {
