@@ -118,14 +118,14 @@ app.get('/getpdf', function(request, response) {
         var binaryData = '';
         res.on('data', function (chunk) {
             console.log('CHUNK----------  ', chunk);
-            console.log('CHUNK64----------  ', base64_encode(chunk));
+            //console.log('CHUNK64----------  ', base64_encode(chunk));
 
-            binaryData += base64_encode(chunk);
+            binaryData += chunk;
         });
         res.on('end', function() {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
-            request.session.pdf_results = binaryData;
+            request.session.pdf_results = base64_encode(binaryData);
             response.redirect('/postchatter');
         });
     });
