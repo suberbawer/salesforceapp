@@ -114,13 +114,14 @@ app.get('/getpdf', function(request, response) {
         }
     };
     var req = http.request(options, function(res) {
-        var str='';
+        res.setEncoding('binary');
+        var binaryData ='';
         res.on('data', function (chunk) {
-            str += chunk;
+            binaryData += chunk;
         });
         res.on('end', function() {
-            console.log('terminamos///////////////////// ' + str.toString('base64'));
-            request.session.pdf_results = str;
+            console.log('terminamos///////////////////// ' + binaryData);
+            request.session.pdf_results = binaryData;
             response.redirect('/postchatter');
         });
     });
