@@ -117,7 +117,7 @@ app.get('/getpdf', function(request, response) {
         var str='';
         res.on('data', function (chunk) {
             console.log('en el dataaaaaa-------', chunk);
-            // str += chunk;
+            str += chunk;
         });
         res.on('end', function() {
             console.log('finaaaaaaaa-----------------');
