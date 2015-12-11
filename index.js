@@ -95,7 +95,7 @@ app.get('/attachments', function(req, res) {
 });
 
 app.get('/getpdf', function(req, res) {
-    conn.apex.get("/na22.salesforce.com/services/data/v34.0/sobjects/ContentVersion/", function(err, res) {
+    conn.apex.get("/services/data/v34.0/sobjects/ContentVersion/", function(err, res) {
       if (err) { return console.error(err); }
       console.log("response: ", res);
       // the response object structure depends on the definition of apex class
