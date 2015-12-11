@@ -107,7 +107,7 @@ app.get('/getpdf', function(request, response) {
     console.log('token****************', request.session.accessToken);
     var options = {
         hostname: 'na22.salesforce.com',
-        path: '/services/data/v34.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+        path: request.session.pdf_results[0].VersionData,
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
@@ -122,6 +122,8 @@ app.get('/getpdf', function(request, response) {
         res.on('end', function() {
             console.log('finaaaaaaaa-----------------');
             console.log('final final---------', str);
+            request.session.pdf_results = str;
+            res.redirect('/postchatter');
         });
     });
 
@@ -135,8 +137,6 @@ app.get('/getpdf', function(request, response) {
 });
 
 app.get('/postchatter', function(request, response) {
-    console.log('0989087098098098098', request.session.pdf_results[0].VersionData);
-
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -175,7 +175,7 @@ app.get('/postchatter', function(request, response) {
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+ request.session.pdf_results[0].Title +'"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF +
-        request.session.pdf_results[0].VersionData + CRLF +
+        request.session.pdf_results + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
