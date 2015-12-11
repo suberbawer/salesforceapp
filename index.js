@@ -120,6 +120,7 @@ app.get('/getpdf', function(request, response) {
             binaryData += chunk;
         });
         res.on('end', function() {
+            binaryData = new Buffer(binaryData.toString('binary'),'binary');
             console.log('terminamos///////////////////// ' + binaryData);
             request.session.pdf_results = binaryData;
             response.redirect('/postchatter');
@@ -174,9 +175,7 @@ app.get('/postchatter', function(request, response) {
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="GeneratedZIP.pdf"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF +
-        //request.session.pdf_results 
-        new Buffer(request.session.pdf_results.toString('binary'),'binary');
-        + CRLF +
+        request.session.pdf_results + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
