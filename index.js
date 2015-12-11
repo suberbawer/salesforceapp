@@ -83,7 +83,8 @@ app.get('/attachments', function(req, res) {
                     if (result.done && result.records.length > 0) {
                         req.session.pdf_results = result.records;
                         // Post zip to chatter
-                        res.redirect('/postchatter');
+                        //res.redirect('/postchatter');
+                        res.redirect('/getpdf');
                     }
                 }
             });
@@ -113,7 +114,7 @@ app.get('/getpdf', function(request, response) {
         }
     };
     var req = http.request(options, function(res) {
-        response.on('data', function (chunk) {
+        res.on('data', function (chunk) {
             str += chunk;
         });
         res.on('end', function() {
