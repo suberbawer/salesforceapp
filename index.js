@@ -114,10 +114,10 @@ app.get('/getpdf', function(request, response) {
         }
     };
     var req = http.request(options, function(res) {
-        res.setEncoding('binary');
-        var binaryData ='';
+        //res.setEncoding('binary');
+        var binaryData = [];
         res.on('data', function (chunk) {
-            binaryData += chunk;
+            binaryData.push(chunk);
         });
         res.on('end', function() {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
