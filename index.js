@@ -116,13 +116,11 @@ app.get('/getpdf', function(request, response) {
     var req = http.request(options, function(res) {
         var str='';
         res.on('data', function (chunk) {
-            console.log('**********************dddddddddddddddd', chunk.toString('base64'))
-            str += chunk;
+            str += chunk.toString('base64');
         });
         res.on('end', function() {
             request.session.pdf_results = str;
-            console.log('res/////////////////////////////////////////', res);
-            //response.redirect('/postchatter');
+            response.redirect('/postchatter');
         });
     });
 
@@ -132,7 +130,6 @@ app.get('/getpdf', function(request, response) {
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
-    req.end();
 });
 
 app.get('/postchatter', function(request, response) {
@@ -163,7 +160,7 @@ app.get('/postchatter', function(request, response) {
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
                  '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                 '"title":"'+ request.session.pdf_results[0].Title +'"' + CRLF +
+                 '"title":"GeneratedZIP.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -171,10 +168,10 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+ request.session.pdf_results[0].Title +'"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="GeneratedZIP.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF +
-        request.session.pdf_results.toString('base64') + CRLF +
+        request.session.pdf_results + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
