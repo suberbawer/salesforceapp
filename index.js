@@ -122,7 +122,7 @@ app.get('/getpdf', function(request, response) {
         res.on('end', function() {
 //            console.log('final final---------', str);
             request.session.pdf_results = str;
-            res.redirect('/postchatter');
+            response.redirect('/postchatter');
         });
     });
 
