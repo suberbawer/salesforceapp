@@ -120,8 +120,8 @@ app.get('/getpdf', function(request, response) {
             binaryData += chunk;
         });
         res.on('end', function() {
-            binaryData = new Buffer(binaryData.toString('binary'),'binary');
-            console.log('terminamos///////////////////// ' + binaryData);
+            //binaryData = new Buffer(binaryData.toString('binary'),'binary');
+            //console.log('terminamos///////////////////// ' + binaryData);
             request.session.pdf_results = binaryData;
             response.redirect('/postchatter');
         });
