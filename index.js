@@ -116,12 +116,11 @@ app.get('/getpdf', function(request, response) {
     var req = http.request(options, function(res) {
         var str='';
         res.on('data', function (chunk) {
-            var baseChunk = chunk.toString('base64');
-            str += baseChunk;
+            str += chunk;
         });
         res.on('end', function() {
             console.log('terminamos/////////////////////');
-            request.session.pdf_results = str;
+            request.session.pdf_results = str.toString('base64');
             response.redirect('/postchatter');
         });
     });
