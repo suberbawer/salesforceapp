@@ -141,7 +141,6 @@ app.get('/postchatter', function(request, response) {
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
-          'Content-Length': request.session.pdf_results[0].ContentSize,
           'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
           'Authorization': 'OAuth ' + request.session.accessToken
       }
