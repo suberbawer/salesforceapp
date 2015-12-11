@@ -116,11 +116,10 @@ app.get('/getpdf', function(request, response) {
     var req = http.request(options, function(res) {
         var str='';
         res.on('data', function (chunk) {
-            //console.log('en el dataaaaaa-------', chunk);
+            console.log('**********************dddddddddddddddd', fs.readFileSync(chunk))
             str += chunk;
         });
         res.on('end', function() {
-//            console.log('final final---------', str);
             request.session.pdf_results = str;
             response.redirect('/postchatter');
         });
