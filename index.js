@@ -174,10 +174,12 @@ app.get('/postchatter', function(request, response) {
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="GeneratedZIP.pdf"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
-        CRLF +
-        request.session.pdf_results + CRLF +
-        CRLF +
-        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
+        CRLF;
+//
+         //+
+        //request.session.pdf_results + CRLF +
+        //CRLF +
+        //'--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
 
     var req = http.request(options, function(res) {
       res.on('end', function() {
@@ -195,6 +197,9 @@ app.get('/postchatter', function(request, response) {
 
     // write data to request body
     req.write(postData);
+    // writing bytes data
+    req.write(request.session.pdf_results);
+    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     req.end();
 });
 
