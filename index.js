@@ -117,7 +117,7 @@ app.get('/getpdf', function(request, response) {
         res.setEncoding('binary');
         var binaryData = '';
         res.on('data', function (chunk) {
-            console.log('CHUNK----------  ', chunk);
+            console.log('CHUNK----------  ', chunk.toString('base64'));
             //console.log('CHUNK64----------  ', base64_encode(chunk));
 
             binaryData += chunk;
