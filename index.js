@@ -114,12 +114,10 @@ app.get('/getpdf', function(request, response) {
         }
     };
     var req = http.request(options, function(res) {
-        //res.setEncoding('null');
+        res.setEncoding('binary');
         var binaryData = '';
         res.on('data', function (chunk) {
-            console.log('CHUNK----------  ', new Buffer(chunk).toString('base64'));
-            //console.log('CHUNK64----------  ', base64_encode(chunk));
-
+            //console.log('CHUNK----------  ', new Buffer(chunk));
             binaryData += chunk;
         });
         res.on('end', function() {
@@ -127,7 +125,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('terminamos///////////////////// ' + binaryData);
             console.log('terminamosbase64///////////////////// ' + binaryData.toString('base64'));
 
-            request.session.pdf_results = binaryData;
+            request.session.pdf_results = binaryData.toString('base64');
             response.redirect('/postchatter');
         });
     });
