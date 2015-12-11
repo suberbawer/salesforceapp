@@ -117,7 +117,7 @@ app.get('/getpdf', function(request, response) {
         //res.setEncoding('null');
         var binaryData = '';
         res.on('data', function (chunk) {
-            console.log('CHUNK----------  ', fs.readFileSync(chunk));
+            console.log('CHUNK----------  ', new Buffer(chunk).toString('base64'));
             //console.log('CHUNK64----------  ', base64_encode(chunk));
 
             binaryData += chunk;
@@ -198,8 +198,8 @@ app.get('/postchatter', function(request, response) {
     // write data to request body
     req.write(postData);
     // writing bytes data
-    var buffer = new Buffer(request.session.pdf_results);
-    req.write(buffer);
+    //var buffer = new Buffer(request.session.pdf_results);
+    req.write(request.session.pdf_results);
     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     req.end();
 });
