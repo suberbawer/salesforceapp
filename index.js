@@ -114,7 +114,7 @@ app.get('/getpdf', function(request, response) {
         }
     };
     var req = http.request(options, function(res) {
-        res.setEncoding('null');
+        //res.setEncoding('null');
         var binaryData = '';
         res.on('data', function (chunk) {
             console.log('CHUNK----------  ', chunk.toString('base64'));
