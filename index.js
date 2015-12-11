@@ -117,14 +117,16 @@ app.get('/getpdf', function(request, response) {
         //res.setEncoding('null');
         var binaryData = '';
         res.on('data', function (chunk) {
-            console.log('CHUNK----------  ', chunk.toString('base64'));
+            //console.log('CHUNK----------  ', chunk.toString('base64'));
             //console.log('CHUNK64----------  ', base64_encode(chunk));
 
             binaryData += chunk;
         });
         res.on('end', function() {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
-            //console.log('terminamos///////////////////// ' + binaryData);
+            console.log('terminamos///////////////////// ' + binaryData);
+            console.log('terminamosbase64///////////////////// ' + binaryData.toString('base64'));
+
             request.session.pdf_results = base64_encode(binaryData);
             response.redirect('/postchatter');
         });
