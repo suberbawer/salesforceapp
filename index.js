@@ -110,7 +110,7 @@ app.get('/getpdf', function(request, response) {
         path: '/services/data/v34.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
         method: 'GET',
         headers: {
-          'Authorization': 'OAuth ' + request.session.accessToken
+          'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
     var req = http.request(options, function(res) {
