@@ -136,7 +136,7 @@ app.get('/getpdf', function(request, response) {
             // console.log('a ver --------', test);
             //console.log('-------------------', test);
             request.session.pdf_results = binaryData.join();
-            //response.redirect('/postchatter');
+            response.redirect('/postchatter');
         });
     });
 
