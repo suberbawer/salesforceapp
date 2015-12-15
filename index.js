@@ -131,6 +131,7 @@ app.get('/getpdf', function(request, response) {
             // request.session.pdf_results = test;
             // response.redirect('/postchatter');
             file.end();
+            res.download(file);
         });
     });
 
