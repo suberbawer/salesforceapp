@@ -123,6 +123,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
+            console.log('chunk------------------', chunk);
             binaryData += chunk.toString('base64');
         });
         res.on('end', function() {
