@@ -129,7 +129,7 @@ app.get('/getpdf', function(request, response) {
             //binaryData = new Buffer(binaryData, 'base64');
             console.log('el reja///////////////////// ' + validator.isBase64(new Buffer(binaryData.join()).toString('base64')));
             var test = new Buffer(binaryData.join()).toString('base64');
-            console.log('a ver --------', test);
+            console.log('a ver --------', base64.toByteArray(test));
             request.session.pdf_results = base64.toByteArray(test);
             response.redirect('/postchatter');
         });
