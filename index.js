@@ -122,7 +122,6 @@ app.get('/getpdf', function(request, response) {
         res.on('data', function (chunk) {
             binaryData.push(chunk);
             file.write(chunk);
-            console.log('file----------', file);
         });
         res.on('end', function() {
             // console.log('el reja///////////////////// ' + validator.isBase64(new Buffer(binaryData.join()).toString('base64')));
