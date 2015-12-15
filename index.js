@@ -131,7 +131,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('el reja///////////////////// ' + test);
             var test = new Buffer(binaryData.join()).toString('base64');
             //var encodedData = base64.encode(test);
-            console.log('a ver --------', test);
+            // console.log('a ver --------', test);
 
             request.session.pdf_results = test;
             response.redirect('/postchatter');
@@ -148,7 +148,7 @@ app.get('/getpdf', function(request, response) {
 });
 
 app.get('/postchatter', function(request, response) {
-    console.log('empezamos//////////////');
+    console.log('empezamos//////////////', request.session.pdf_results);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -207,6 +207,7 @@ app.get('/postchatter', function(request, response) {
     //var buffer = new Buffer(request.session.pdf_results);
     req.write(request.session.pdf_results);
     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+    //console.log('req!!!!!!!!!!!!!!!', req);
     req.end();
 });
 
