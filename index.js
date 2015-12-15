@@ -121,7 +121,7 @@ app.get('/getpdf', function(request, response) {
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
-            base64_decode(new Buffer(chunk).toString('base64'), 'GeneratedZIP.pdf');
+            var binaryData = base64_decode(new Buffer(chunk).toString('base64'), 'GeneratedZIP.pdf');
             //binaryData.push(chunk);
         });
         res.on('end', function() {
@@ -254,6 +254,6 @@ function base64_decode(base64str, file) {
     // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
     var bitmap = new Buffer(base64str, 'base64');
     // write buffer to file
-    fs.writeFileSync(file, bitmap);
+    base64_encode(fs.writeFileSync(file, bitmap));
     console.log('******** File created from base64 encoded string ********');
 }
