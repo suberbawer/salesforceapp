@@ -134,8 +134,8 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            //console.log('-------------------', test);
-            request.session.pdf_results = binaryData.join();
+            console.log('-------------------', binaryData);
+            request.session.pdf_results = binaryData;
             response.redirect('/postchatter');
         });
     });
@@ -209,7 +209,7 @@ app.get('/postchatter', function(request, response) {
     //var buffer = new Buffer(request.session.pdf_results);
     req.write(request.session.pdf_results);
     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-    console.log('req!!!!!!!!!!!!!!!', req);
+    //console.log('req!!!!!!!!!!!!!!!', req);
     req.end();
 });
 
