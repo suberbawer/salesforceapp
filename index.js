@@ -123,7 +123,9 @@ app.get('/getpdf', function(request, response) {
         res.on('end', function() {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
-            console.log('terminamosbase64///////////////////// ' + binaryData.toString('base64'));
+            binaryData = new Buffer(binaryData, 'base64');
+            console.log('terminamosbase64///////////////////// ' + binaryData);
+            console.log('terminamosbase64///////////////////// ' + binaryData.toString());
 
             request.session.pdf_results = binaryData.toString('base64');
             response.redirect('/postchatter');
