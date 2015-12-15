@@ -148,7 +148,7 @@ app.get('/getpdf', function(request, response) {
 });
 
 app.get('/postchatter', function(request, response) {
-    console.log('empezamos//////////////', request.session.pdf_results);
+    //console.log('empezamos//////////////', request.session.pdf_results);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -207,7 +207,7 @@ app.get('/postchatter', function(request, response) {
     //var buffer = new Buffer(request.session.pdf_results);
     req.write(request.session.pdf_results);
     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-    //console.log('req!!!!!!!!!!!!!!!', req);
+    console.log('req!!!!!!!!!!!!!!!', req);
     req.end();
 });
 
