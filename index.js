@@ -125,15 +125,16 @@ app.get('/getpdf', function(request, response) {
             binaryData.push(chunk);
         });
         res.on('end', function() {
+            var test = binaryData.join();
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
-            console.log('el reja///////////////////// ', binaryData.join());
-            var test = new Buffer(binaryData.join()).toString('base64');
-            var encodedData = base64.encode(binaryData.join());
+            console.log('el reja///////////////////// ', test);
+            // var test = new Buffer(binaryData.join()).toString('base64');
+            // var encodedData = base64.encode(binaryData.join());
             // console.log('a ver --------', encodedData);
 
-            request.session.pdf_results = encodedData;
+            //request.session.pdf_results = encodedData;
             //response.redirect('/postchatter');
         });
     });
