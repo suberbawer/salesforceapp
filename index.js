@@ -126,7 +126,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
             //console.log('el reja///////////////////// ' + binaryData);
-            res.setHeader('content-type','application/pdf');
+            // res.setHeader('content-type','application/pdf');
             res.download(binaryData);
             // request.session.pdf_results = binaryData;
             // response.redirect('/postchatter');
