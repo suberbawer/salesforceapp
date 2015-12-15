@@ -118,20 +118,19 @@ app.get('/getpdf', function(request, response) {
     var req = http.request(options, function(res) {
         res.setEncoding('binary');
         var binaryData = [];
+        var file = fs.createWriteStream('/Downloads/test.pdf');
         res.on('data', function (chunk) {
-            //console.log('CHUNK----------  ', new Buffer(chunk));
-            //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             binaryData.push(chunk);
+            file.write(chunk);
+            console.log('file----------', file);
         });
         res.on('end', function() {
-            //binaryData = new Buffer(binaryData.toString('binary'),'binary');
-            //console.log('terminamos///////////////////// ' + binaryData);
-            //binaryData = new Buffer(binaryData, 'base64');
-            console.log('el reja///////////////////// ' + validator.isBase64(new Buffer(binaryData.join()).toString('base64')));
-            var test = new Buffer(binaryData.join()).toString('base64');
-            console.log('a ver --------', test);
-            request.session.pdf_results = test;
-            response.redirect('/postchatter');
+            // console.log('el reja///////////////////// ' + validator.isBase64(new Buffer(binaryData.join()).toString('base64')));
+            // var test = new Buffer(binaryData.join()).toString('base64');
+            // console.log('a ver --------', test);
+            // request.session.pdf_results = test;
+            // response.redirect('/postchatter');
+            file.end();
         });
     });
 
