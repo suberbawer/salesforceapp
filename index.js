@@ -118,7 +118,7 @@ app.get('/getpdf', function(request, response) {
         var binaryData = '';
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ', new Buffer(chunk));
-            //console.log('terminamosbase64///////////////////// ',  validator.isBase64(chunk));
+            console.log('terminamosbase64///////////////////// ',  validator.isBase64(chunk));
             binaryData += new Buffer(chunk);
         });
         res.on('end', function() {
