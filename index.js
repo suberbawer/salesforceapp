@@ -7,7 +7,8 @@ var url = require('url') ;
 var fs = require('fs');
 var http = require('https');
 var validator = require('validator');
-var base64 = require('base64-js');
+var teta = require('base64-js');
+var base64 = require('base-64');
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -129,8 +130,10 @@ app.get('/getpdf', function(request, response) {
             //binaryData = new Buffer(binaryData, 'base64');
             //console.log('el reja///////////////////// ', new Buffer(binaryData.join()).toString('base64'));
             var test = new Buffer(binaryData.join()).toString('base64');
-            // console.log('a ver --------', test);
-            request.session.pdf_results = test;
+            var encodedData = base64.encode(binaryData.join());
+            console.log('a ver --------', encodedData);
+            
+            request.session.pdf_results = encodedData;
             response.redirect('/postchatter');
         });
     });
