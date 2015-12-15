@@ -120,14 +120,14 @@ app.get('/getpdf', function(request, response) {
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ', new Buffer(chunk));
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
-            binaryData.push(chunk);
+            binaryData.push(new Buffer(chunk));
         });
         res.on('end', function() {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
-            console.log('el reja///////////////////// ' + validator.isBase64(new Buffer.concat(binaryData).toString('base64')));
-            request.session.pdf_results = new Buffer.concat(binaryData).toString('base64');
+            console.log('el reja///////////////////// ' + validator.isBase64(Buffer.concat(binaryData).toString('base64')));
+            request.session.pdf_results = Buffer.concat(binaryData).toString('base64');
             response.redirect('/postchatter');
         });
     });
