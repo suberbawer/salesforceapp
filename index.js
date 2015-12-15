@@ -121,8 +121,8 @@ app.get('/getpdf', function(request, response) {
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
-            var binaryData = base64_decode(new Buffer(chunk).toString('base64'), 'GeneratedZIP.pdf');
-            //binaryData.push(chunk);
+            //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
+            binaryData.push(chunk);
         });
         res.on('end', function() {
             //var test = binaryData.join();
@@ -130,12 +130,12 @@ app.get('/getpdf', function(request, response) {
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
             //console.log('el reja///////////////////// ' + test);
-            // var test = new Buffer(binaryData.join()).toString('base64');
+            var test = new Buffer(binaryData.join()).toString('base64');
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
             console.log('-------------------', binaryData);
-            // request.session.pdf_results = test;
-            // response.redirect('/postchatter');
+            request.session.pdf_results = test;
+            response.redirect('/postchatter');
         });
     });
 
@@ -184,7 +184,7 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="GeneratedZIP.pdf"' + CRLF +
+        'Content-Disposition: attachment; name="feedElementFileUpload"; filename="GeneratedZIP.pdf"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
@@ -254,6 +254,6 @@ function base64_decode(base64str, file) {
     // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
     var bitmap = new Buffer(base64str, 'base64');
     // write buffer to file
-    base64_encode(fs.writeFileSync(file, bitmap));
+    fs.writeFileSync(file, bitmap);
     console.log('******** File created from base64 encoded string ********');
 }
