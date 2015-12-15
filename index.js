@@ -118,14 +118,14 @@ app.get('/getpdf', function(request, response) {
         var binaryData = '';
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ', new Buffer(chunk));
-            binaryData += chunk;
+            console.log('terminamosbase64///////////////////// ' + new Buffer(chunk.toString('base64'));
+            binaryData += chunk.toString('base64');
         });
         res.on('end', function() {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
             binaryData = new Buffer(binaryData, 'base64');
             //console.log('el reja///////////////////// ' + binaryData);
-            console.log('terminamosbase64///////////////////// ' + binaryData.toString('base64'));
 
             request.session.pdf_results = binaryData.toString('base64');
             //response.redirect('/postchatter');
