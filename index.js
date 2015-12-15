@@ -122,20 +122,20 @@ app.get('/getpdf', function(request, response) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
-            binaryData.push(chunk);
+            binaryData.push(chunk.toString('base64'));
         });
         res.on('end', function() {
-            console.log('resbody++++++++++++', res.body);
+            //console.log('resbody++++++++++++', res);
             //var test = binaryData.join();
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
             //console.log('el reja///////////////////// ' + test);
-            var test = base64.encode(Buffer.concat(binaryData));
+            //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
             //console.log('-------------------', test);
-            request.session.pdf_results = test;
+            request.session.pdf_results = binaryData.join();
             //response.redirect('/postchatter');
         });
     });
