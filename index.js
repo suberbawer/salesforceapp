@@ -128,7 +128,7 @@ app.get('/getpdf', function(request, response) {
             console.log('terminamosbase64///////////////////// ' + binaryData.toString('base64'));
 
             request.session.pdf_results = binaryData.toString('base64');
-            response.redirect('/postchatter');
+            //response.redirect('/postchatter');
         });
     });
 
