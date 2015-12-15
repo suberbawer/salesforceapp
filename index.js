@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var url = require('url') ;
 var fs = require('fs');
 var http = require('https');
+var validator = require('validator');
 var dbOperations = require("./database/database.js");
 
 var conn;
