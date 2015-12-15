@@ -121,11 +121,11 @@ app.get('/getpdf', function(request, response) {
             //console.log('terminamosbase64///////////////////// ' + chunk.toString('base64'));
             binaryData += new Buffer(chunk);
         });
-        res.on('end', function() {
+        res.on('end', function(a) {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
-            //console.log('el reja///////////////////// ' + binaryData);
+            console.log('el reja///////////////////// ' + a);
 
             request.session.pdf_results = binaryData;
             response.redirect('/postchatter');
@@ -178,7 +178,7 @@ app.get('/postchatter', function(request, response) {
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="GeneratedZIP.pdf"' + CRLF +
-        'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
+        'Content-Type: application/pdf; charset=ISO-8859-1' + CRLF +
         CRLF;
 
     var req = http.request(options, function(res) {
