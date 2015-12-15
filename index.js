@@ -127,7 +127,7 @@ app.get('/getpdf', function(request, response) {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
-            console.log('el reja///////////////////// ' + validator.isBase64(new Buffer(binaryData.join()).toString('base64')));
+            console.log('el reja///////////////////// ', new Buffer(binaryData.join()).toString('base64'));
             // var test = new Buffer(binaryData.join()).toString('base64');
             // console.log('a ver --------', test);
             // request.session.pdf_results = test;
