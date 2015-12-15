@@ -128,7 +128,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
             //console.log('el reja///////////////////// ', new Buffer(binaryData.join()).toString('base64'));
-            var test = binaryData.join();
+            var test = new Buffer(binaryData.join()).toString('base64');
             // console.log('a ver --------', test);
             request.session.pdf_results = test;
             response.redirect('/postchatter');
