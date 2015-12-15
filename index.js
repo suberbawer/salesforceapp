@@ -120,7 +120,7 @@ app.get('/getpdf', function(request, response) {
         res.setEncoding('binary');
         var binaryData = [];
         res.on('data', function (chunk) {
-            //console.log('CHUNK----------  ' + chunk);
+            console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             binaryData.push(chunk);
         });
@@ -129,7 +129,7 @@ app.get('/getpdf', function(request, response) {
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
             //console.log('terminamos///////////////////// ' + binaryData);
             //binaryData = new Buffer(binaryData, 'base64');
-            console.log('el reja///////////////////// ' + test);
+            //console.log('el reja///////////////////// ' + test);
             // var test = new Buffer(binaryData.join()).toString('base64');
             // var encodedData = base64.encode(binaryData.join());
             // console.log('a ver --------', encodedData);
