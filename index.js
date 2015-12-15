@@ -112,9 +112,9 @@ app.get('/getpdf', function(request, response) {
         hostname: 'na22.salesforce.com',
         path: request.session.pdf_results[0].VersionData,
         method: 'GET',
-        encoding: null,
         headers: {
-          'Authorization': 'Bearer ' + request.session.accessToken
+          'Authorization': 'Bearer ' + request.session.accessToken,
+          'Content-Type': 'text/plain; charset=utf8'
         }
     };
     var req = http.request(options, function(res) {
