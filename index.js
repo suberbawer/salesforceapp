@@ -137,7 +137,7 @@ app.get('/getpdf', function(request, response) {
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
             console.log('-------------------', binaryData);
-            request.session.pdf_results = binaryData.join();
+            request.session.pdf_results = binaryData.join().toString('base64');
             response.redirect('/postchatter');
         });
     });
