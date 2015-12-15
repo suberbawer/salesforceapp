@@ -130,10 +130,10 @@ app.get('/getpdf', function(request, response) {
             //binaryData = new Buffer(binaryData, 'base64');
             //console.log('el reja///////////////////// ' + test);
             // var test = new Buffer(binaryData.join()).toString('base64');
-             var encodedData = base64.encode(test);
+             //var encodedData = base64.encode(test);
             console.log('a ver --------', test);
 
-            request.session.pdf_results = encodedData;
+            request.session.pdf_results = test;
             response.redirect('/postchatter');
         });
     });
