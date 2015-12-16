@@ -144,6 +144,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk------------------2', typeof chunk);
 
             binaryData += new Buffer(chunk, 'base64').toString();
+            console.log('binary en batch en batch en batch', binaryData);
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
@@ -155,7 +156,7 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            console.log('lista lista lista lista ', binaryData);
+            //console.log('lista lista lista lista ', binaryData);
             request.session.pdf_results = binaryData.toString('ascii');
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
