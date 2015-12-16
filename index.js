@@ -155,9 +155,9 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            request.session.pdf_results = Buffer.concat(binaryData).toString('base64');
+            request.session.pdf_results = Buffer.concat(binaryData).toString('ascii');
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
-            
+
             console.log('resultado-------------------'+ request.session.pdf_results);
 
             response.redirect('/postchatter');
