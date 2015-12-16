@@ -134,7 +134,7 @@ app.get('/getpdf', function(request, response) {
     };
     console.log('pdf title****************', request.session.pdf_results[0].Title);
     var req = http.request(options, function(res) {
-        //res.setEncoding('base64');
+        res.setEncoding('base64');
         var binaryData = [];
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ' + chunk);
@@ -142,8 +142,8 @@ app.get('/getpdf', function(request, response) {
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
             //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
-            //chunk = chunk.replace('\n', '');
-            binaryData.push(chunk);
+
+            binaryData.push(new Buffer(chunk, 'base64'));
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
@@ -155,7 +155,6 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            //console.log('lista de buffers', binaryData);
             request.session.pdf_results = new Buffer.concat(binaryData).toString('base64');
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
