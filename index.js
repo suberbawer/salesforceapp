@@ -143,7 +143,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
 
-            binaryData.push(new Buffer(chunk.replace('\n',''), 'base64'));
+            binaryData.push(new Buffer(chunk, 'base64').toString());
             console.log('binary en batch en batch en batch', chunk);
         });
         res.on('end', function() {
@@ -157,10 +157,10 @@ app.get('/getpdf', function(request, response) {
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
             //console.log('lista lista lista lista ', binaryData);
-            request.session.pdf_results = new Buffer.concat(binaryData);
+            request.session.pdf_results = binaryData.join().replace('\n','');
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
-            // console.log('resultado-------------------'+ Buffer.concat(binaryData).toString('base64').replace('\n',''));
+             console.log('resultado-------------------'+ request.session.pdf_results);
 
             response.redirect('/postchatter');
         });
