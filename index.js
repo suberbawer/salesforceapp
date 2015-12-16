@@ -124,7 +124,8 @@ app.get('/getpdf', function(request, response) {
     //console.log('token****************', request.session.accessToken);
     var options = {
         hostname: 'na22.salesforce.com',
-        path: request.session.pdf_results[0].VersionData,
+        path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+        //path: request.session.pdf_results[0].VersionData,
         method: 'GET',
         encode: 'base64',
         headers: {
