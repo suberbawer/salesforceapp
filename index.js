@@ -143,8 +143,8 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
 
-            binaryData += new Buffer(chunk, 'base64').toString();
-            console.log('binary en batch en batch en batch', binaryData);
+            binaryData += new Buffer(chunk.replace('\n',''), 'base64');
+            console.log('binary en batch en batch en batch', chunk);
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
