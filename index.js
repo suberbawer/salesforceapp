@@ -134,7 +134,7 @@ app.get('/getpdf', function(request, response) {
     };
     console.log('pdf title****************', request.session.pdf_results[0].Title);
     var req = http.request(options, function(res) {
-        res.setEncoding('base64');
+        //res.setEncoding('base64');
         var binaryData = [];
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ' + chunk);
@@ -144,7 +144,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk------------------2', typeof chunk);
             // console.log('binary en batch en batch en batch chunk', new Buffer(chunk, 'base64').toString('ascii'));
 
-            binaryData.push(new Buffer(chunk, 'base64').toString('ascii').replace('\n',''));
+            binaryData.push(chunk);
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
@@ -160,7 +160,7 @@ app.get('/getpdf', function(request, response) {
             for (var i=0; i < binaryData.length; i++) {
                 console.log('los strings en ascii en la lista son: ' + (i), binaryData[i]);
             }
-            request.session.pdf_results = binaryData.join();
+            request.session.pdf_results = Buffer.concat(binaryData).toString('ascii');
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
              console.log('resultado-------------------'+ request.session.pdf_results);
