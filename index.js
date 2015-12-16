@@ -84,18 +84,22 @@ app.get('/attachments', function(req, res) {
                     return console.error('Document query error: ', err);
                 } else {
                     if (result.done && result.records.length > 0) {
+                        var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
                             if (result.records[i].Title == 'test1') {
                                 console.log('el titulooooooooo');
-                                req.session.pdf_results.push(result.records[i]);
+                                pdfs.push(result.records[i]);
                                 break;
                             }
                         }
 
                         if (!req.session.pdf_results) {
-                            req.session.pdf_results = result.records;
+                            pdfs = result.records;
                         }
+
+                        req.session.pdf_results = pdfs;
+
                         // get pdf from salesforce to process
                         res.redirect('/getpdf');
                     }
