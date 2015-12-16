@@ -95,8 +95,7 @@ app.get('/attachments', function(req, res) {
                         if (!req.session.pdf_results) {
                             req.session.pdf_results = result.records;
                         }
-                        // Post zip to chatter
-                        //res.redirect('/postchatter');
+                        // get pdf from salesforce to process
                         res.redirect('/getpdf');
                     }
                 }
@@ -133,7 +132,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
-            console.log('chunk------------------', chunk);
+            //console.log('chunk------------------', chunk);
             binaryData.push(chunk);
         });
         res.on('end', function() {
@@ -146,9 +145,9 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            console.log('-------------------', binaryData);
             request.session.pdf_results = binaryData.join().toString('base64');
-            //response.redirect('/postchatter');
+            console.log('-------------------', validator.isBase64(request.session.pdf_results));
+            response.redirect('/postchatter');
         });
     });
 
