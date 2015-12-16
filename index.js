@@ -125,6 +125,7 @@ app.get('/getpdf', function(request, response) {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
+    console.log('pdf title****************', request.session.pdf_results[0].Title);
     var req = http.request(options, function(res) {
         res.setEncoding('base64');
         var binaryData = [];
@@ -146,7 +147,7 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            request.session.pdf_results = Buffer.concat(binaryData).toString('base64');
+            request.session.pdf_results = base64.encode(Buffer.concat(binaryData));
             console.log('-------------------', validator.isBase64(request.session.pdf_results));
             response.redirect('/postchatter');
         });
