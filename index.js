@@ -140,8 +140,8 @@ app.get('/getpdf', function(request, response) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
-            console.log('chunk------------------1', validator.isBase64(chunk));
-            console.log('chunk------------------2', typeof chunk);
+            //console.log('chunk------------------1', validator.isBase64(chunk));
+            //console.log('chunk------------------2', typeof chunk);
 
             binaryData += chunk;
         });
@@ -159,7 +159,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
             console.log('resultado-------------------'+ request.session.pdf_results);
-            //response.redirect('/postchatter');
+            response.redirect('/postchatter');
         });
     });
 
