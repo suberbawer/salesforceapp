@@ -94,7 +94,7 @@ app.get('/attachments', function(req, res) {
                             }
                         }
 
-                        if (!req.session.pdf_results) {
+                        if (pdfs.length == 0) {
                             pdfs = result.records;
                         }
 
