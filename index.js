@@ -126,6 +126,7 @@ app.get('/getpdf', function(request, response) {
         hostname: 'na22.salesforce.com',
         path: request.session.pdf_results[0].VersionData,
         method: 'GET',
+        encode: 'base64',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
@@ -138,9 +139,9 @@ app.get('/getpdf', function(request, response) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
-            console.log('chunk------------------1', chunk);
-            console.log('chunk------------------2', typeof chunk);
-            console.log('chunk------------------3', JSON.stringify(chunk));
+            // console.log('chunk------------------1', chunk);
+            // console.log('chunk------------------2', typeof chunk);
+            // console.log('chunk------------------3', JSON.stringify(chunk));
             binaryData.push(chunk);
         });
         res.on('end', function() {
