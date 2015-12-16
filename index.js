@@ -132,15 +132,15 @@ app.get('/getpdf', function(request, response) {
     };
     console.log('pdf title****************', request.session.pdf_results[0].Title);
     var req = http.request(options, function(res) {
-        res.setEncoding('base64');
-        var binaryData = [];
+        //res.setEncoding('base64');
+        var binaryData = '';
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
-            console.log('chunk------------------', validator.isBase64(chunk));
+            console.log('chunk------------------', typeof chunk);
 
-            binaryData.push(new Buffer(chunk));
+            binaryData += chunk;
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
@@ -152,7 +152,7 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            request.session.pdf_results = Buffer.concat(binaryData);
+            request.session.pdf_results = binaryData.toString('base64');
             console.log('-------------------', validator.isBase64(request.session.pdf_results));
             console.log('resultado-------------------', request.session.pdf_results);
             response.redirect('/postchatter');
