@@ -127,7 +127,7 @@ app.get('/getpdf', function(request, response) {
         path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
         //path: request.session.pdf_results[0].VersionData,
         method: 'GET',
-        encode: 'base64',
+        // encode: 'base64',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
@@ -155,10 +155,10 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            request.session.pdf_results = new Buffer.concat(binaryData).toString('base64');
+            request.session.pdf_results = new Buffer.concat(binaryData).toString('ascii');
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
-            console.log('resultado-------------------'+ request.session.pdf_results);
+            console.log('resultado-------------------'+ Buffer.concat(binaryData).toString('base64').replace('\n',''));
 
             response.redirect('/postchatter');
         });
