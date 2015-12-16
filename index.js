@@ -142,9 +142,9 @@ app.get('/getpdf', function(request, response) {
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
             //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
+            // console.log('binary en batch en batch en batch chunk', new Buffer(chunk, 'base64').toString('ascii'));
 
-            binaryData.push(new Buffer(chunk, 'base64').toString());
-            console.log('binary en batch en batch en batch', chunk);
+            binaryData.push(new Buffer(chunk, 'base64').toString('ascii'));
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
@@ -157,7 +157,10 @@ app.get('/getpdf', function(request, response) {
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
             //console.log('lista lista lista lista ', binaryData);
-            request.session.pdf_results = binaryData.join().replace('\n','');
+            for (var i=0; i < binaryData.length; i++) {
+                console.log('los strings en ascii en la lista son: ', binaryData[i]);
+            }
+            request.session.pdf_results = binaryData.join();
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
              console.log('resultado-------------------'+ request.session.pdf_results);
