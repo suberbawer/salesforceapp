@@ -140,7 +140,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
-            console.log('chunk------------------1', chunk);
+            //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
 
             binaryData += chunk;
@@ -155,11 +155,11 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            // request.session.pdf_results = new Buffer(binaryData, 'base64').toString("ascii");
+            request.session.pdf_results = binaryData;
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
             console.log('resultado-------------------'+ binaryData);
-            // response.redirect('/postchatter');
+            response.redirect('/postchatter');
         });
     });
 
