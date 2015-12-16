@@ -86,7 +86,8 @@ app.get('/attachments', function(req, res) {
                     if (result.done && result.records.length > 0) {
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Title == 'Test1') {
+                            if (result.records[i].Title == 'test1') {
+                                console.log('el titulooooooooo');
                                 req.session.pdf_results.push(result.records[i]);
                                 break;
                             }
