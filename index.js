@@ -189,7 +189,7 @@ app.get('/postchatter', function(request, response) {
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
                  '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                 '"title":"GeneratedZIP.pdf"' + CRLF +
+                 '"title":"NewGeneratedZIP.pdf"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -197,7 +197,7 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="GeneratedZIP.pdf"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.pdf"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
