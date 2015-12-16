@@ -138,9 +138,9 @@ app.get('/getpdf', function(request, response) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
-            console.log('chunk------------------', chunk.data);
-            console.log('chunk------------------', typeof chunk.data);
-            console.log('chunk------------------', JSON.stringify(chunk));
+            console.log('chunk------------------1', chunk.data);
+            console.log('chunk------------------2', typeof chunk.data);
+            console.log('chunk------------------3', JSON.stringify(chunk));
             binaryData += chunk.data;
         });
         res.on('end', function() {
