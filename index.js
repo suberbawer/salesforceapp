@@ -133,7 +133,8 @@ app.get('/getpdf', function(request, response) {
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
             //console.log('chunk------------------', chunk);
-            binaryData.push(chunk);
+
+            binaryData.push(new Buffer(chunk));
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
@@ -145,7 +146,7 @@ app.get('/getpdf', function(request, response) {
             //var test = base64.encode(Buffer.concat(binaryData));
             //var encodedData = base64.encode(test);
             // console.log('a ver --------', test);
-            request.session.pdf_results = binaryData.join().toString('base64');
+            request.session.pdf_results = Buffer.concat(binaryData).toString('base64');
             console.log('-------------------', validator.isBase64(request.session.pdf_results));
             response.redirect('/postchatter');
         });
