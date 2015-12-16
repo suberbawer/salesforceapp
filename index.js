@@ -84,7 +84,17 @@ app.get('/attachments', function(req, res) {
                     return console.error('Document query error: ', err);
                 } else {
                     if (result.done && result.records.length > 0) {
-                        req.session.pdf_results = result.records;
+                        // Hack to test with selected pdf
+                        for (var i=0; i < result.records.length; i++) {
+                            if (result.records[i].Title == 'Test1') {
+                                req.session.pdf_results.push(result.records[i]);
+                                break;
+                            }
+                        }
+
+                        if (!req.session.pdf_results) {
+                            req.session.pdf_results = result.records;
+                        }
                         // Post zip to chatter
                         //res.redirect('/postchatter');
                         res.redirect('/getpdf');
@@ -138,7 +148,7 @@ app.get('/getpdf', function(request, response) {
             // console.log('a ver --------', test);
             console.log('-------------------', binaryData);
             request.session.pdf_results = binaryData.join().toString('base64');
-            response.redirect('/postchatter');
+            //response.redirect('/postchatter');
         });
     });
 
