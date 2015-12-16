@@ -142,7 +142,7 @@ app.get('/getpdf', function(request, response) {
             //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
             //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
-            chunk = chunk..replace('\n', '');
+            chunk = chunk.replace('\n', '');
             binaryData.push(new Buffer(chunk, 'base64'));
         });
         res.on('end', function() {
