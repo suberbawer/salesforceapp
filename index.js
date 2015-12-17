@@ -143,7 +143,10 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
             // console.log('binary en batch en batch en batch chunk', new Buffer(chunk, 'base64').toString('ascii'));
-            //console.log('chunk byte---------',typeof bytes.toByteArray(chunk) );
+            console.log('chunk byte---------',typeof chunk);
+            console.log('chunk ---------',typeof bytes.toByteArray(chunk));
+            console.log('chunk2 ---------',JSON.stringify(bytes.toByteArray(chunk)));
+
             //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
             binaryData.push(chunk);
         });
@@ -161,8 +164,8 @@ app.get('/getpdf', function(request, response) {
             // for (var i=0; i < binaryData.length; i++) {
             //     console.log('los bytes en la lista son: ' + (i), binaryData[i]);
             // }
-            console.log('resultado-------------------'+ typeof bytes.toByteArray(binaryData));
-            console.log('resultado-------------------'+ bytes.toByteArray(binaryData));
+            //console.log('resultado-------------------'+ typeof bytes.toByteArray(binaryData));
+            //console.log('resultado-------------------'+ bytes.toByteArray(binaryData));
             // var blob = new Blob(binaryData, {type: "application/pdf"});
             //
             // request.session.pdf_results = blob;
