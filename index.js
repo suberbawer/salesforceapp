@@ -232,7 +232,7 @@ app.get('/postchatter', function(request, response) {
     req.write(postData);
     // writing bytes data
     //var buffer = new Buffer(request.session.pdf_results);
-    req.rawBody = request.session.pdf_results;
+    req.pipe(request.session.pdf_results);
     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     //console.log('req!!!!!!!!!!!!!!!', req);
     req.end();
