@@ -159,24 +159,6 @@ app.get('/getpdf', function(request, response) {
             binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
-            //file.end();
-            //console.log('resbody++++++++++++', res);
-            //var test = binaryData.join();
-            //binaryData = new Buffer(binaryData.toString('binary'),'binary');
-            //console.log('terminamos///////////////////// ' + binaryData);
-            //binaryData = new Buffer(binaryData, 'base64');
-            //console.log('el reja///////////////////// ' + test);
-            //var test = base64.encode(Buffer.concat(binaryData));
-            //var encodedData = base64.encode(test);
-            // console.log('a ver --------', test);
-            //console.log('lista lista lista lista ', binaryData);
-            // for (var i=0; i < binaryData.length; i++) {
-            //     console.log('los bytes en la lista son: ' + (i), binaryData[i]);
-            // }
-            //console.log('resultado-------------------'+ typeof bytes.toByteArray(binaryData));
-            //console.log('resultado-------------------'+ bytes.toByteArray(binaryData));
-            // var blob = new Blob(binaryData, {type: "application/pdf"});
-            //
             request.session.pdf_results = binaryData;
             console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
@@ -250,7 +232,7 @@ app.get('/postchatter', function(request, response) {
     req.write(postData);
     // writing bytes data
     //var buffer = new Buffer(request.session.pdf_results);
-    req.write(request.session.pdf_results);
+    req.rawBody = request.session.pdf_results;
     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     //console.log('req!!!!!!!!!!!!!!!', req);
     req.end();
