@@ -171,7 +171,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('resultado-------------------'+ bytes.toByteArray(binaryData));
             // var blob = new Blob(binaryData, {type: "application/pdf"});
             //
-            request.session.pdf_results = binaryData;
+            request.session.pdf_results = new Buffer(binaryData);
             console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
