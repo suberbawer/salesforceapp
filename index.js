@@ -221,8 +221,8 @@ app.get('/postchatter', function(request, response) {
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
-    
-    console.log('req a ver req a ver', req.form());
+
+    console.log('req a ver req a ver', req);
     // write data to request body
     req.write(postData);
     // writing bytes data
