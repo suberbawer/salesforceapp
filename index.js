@@ -151,7 +151,7 @@ app.get('/getpdf', function(request, response) {
             // for (var i = 0; i < chunk.length; i++) {
             //     binaryData.push(chunk.charCodeAt(i));
             // }
-            binaryData += chunk;
+            binaryData.push(new Buffer(chunk,'binary'));
             //binaryData.push(new Buffer(bytes.toByteArray(chunk)));
         });
         res.on('end', function() {
@@ -172,7 +172,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('resultado-------------------'+ bytes.toByteArray(binaryData));
             // var blob = new Blob(binaryData, {type: "application/pdf"});
             //
-            request.session.pdf_results = binaryData;
+            request.session.pdf_results = Buffer.concat(binaryData);
             console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
