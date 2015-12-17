@@ -135,7 +135,7 @@ app.get('/getpdf', function(request, response) {
     console.log('pdf title****************', request.session.pdf_results[0].Title);
     var req = http.request(options, function(res) {
         res.setEncoding('binary');
-        var binaryData = '';
+        var binaryData = [];
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
