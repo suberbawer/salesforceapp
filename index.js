@@ -148,9 +148,9 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk2 ---------', chunk);
 
             //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
-            // for (var i = 0; i < chunk.length; i++) {
-            //     binaryData.push(chunk.charCodeAt(i));
-            // }
+            for (var i = 0; i < chunk.length; i++) {
+                binaryData.push(chunk.charCodeAt(i));
+            }
             binaryData.push(new Buffer(chunk,'binary'));
             //binaryData.push(new Buffer(bytes.toByteArray(chunk)));
         });

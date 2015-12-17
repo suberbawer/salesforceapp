@@ -1,3 +1,21 @@
+MAC OS CONFIG
+1- install heroku-toolbet (from terminal with brew);
+    $ brew install heroku-toolbet
+    $ heroku update
+        - note: if there are some dependency issues make sure to have the latest ruby version (2.2.1 is my version)
+    $ heroku login
+        - note: make sure have all access solved (ssh, user, password)
+
+2- once you clone git repository from mine, create new heroku app and push the code.
+    $ heroku create myapp
+    $ git push heroku master
+
+Then to do some test, just start the app on the root url: https://yourapp.herokuapp.com/ in my case the url is https://salesforceapi.herokuapp.com/
+
+Thanks!!!
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 # node-js-getting-started
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
