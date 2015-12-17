@@ -160,11 +160,11 @@ app.get('/getpdf', function(request, response) {
             // for (var i=0; i < binaryData.length; i++) {
             //     console.log('los bytes en la lista son: ' + (i), binaryData[i]);
             // }
+            console.log('resultado-------------------'+ typeof binaryData);
+            console.log('resultado-------------------'+ binaryData);
             var blob = new Blob(binaryData, {type: "application/pdf"});
 
             request.session.pdf_results = blob;
-
-             console.log('resultado-------------------'+ request.session.pdf_results);
 
             response.redirect('/postchatter');
         });
