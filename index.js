@@ -190,7 +190,7 @@ app.get('/getpdf', function(request, response) {
         res.on('end', function() {
             binaryData = Buffer.concat([binaryData, new Buffer(afterBody)]);
             request.session.pdf_results = binaryData;
-            console.log('resultado------------------', request.session.pdf_results);
+            console.log('resultado------------------', request.session.pdf_results.toString('ascii'));
             response.redirect('/postchatter');
         });
     });
