@@ -143,7 +143,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
             // console.log('binary en batch en batch en batch chunk', new Buffer(chunk, 'base64').toString('ascii'));
-            console.log('chunk byte---------',typeof chunk);
+            console.log('chunk byte---------',new Buffer bytes.toByteArray(chunk));
             console.log('chunk ---------', bytes.toByteArray(chunk));
             console.log('chunk2 ---------',JSON.stringify(bytes.toByteArray(chunk)));
 
