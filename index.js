@@ -136,6 +136,8 @@ app.get('/getpdf', function(request, response) {
     var req = http.request(options, function(res) {
         res.setEncoding('binary');
         var binaryData = [];
+        var file = fs.createWriteStream('myOutput.pdf');
+
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ' + chunk);
             //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
@@ -148,13 +150,16 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk2 ---------', chunk);
 
             //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
-            for (var i = 0; i < chunk.length; i++) {
-                binaryData.push(chunk.charCodeAt(i));
-            }
-            binaryData.push(new Buffer(chunk,'binary'));
+            // for (var i = 0; i < chunk.length; i++) {
+            //     binaryData.push(chunk.charCodeAt(i));
+            // }
+
+            console.log('EN BINARIO--------', chunk);
+            file.write(chunk);
             //binaryData.push(new Buffer(bytes.toByteArray(chunk)));
         });
         res.on('end', function() {
+            file.end();
             //console.log('resbody++++++++++++', res);
             //var test = binaryData.join();
             //binaryData = new Buffer(binaryData.toString('binary'),'binary');
@@ -172,7 +177,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('resultado-------------------'+ bytes.toByteArray(binaryData));
             // var blob = new Blob(binaryData, {type: "application/pdf"});
             //
-            request.session.pdf_results = Buffer.concat(binaryData).toString();
+            request.session.pdf_results = file;
             console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
