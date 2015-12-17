@@ -132,52 +132,13 @@ app.get('/getpdf', function(request, response) {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
-    console.log('pdf title****************', request.session.pdf_results[0].Title);
+
     var req = http.request(options, function(res) {
         //res.setEncoding('binary');
-        var CRLF = '\r\n';
-        var postData = '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-            'Content-Disposition: form-data; name="json"' + CRLF +
-            'Content-Type: application/json; charset=UTF-8' + CRLF +
-            CRLF +
-            '{' + CRLF +
-               '"body":{' + CRLF +
-                  '"messageSegments":[' + CRLF +
-                     '{' + CRLF +
-                        '"type":"Text",' + CRLF +
-                        '"text":""' + CRLF +
-                     '}' + CRLF +
-                  ']' + CRLF +
-               '},' + CRLF +
-               '"capabilities":{' + CRLF +
-                  '"content":{' + CRLF +
-                     '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                     '"title":"NewGeneratedZIP.pdf"' + CRLF +
-                  '}' + CRLF +
-               '},' + CRLF +
-               '"feedElementType":"FeedItem",' + CRLF +
-               '"subjectId":"me"' + CRLF +
-            '}' + CRLF +
-            CRLF +
-            '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-            'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.pdf"' + CRLF +
-            'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
-            CRLF;
-        var afterBody = CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
-        var binaryData = new Buffer(postData);
+        var binaryData = new Buffer('');
         //var file = fs.createWriteStream('myOutput.pdf');
 
         res.on('data', function (chunk) {
-            //console.log('CHUNK----------  ' + chunk);
-            //console.log('terminamosbase64///////////////////// ',  validator.isBase64(new Buffer(chunk).toString('base64')));
-            //binaryData = fs.writeFileSync('GeneratedZIP.pdf', chunk, 'utf8');
-            //console.log('chunk------------------1', chunk);
-            //console.log('chunk------------------2', typeof chunk);
-            // console.log('binary en batch en batch en batch chunk', new Buffer(chunk, 'base64').toString('ascii'));
-            // console.log('chunk byte---------',);
-            // console.log('chunk ---------', bytes.toByteArray(chunk));
-            //console.log('chunk2 ---------', chunk);
-
             //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
             // for (var i = 0; i < chunk.length; i++) {
             //     binaryData.push(chunk.charCodeAt(i));
@@ -188,9 +149,8 @@ app.get('/getpdf', function(request, response) {
             binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
-            binaryData = Buffer.concat([binaryData, new Buffer(afterBody)]);
             request.session.pdf_results = binaryData;
-            console.log('resultado------------------', request.session.pdf_results.toString('ascii'));
+            console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
     });
@@ -205,7 +165,6 @@ app.get('/getpdf', function(request, response) {
 });
 
 app.get('/postchatter', function(request, response) {
-    //console.log('empezamos//////////////', request.session.pdf_results);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -215,6 +174,7 @@ app.get('/postchatter', function(request, response) {
           'Authorization': 'OAuth ' + request.session.accessToken
       }
     };
+
     var CRLF = '\r\n';
     var postData = '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
         'Content-Disposition: form-data; name="json"' + CRLF +
@@ -245,10 +205,14 @@ app.get('/postchatter', function(request, response) {
         CRLF;
 
     var req = http.request(options, function(res) {
-      req.on('end', function() {
+      res.on('end', function() {
         //   res.write('Check Chatter to see message');
         console.log('ES EL FIN*****');
         });
+    });
+
+    req.on('end', function() {
+        console.log('el final ha llegado');
     });
 
     // If error show message and finish response
@@ -257,15 +221,16 @@ app.get('/postchatter', function(request, response) {
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
-
+    
+    console.log('req a ver req a ver', req.form());
     // write data to request body
-    //req.write(postData);
+    req.write(postData);
     // writing bytes data
     //var buffer = new Buffer(request.session.pdf_results);
-    req.rawBody = request.session.pdf_results;
-    //req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+    req.write(request.session.pdf_results);
+    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     //console.log('req!!!!!!!!!!!!!!!', req);
-    //req.end();
+    req.end();
 });
 
 // Recieve contet ids from salesforce
