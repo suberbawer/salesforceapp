@@ -154,7 +154,7 @@ app.get('/getpdf', function(request, response) {
             //     binaryData.push(chunk.charCodeAt(i));
             // }
 
-            console.log('EN BINARIO--------', chunk);
+            //console.log('EN BINARIO--------', chunk);
             file.write(chunk);
             //binaryData.push(new Buffer(bytes.toByteArray(chunk)));
         });
