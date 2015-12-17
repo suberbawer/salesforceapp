@@ -265,7 +265,7 @@ app.get('/postchatter', function(request, response) {
     req.rawBody = request.session.pdf_results;
     //req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     //console.log('req!!!!!!!!!!!!!!!', req);
-    req.end();
+    //req.end();
 });
 
 // Recieve contet ids from salesforce
