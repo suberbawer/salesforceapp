@@ -160,7 +160,7 @@ app.get('/getpdf', function(request, response) {
             // for (var i=0; i < binaryData.length; i++) {
             //     console.log('los bytes en la lista son: ' + (i), binaryData[i]);
             // }
-            request.session.pdf_results = binaryData;
+            request.session.pdf_results = new Buffer(binaryData);
 
              console.log('resultado-------------------'+ request.session.pdf_results);
 
