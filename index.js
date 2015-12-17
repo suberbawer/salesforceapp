@@ -263,7 +263,6 @@ app.get('/postchatter', function(request, response) {
     // writing bytes data
     //var buffer = new Buffer(request.session.pdf_results);
     req.rawBody = request.session.pdf_results;
-    next();
     //req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     //console.log('req!!!!!!!!!!!!!!!', req);
     req.end();
