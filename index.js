@@ -149,7 +149,7 @@ app.get('/getpdf', function(request, response) {
             //binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
-            request.session.pdf_results = createReadStream(file);
+            request.session.pdf_results = fs.createReadStream(file);
             console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
