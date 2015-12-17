@@ -7,7 +7,7 @@ var url = require('url') ;
 var fs = require('fs');
 var http = require('https');
 var validator = require('validator');
-var teta = require('base64-js');
+var bytes = require('base64-js');
 var base64 = require('base-64');
 var dbOperations = require("./database/database.js");
 
@@ -134,7 +134,7 @@ app.get('/getpdf', function(request, response) {
     };
     console.log('pdf title****************', request.session.pdf_results[0].Title);
     var req = http.request(options, function(res) {
-        //res.setEncoding('base64');
+        res.setEncoding('base64');
         var binaryData = [];
         res.on('data', function (chunk) {
             //console.log('CHUNK----------  ' + chunk);
@@ -144,7 +144,7 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk------------------2', typeof chunk);
             // console.log('binary en batch en batch en batch chunk', new Buffer(chunk, 'base64').toString('ascii'));
 
-            binaryData.push(chunk);
+            binaryData.push.apply(bytes.toByteArray(chunk));
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
@@ -158,14 +158,14 @@ app.get('/getpdf', function(request, response) {
             // console.log('a ver --------', test);
             //console.log('lista lista lista lista ', binaryData);
             for (var i=0; i < binaryData.length; i++) {
-                console.log('los strings en ascii en la lista son: ' + (i), binaryData[i]);
+                console.log('los bytes en la lista son: ' + (i), binaryData[i]);
             }
-            request.session.pdf_results = Buffer.concat(binaryData).toString('ascii');
+            request.session.pdf_results = binaryData;
             //console.log('-------------------', validator.isBase64(request.session.pdf_results));
 
              console.log('resultado-------------------'+ request.session.pdf_results);
 
-            response.redirect('/postchatter');
+            //response.redirect('/postchatter');
         });
     });
 

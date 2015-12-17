@@ -66,6 +66,26 @@ module.exports = {
             res.end();
         });
     },
+
+    // createTable: function(req, res) {
+    //     var pg = require('pg');
+    //     var conString = 'postgres://bjymmlojxvzepa:pZuU8I6dpLrZwHHtsqg-WiMb6R@ec2-54-204-39-67.compute-1.amazonaws.com:5432/d3bcrdfv174lkt';
+    //     var client = new pg.Client(conString);
+    //     client.connect();
+    //     var query = client.query( "CREATE TABLE pdfs"+
+    //                                 "("+
+    //                                   "pdf_field (blob),"+
+    //                                   "refresh_token VARCHAR (220),"+
+    //                                   "instance_url VARCHAR (220),"+
+    //                                   "id serial PRIMARY KEY NOT NULL"+
+    //                                 ")");
+    //
+    //     query.on("end", function (result) {
+    //         client.end();
+    //         res.write('Table Schema Created');
+    //         res.end();
+    //     });
+    // },
     dropTable : function(req, res){
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
