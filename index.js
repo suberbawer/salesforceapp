@@ -135,8 +135,8 @@ app.get('/getpdf', function(request, response) {
 
     var req = http.request(options, function(res) {
         //res.setEncoding('binary');
-        var binaryData = new Buffer('');
-        //var file = fs.createWriteStream('myOutput.pdf');
+        //var binaryData = new Buffer('');
+        var file = fs.createWriteStream('myOutput.pdf');
 
         res.on('data', function (chunk) {
             //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
@@ -145,11 +145,11 @@ app.get('/getpdf', function(request, response) {
             // }
 
             //console.log('EN BINARIO--------', chunk);
-            //file.write(chunk);
-            binaryData = Buffer.concat([binaryData, chunk]);
+            file.write(chunk);
+            //binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
-            request.session.pdf_results = binaryData;
+            request.session.pdf_results = createReadStream(file);
             console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
@@ -220,6 +220,10 @@ app.get('/postchatter', function(request, response) {
         console.log('problem with request: ' + e.message);
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
+    });
+
+    req.on('response', function(res) {
+        console.log('en la responseeeeeeeeeeeee', res.statusCode);
     });
 
     console.log('req a ver req a ver', req);
