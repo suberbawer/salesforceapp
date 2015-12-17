@@ -145,7 +145,7 @@ app.get('/getpdf', function(request, response) {
             // console.log('binary en batch en batch en batch chunk', new Buffer(chunk, 'base64').toString('ascii'));
             // console.log('chunk byte---------',);
             // console.log('chunk ---------', bytes.toByteArray(chunk));
-            console.log('chunk2 ---------', chunk));
+            console.log('chunk2 ---------', chunk);
 
             //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
             for (var i = 0; i < chunk.length; i++) {
