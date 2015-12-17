@@ -245,7 +245,7 @@ app.get('/postchatter', function(request, response) {
         CRLF;
 
     var req = http.request(options, function(res) {
-      res.on('end', function() {
+      req.on('end', function() {
         //   res.write('Check Chatter to see message');
         console.log('ES EL FIN*****');
         });
