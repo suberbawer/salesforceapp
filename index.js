@@ -143,12 +143,12 @@ app.get('/getpdf', function(request, response) {
             //console.log('chunk------------------1', chunk);
             //console.log('chunk------------------2', typeof chunk);
             // console.log('binary en batch en batch en batch chunk', new Buffer(chunk, 'base64').toString('ascii'));
-            console.log('chunk byte---------',new Buffer(bytes.toByteArray(chunk)));
-            console.log('chunk ---------', bytes.toByteArray(chunk));
-            console.log('chunk2 ---------',JSON.stringify(bytes.toByteArray(chunk)));
+            // console.log('chunk byte---------',);
+            // console.log('chunk ---------', bytes.toByteArray(chunk));
+            // console.log('chunk2 ---------',JSON.stringify(bytes.toByteArray(chunk)));
 
             //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
-            binaryData.push(chunk);
+            binaryData.push(new Buffer(bytes.toByteArray(chunk)));
         });
         res.on('end', function() {
             //console.log('resbody++++++++++++', res);
@@ -168,9 +168,9 @@ app.get('/getpdf', function(request, response) {
             //console.log('resultado-------------------'+ bytes.toByteArray(binaryData));
             // var blob = new Blob(binaryData, {type: "application/pdf"});
             //
-            // request.session.pdf_results = blob;
-            //
-            // response.redirect('/postchatter');
+            request.session.pdf_results = Buffer.concat(binaryData);
+            console.log('resultado------------------', request.session.pdf_results);
+            response.redirect('/postchatter');
         });
     });
 
