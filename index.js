@@ -135,7 +135,36 @@ app.get('/getpdf', function(request, response) {
     console.log('pdf title****************', request.session.pdf_results[0].Title);
     var req = http.request(options, function(res) {
         //res.setEncoding('binary');
-        var binaryData = new Buffer('');
+        var CRLF = '\r\n';
+        var postData = '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
+            'Content-Disposition: form-data; name="json"' + CRLF +
+            'Content-Type: application/json; charset=UTF-8' + CRLF +
+            CRLF +
+            '{' + CRLF +
+               '"body":{' + CRLF +
+                  '"messageSegments":[' + CRLF +
+                     '{' + CRLF +
+                        '"type":"Text",' + CRLF +
+                        '"text":""' + CRLF +
+                     '}' + CRLF +
+                  ']' + CRLF +
+               '},' + CRLF +
+               '"capabilities":{' + CRLF +
+                  '"content":{' + CRLF +
+                     '"description":"Generated Heroku Zip Pdx",' + CRLF +
+                     '"title":"NewGeneratedZIP.pdf"' + CRLF +
+                  '}' + CRLF +
+               '},' + CRLF +
+               '"feedElementType":"FeedItem",' + CRLF +
+               '"subjectId":"me"' + CRLF +
+            '}' + CRLF +
+            CRLF +
+            '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
+            'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.pdf"' + CRLF +
+            'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
+            CRLF;
+        var afterBody = CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF;
+        var binaryData = new Buffer(postData);
         //var file = fs.createWriteStream('myOutput.pdf');
 
         res.on('data', function (chunk) {
@@ -159,6 +188,7 @@ app.get('/getpdf', function(request, response) {
             binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
+            binaryData = Buffer.concat([binaryData, new Buffer(afterBody)]);
             request.session.pdf_results = binaryData;
             console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
@@ -229,11 +259,12 @@ app.get('/postchatter', function(request, response) {
     });
 
     // write data to request body
-    req.write(postData);
+    //req.write(postData);
     // writing bytes data
     //var buffer = new Buffer(request.session.pdf_results);
-    req.pipe(request.session.pdf_results);
-    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+    req.rawBody = request.session.pdf_results;
+    next();
+    //req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     //console.log('req!!!!!!!!!!!!!!!', req);
     req.end();
 });
