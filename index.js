@@ -32,7 +32,7 @@ var oauth2 = new sf.OAuth2({
     // we can change loginUrl to connect to sandbox or prerelease env.
     // loginUrl : 'https://test.salesforce.com',
     clientId : '3MVG91ftikjGaMd_epnylI.6EF_WhqQrAp3oUSc6wIgZi_3gCb4HdvdKjBbwQ6mczNvink75zl.0g7b.Txfx4',
-    clientSecret : '4671395917099215169',
+    clientSecret : '2418598885995816946',
     redirectUri : 'https://sfapijose.herokuapp.com/callback'
 });
 
