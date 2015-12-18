@@ -33,7 +33,7 @@ var oauth2 = new sf.OAuth2({
     // loginUrl : 'https://test.salesforce.com',
     clientId : '3MVG91ftikjGaMd_epnylI.6EF_WhqQrAp3oUSc6wIgZi_3gCb4HdvdKjBbwQ6mczNvink75zl.0g7b.Txfx4',
     clientSecret : '2418598885995816946',
-    redirectUri : 'https://sfapijose.herokuapp.com/callback'
+    redirectUri : 'https://jotapi.herokuapp.com/callback'
 });
 
 // Get authz url and redirect to it.
