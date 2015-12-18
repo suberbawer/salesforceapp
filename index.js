@@ -147,7 +147,7 @@ app.get('/getpdf', function(request, response) {
         res.on('end', function() {
             console.log('endddddddddddddd');
             file.end();
-            request.session.pdf_results = fs.createReadStream(file);
+            request.session.pdf_results = file;
             // console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
