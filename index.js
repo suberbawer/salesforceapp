@@ -189,6 +189,7 @@ app.get('/getpdf', function(request, response) {
                 file.end();
                 // Add file to zip
                 zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
+                req.end();
             });
         });
     },
@@ -200,7 +201,7 @@ app.get('/getpdf', function(request, response) {
         response.redirect('/postchatter');
     });
 
-    req.end();
+
 });
 
 app.get('/postchatter', function(request, response) {
