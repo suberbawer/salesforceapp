@@ -237,7 +237,7 @@ app.get('/postchatter', function(request, response) {
     req.write(postData);
     // writing bytes data
     //var buffer = new Buffer(request.session.pdf_results);
-    console.log('el file=========', request.session.pdf_results);
+    // console.log('el file=========', request.session.pdf_results);
     request.session.pdf_results
         .on('end', function() {
             console.log('EN EL PIPEEEEEEEEEEEEEEEEEEEEEEEE');
