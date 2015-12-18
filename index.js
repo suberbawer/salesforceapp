@@ -170,7 +170,7 @@ app.get('/getpdf', function(request, response) {
 
 app.get('/postchatter', function(request, response) {
     var form = new FormData();
-    console.log('--------------------------file', request.session.pdf_results);
+    //console.log('--------------------------file', request.session.pdf_results);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
