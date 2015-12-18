@@ -189,7 +189,6 @@ app.get('/getpdf', function(request, response) {
                 file.end();
                 // Add file to zip
                 zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
-                callback();
             });
         });
     },
