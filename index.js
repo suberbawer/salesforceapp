@@ -156,7 +156,7 @@ app.get('/getpdf', function(request, response) {
     var zip = archiver.create('zip', {});
     var file = fs.createWriteStream('outputPdf.pdf');
     var output = fs.createWriteStream('outputZip.zip');
-
+    var req;
     var options = {
         hostname: 'na22.salesforce.com',
         //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
@@ -167,15 +167,18 @@ app.get('/getpdf', function(request, response) {
         }
     };
     async.forEach(request.session.pdf_results, function(content_version, callback){
+        console.log('tamo afuera---------', content_version);
         options.path = content_version.VersionData;
 
-        var req = http.request(options, function(res) {
+        req = http.request(options, function(res) {
             res.on('data', function (chunk) {
+                console.log('tamo en el chunk');
                 // Write file with chunks
                 file.write(chunk);
             });
 
             res.on('end', function() {
+                console.log('tamo en el end');
                 // Close file
                 file.end();
                 // Add file to pdf
@@ -190,6 +193,7 @@ app.get('/getpdf', function(request, response) {
         zip.finalize();
         response.redirect('/postchatter');
     });
+    req.end();
 });
 
 app.get('/postchatter', function(request, response) {
