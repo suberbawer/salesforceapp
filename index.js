@@ -153,7 +153,7 @@ app.get('/getpdf', function(request, response) {
         res.on('end', function() {
             //console.log('endddddddddddddd');
             file.end();
-            request.session.pdf_results = fs.createReadStream(myOutput.pdf);
+            request.session.pdf_results = fs.createReadStream('myOutput.pdf');
             // console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
