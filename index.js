@@ -9,6 +9,7 @@ var http = require('https');
 var validator = require('validator');
 var bytes = require('base64-js');
 var base64 = require('base-64');
+var FormData = require('form-data');
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -139,22 +140,16 @@ app.get('/getpdf', function(request, response) {
         var file = fs.createWriteStream('myOutput.pdf');
 
         res.on('data', function (chunk) {
-            //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
-            // for (var i = 0; i < chunk.length; i++) {
-            //     binaryData.push(chunk.charCodeAt(i));
-            // }
-
-            //console.log('EN BINARIO--------', chunk);
-            console.log('-------chunk1', chunk);
+            //console.log('-------chunk1', chunk);
             file.write(chunk);
             //binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
             console.log('endddddddddddddd');
             file.end();
-            // request.session.pdf_results = fs.createReadStream(file);
+            request.session.pdf_results = fs.createReadStream(file);
             // console.log('resultado------------------', request.session.pdf_results);
-            // response.redirect('/postchatter');
+            response.redirect('/postchatter');
         });
     });
 
@@ -168,6 +163,8 @@ app.get('/getpdf', function(request, response) {
 });
 
 app.get('/postchatter', function(request, response) {
+    var form = new FormData();
+    console.log('--------------------------file', request.session.pdf_results);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -207,12 +204,19 @@ app.get('/postchatter', function(request, response) {
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
+    form.append(postData);
+    form.append(request.session.pdf_results);
+    form.append(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF)
+
     var req = http.request(options, function(res) {
       res.on('end', function() {
         //   res.write('Check Chatter to see message');
         console.log('ES EL FIN*****');
         });
     });
+
+    //Binds form to request
+    form.pipe(req);
 
     req.on('end', function() {
         console.log('el final ha llegado');
@@ -229,13 +233,13 @@ app.get('/postchatter', function(request, response) {
         console.log('en la responseeeeeeeeeeeee', res.statusCode);
     });
 
-    console.log('req a ver req a ver', req);
-    // write data to request body
-    req.write(postData);
-    // writing bytes data
-    //var buffer = new Buffer(request.session.pdf_results);
-    req.write(request.session.pdf_results);
-    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+    //console.log('req a ver req a ver', req);
+    // // write data to request body
+    // req.write(postData);
+    // // writing bytes data
+    // //var buffer = new Buffer(request.session.pdf_results);
+    // req.write();
+    // req.write();
     //console.log('req!!!!!!!!!!!!!!!', req);
     req.end();
 });
