@@ -145,13 +145,16 @@ app.get('/getpdf', function(request, response) {
             // }
 
             //console.log('EN BINARIO--------', chunk);
+            console.log('-------chunk1', chunk);
             file.write(chunk);
             //binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
-            request.session.pdf_results = fs.createReadStream(file);
-            console.log('resultado------------------', request.session.pdf_results);
-            response.redirect('/postchatter');
+            console.log('endddddddddddddd');
+            file.end();
+            // request.session.pdf_results = fs.createReadStream(file);
+            // console.log('resultado------------------', request.session.pdf_results);
+            // response.redirect('/postchatter');
         });
     });
 
