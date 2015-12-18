@@ -169,7 +169,7 @@ app.get('/getpdf', function(request, response) {
             path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
         },
         {
-            method: 'POST',
+            method: 'GET',
             path: '/services/data/v35.0/sobjects/ContentVersion/06815000001WPm4AAG/VersionData',
         }
 	];
