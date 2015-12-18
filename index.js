@@ -168,7 +168,7 @@ app.get('/getpdf', function(request, response) {
         }
     };
     zip.pipe(output);
-    async.map(request.session.pdf_results, function(content_version, callback){
+    async.forEach(request.session.pdf_results, function(content_version, callback){
         console.log('tamo afuera---------', content_version);
         options.path = content_version.VersionData;
         title_pdf = content_version.Title;
