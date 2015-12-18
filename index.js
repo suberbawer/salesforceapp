@@ -239,7 +239,7 @@ app.get('/postchatter', function(request, response) {
     //var buffer = new Buffer(request.session.pdf_results);
     console.log('el file=========', request.session.pdf_results);
     request.session.pdf_results
-        .pipe(req, {end:false})
+        .pipe(req)
         .on('end', function() {
             console.log('EN EL PIPEEEEEEEEEEEEEEEEEEEEEEEE');
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
