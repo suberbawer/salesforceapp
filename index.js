@@ -166,7 +166,7 @@ app.get('/getpdf', function(request, response) {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
-    async.forEach(request.session.pdf_results, function(content_version, callback){
+    async.map(request.session.pdf_results, function(content_version, callback){
         console.log('tamo afuera---------', content_version);
         options.path = content_version.VersionData;
 
@@ -182,7 +182,7 @@ app.get('/getpdf', function(request, response) {
                 console.log('tamo en el end');
                 // Close file
                 file.end();
-                // Add file to pdf
+                // Add file to zip
                 zip.append(fs.createReadStream(content_version.Title), { name: content_version.Title });
             });
         });
