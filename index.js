@@ -7,7 +7,7 @@ var fs = require('fs');
 var http = require('https');
 var archiver = require('archiver');
 //---------- variables test
-var batchClient = require('batch-api-requests').client;
+var async = require("async");
 //-----------------
 var dbOperations = require("./database/database.js");
 
@@ -87,10 +87,10 @@ app.get('/attachments', function(req, res) {
                         var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06915000001J99K') {
+                            if (result.records[i].Id == '06915000001J99K' || result.records[i].Id == '06915000001Jm9U') {
                                 console.log('el titulooooooooo');
                                 pdfs.push(result.records[i]);
-                                break;
+
                             }
                         }
 
@@ -151,38 +151,43 @@ app.get('/attachments', function(req, res) {
 //     });
 //     req.end();
 // });
-
-function createRequestObjects() {
-
-}
-
 app.get('/getpdf', function(request, response) {
-    batchConnection = batchClient.connect({
-		url: 'na22.salesforce.com',
+    // Variables
+    var zip = archiver.create('zip', {});
+    var file = fs.createWriteStream('outputPdf.pdf');
+    var output = fs.createWriteStream('outputZip.zip');
+
+    var options = {
+        hostname: 'na22.salesforce.com',
+        //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+        //path: request.session.pdf_results[0].VersionData,
+        method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + request.session.accessToken
+          'Authorization': 'Bearer ' + request.session.accessToken
         }
-	}),
-	items = [// an array of request objects
-		{
-            method: 'GET',
-            path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-        },
-        {
-            method: 'GET',
-            path: '/services/data/v35.0/sobjects/ContentVersion/06815000001WPm4AAG/VersionData',
-        }
-	];
+    };
+    async.forEach(req.session.pdf_results, function(content_version, callback){
+        options.path = content_version.VersionData;
 
-	// sending all items
-	items.forEach(function (item) {
-		batchConnection.get(item, function (error, body, response) {
-            console.log('---------', response);
-            console.log('=========', body);
+        var req = http.request(options, function(res) {
+            res.on('data', function (chunk) {
+                // Write file with chunks
+                file.write(chunk);
+            });
+
+            res.on('end', function() {
+                // Close file
+                file.end();
+                // Add file to pdf
+                zip.append(fs.createReadStream('outputPdf.pdf'), { name: content_version.Title });
+            });
         });
-	});
-
-	batchConnection.close();
+    },
+    function(err) {
+        if (err) response.write('ERROR');
+        zip.finalize();
+        response.redirect('/postchatter');
+    });
 });
 
 app.get('/postchatter', function(request, response) {
