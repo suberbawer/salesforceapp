@@ -153,7 +153,7 @@ app.get('/getpdf', function(request, response) {
         res.on('end', function() {
             //console.log('endddddddddddddd');
             file.end();
-            request.session.pdf_results = fs.createReadStream('myOutput.pdf');
+            //request.session.pdf_results = fs.createReadStream('myOutput.pdf');
             // console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
@@ -238,7 +238,7 @@ app.get('/postchatter', function(request, response) {
     // writing bytes data
     //var buffer = new Buffer(request.session.pdf_results);
     // console.log('el file=========', request.session.pdf_results);
-    request.session.pdf_results
+    fs.createReadStream('myOutput.pdf')
         .on('end', function() {
             console.log('EN EL PIPEEEEEEEEEEEEEEEEEEEEEEEE');
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
