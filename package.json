@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "archiver": "^0.20.0",
+    "batch-api-requests": "0.0.1",
     "body-parser": "^1.14.1",
     "ejs": "2.3.3",
     "express": "4.13.3",
