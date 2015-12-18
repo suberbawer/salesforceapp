@@ -207,6 +207,7 @@ app.get('/postchatter', function(request, response) {
 
     req.on('response', function(res) {
         console.log('en la responseeeeeeeeeeeee', res.statusCode);
+        response.write(res +'------'+ res.statusCode);
         response.end();
     });
 
