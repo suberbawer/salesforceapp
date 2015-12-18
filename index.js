@@ -6,10 +6,6 @@ var bodyParser = require('body-parser');
 var url = require('url') ;
 var fs = require('fs');
 var http = require('https');
-var validator = require('validator');
-var bytes = require('base64-js');
-var base64 = require('base-64');
-var FormData = require('form-data');
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -98,9 +94,7 @@ app.get('/attachments', function(req, res) {
                         if (pdfs.length == 0) {
                             pdfs = result.records;
                         }
-
                         req.session.pdf_results = pdfs;
-
                         // get pdf from salesforce to process
                         res.redirect('/getpdf');
                     }
@@ -114,13 +108,11 @@ app.get('/attachments', function(req, res) {
 });
 
 app.get('/getpdf', function(request, response) {
-    //console.log('token****************', request.session.accessToken);
     var options = {
         hostname: 'na22.salesforce.com',
         path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
         //path: request.session.pdf_results[0].VersionData,
         method: 'GET',
-        // encode: 'base64',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
@@ -200,13 +192,11 @@ app.get('/postchatter', function(request, response) {
 
     // If error show message and finish response
     req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
 
     req.on('response', function(res) {
-        console.log('en la responseeeeeeeeeeeee', res.statusCode);
         response.write('SUCCESS: Check Chatter to find the PDF file :)');
         response.end();
     });
@@ -216,7 +206,6 @@ app.get('/postchatter', function(request, response) {
 
     fs.createReadStream('myOutput.pdf')
         .on('end', function() {
-            console.log('EN EL PIPEEEEEEEEEEEEEEEEEEEEEEEE');
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
@@ -226,7 +215,6 @@ app.get('/postchatter', function(request, response) {
 app.post('/test', function(req, res) {
     var message = 'ERROR';
     docIds = req.body;
-    console.log('attachments ids+++++++++ ', docIds);
     if (docIds) {
         message = 'SUCCESS';
     }
@@ -249,21 +237,3 @@ app.get('/db/createTable', function(req,res){
 app.get('/db/dropTable', function(req,res){
     dbOperations.dropTable(req,res);
 });
-
-// BASE 64 FUNCTIONS
-// function to encode file data to base64 encoded string
-function base64_encode(file) {
-    // read binary data
-    var bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    return new Buffer(bitmap).toString('base64');
-}
-
-// function to create file from base64 encoded string
-function base64_decode(base64str, file) {
-    // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
-    var bitmap = new Buffer(base64str, 'base64');
-    // write buffer to file
-    fs.writeFileSync(file, bitmap);
-    console.log('******** File created from base64 encoded string ********');
-}

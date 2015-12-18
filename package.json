@@ -7,15 +7,11 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "base-64": "^0.1.0",
-    "base64-js": "0.0.8",
     "body-parser": "^1.14.1",
     "ejs": "2.3.3",
     "express": "4.13.3",
     "express-session": "^1.12.1",
-    "form-data": "^0.2.0",
-    "jsforce": "^1.5.0",
-    "validator": "^4.4.0"
+    "jsforce": "^1.5.0"
   },
   "engines": {
     "node": "0.12.7"
