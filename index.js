@@ -176,7 +176,7 @@ app.get('/getpdf', function(request, response) {
 
 	// sending all items
 	items.forEach(function (item) {
-		batchConnection.send(item, function (error, body, response) {
+		batchConnection.get(item, function (error, body, response) {
             console.log('---------', response);
             console.log('=========', body);
         });
