@@ -113,14 +113,6 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-// app.get('/getpdf', function(req, res) {
-//     conn.apex.get("/services/data/v34.0/sobjects/ContentVersion/", function(err, res) {
-//       if (err) { return console.error(err); }
-//       console.log("response: ", res);
-//       // the response object structure depends on the definition of apex class
-//   });
-// });
-
 app.get('/getpdf', function(request, response) {
     //console.log('token****************', request.session.accessToken);
     var options = {
@@ -135,26 +127,13 @@ app.get('/getpdf', function(request, response) {
     };
 
     var req = http.request(options, function(res) {
-        //res.setEncoding('binary');
-        //var binaryData = new Buffer('');
         var file = fs.createWriteStream('myOutput.pdf');
 
         res.on('data', function (chunk) {
-            //binaryData.push.apply(binaryData, bytes.toByteArray(chunk));
-            // for (var i = 0; i < chunk.length; i++) {
-            //     binaryData.push(chunk.charCodeAt(i));
-            // }
-
-            //console.log('EN BINARIO--------', chunk);
-            //console.log('-------chunk1', chunk);
             file.write(chunk);
-            //binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
-            //console.log('endddddddddddddd');
             file.end();
-            //request.session.pdf_results = fs.createReadStream('myOutput.pdf');
-            // console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
     });
@@ -169,8 +148,6 @@ app.get('/getpdf', function(request, response) {
 });
 
 app.get('/postchatter', function(request, response) {
-    var form = new FormData();
-    //console.log('--------------------------file', request.session.pdf_results);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -230,22 +207,18 @@ app.get('/postchatter', function(request, response) {
 
     req.on('response', function(res) {
         console.log('en la responseeeeeeeeeeeee', res.statusCode);
+        response.end();
     });
 
-    //console.log('req a ver req a ver', req);
     // write data to request body
     req.write(postData);
-    // writing bytes data
-    //var buffer = new Buffer(request.session.pdf_results);
-    // console.log('el file=========', request.session.pdf_results);
+
     fs.createReadStream('myOutput.pdf')
         .on('end', function() {
             console.log('EN EL PIPEEEEEEEEEEEEEEEEEEEEEEEE');
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
-    //req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-    //console.log('req!!!!!!!!!!!!!!!', req);
     //req.end();
 });
 
