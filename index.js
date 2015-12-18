@@ -172,6 +172,8 @@ app.get('/getpdf', function(request, response) {
 
         req = http.request(options, function(res) {
             file = fs.createWriteStream(content_version.Title);
+            console.log('title999999999 ', content_version.Title);
+            console.log('callback4444444 ', callback);
             res.on('data', function (chunk) {
                 console.log('tamo en el chunk');
                 // Write file with chunks
