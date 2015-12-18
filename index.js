@@ -220,7 +220,6 @@ app.get('/postchatter', function(request, response) {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
-    //req.end();
 });
 
 // Recieve contet ids from salesforce
