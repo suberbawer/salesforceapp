@@ -87,7 +87,7 @@ app.get('/attachments', function(req, res) {
                         var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06915000001J99K' || result.records[i].Id == '06915000001Jm9U') {
+                            if (result.records[i].Id == '06815000001VnBOAA0' || result.records[i].Id == '06815000001WPm4AAG') {
                                 console.log('el titulooooooooo');
                                 pdfs.push(result.records[i]);
 
