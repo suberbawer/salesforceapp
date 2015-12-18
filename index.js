@@ -157,6 +157,7 @@ app.get('/getpdf', function(request, response) {
     var file;
     var output = fs.createWriteStream('outputZip.zip');
     var req;
+    var title_pdf = '';
     var options = {
         hostname: 'na22.salesforce.com',
         //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
@@ -170,10 +171,11 @@ app.get('/getpdf', function(request, response) {
     async.map(request.session.pdf_results, function(content_version, callback){
         console.log('tamo afuera---------', content_version);
         options.path = content_version.VersionData;
+        title_pdf = content_version.Title;
 
         req = http.request(options, function(res) {
-            file = fs.createWriteStream(content_version.Title);
-            console.log('title999999999 ', content_version.Title);
+            file = fs.createWriteStream(title_pdf);
+            console.log('title999999999 ', title_pdf);
             console.log('callback4444444 ', callback);
             res.on('data', function (chunk) {
                 console.log('tamo en el chunk');
@@ -186,7 +188,7 @@ app.get('/getpdf', function(request, response) {
                 // Close file
                 file.end();
                 // Add file to zip
-                zip.append(fs.createReadStream(content_version.Title), { name: content_version.Title });
+                zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
             });
         });
     },
@@ -197,6 +199,8 @@ app.get('/getpdf', function(request, response) {
         zip.finalize();
         response.redirect('/postchatter');
     });
+
+    req.end();
 });
 
 app.get('/postchatter', function(request, response) {
