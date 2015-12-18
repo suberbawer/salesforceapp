@@ -146,14 +146,14 @@ app.get('/getpdf', function(request, response) {
             // }
 
             //console.log('EN BINARIO--------', chunk);
-            console.log('-------chunk1', chunk);
+            //console.log('-------chunk1', chunk);
             file.write(chunk);
             //binaryData = Buffer.concat([binaryData, chunk]);
         });
         res.on('end', function() {
-            console.log('endddddddddddddd');
+            //console.log('endddddddddddddd');
             file.end();
-            request.session.pdf_results = fs.createReadStream(file);
+            request.session.pdf_results = fs.createReadStream(myOutput.pdf);
             // console.log('resultado------------------', request.session.pdf_results);
             response.redirect('/postchatter');
         });
