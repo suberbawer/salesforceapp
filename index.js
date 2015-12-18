@@ -207,8 +207,7 @@ app.get('/postchatter', function(request, response) {
 
     req.on('response', function(res) {
         console.log('en la responseeeeeeeeeeeee', res.statusCode);
-        //response.write('SUCCESS: Check Chatter to find the PDF file');
-        response.write('Response: ' + JSON.stringify(res));
+        response.write('SUCCESS: Check Chatter to find the PDF file :)');
         response.end();
     });
 
