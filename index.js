@@ -154,7 +154,7 @@ app.get('/attachments', function(req, res) {
 app.get('/getpdf', function(request, response) {
     // Variables
     var zip = archiver.create('zip', {});
-    var file = fs.createWriteStream('outputPdf.pdf');
+    var file;
     var output = fs.createWriteStream('outputZip.zip');
     var req;
     var options = {
@@ -171,6 +171,7 @@ app.get('/getpdf', function(request, response) {
         options.path = content_version.VersionData;
 
         req = http.request(options, function(res) {
+            file = fs.createWriteStream(content_version.Title);
             res.on('data', function (chunk) {
                 console.log('tamo en el chunk');
                 // Write file with chunks
@@ -182,7 +183,7 @@ app.get('/getpdf', function(request, response) {
                 // Close file
                 file.end();
                 // Add file to pdf
-                zip.append(fs.createReadStream('outputPdf.pdf'), { name: content_version.Title });
+                zip.append(fs.createReadStream(content_version.Title), { name: content_version.Title });
             });
         });
     },
