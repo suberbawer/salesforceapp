@@ -6,6 +6,9 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var http = require('https');
 var archiver = require('archiver');
+//---------- variables test
+var batchClient = require('batch-api-requests').client;
+//-----------------
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -107,48 +110,79 @@ app.get('/attachments', function(req, res) {
     }
 });
 
+// app.get('/getpdf', function(request, response) {
+//     // Variables
+//     var zip = archiver.create('zip', {});
+//     var file = fs.createWriteStream('outputPdf.pdf');
+//     var output = fs.createWriteStream('outputZip.zip');
+//     var options = {
+//         hostname: 'na22.salesforce.com',
+//         path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+//         //path: request.session.pdf_results[0].VersionData,
+//         method: 'GET',
+//         headers: {
+//           'Authorization': 'Bearer ' + request.session.accessToken
+//         }
+//     };
+//     // Bind zip to output
+//     zip.pipe(output);
+//     // Request
+//     var req = http.request(options, function(res) {
+//         res.on('data', function (chunk) {
+//             // Write file with chunks
+//             file.write(chunk);
+//         });
+//
+//         res.on('end', function() {
+//             // Close file
+//             file.end();
+//             // Add file to pdf
+//             zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
+//
+//             response.redirect('/postchatter');
+//         });
+//     });
+//
+//     // If error show message and finish response
+//     req.on('error', function(e) {
+//         console.log('problem with request: ' + e.message);
+//         response.write('Error in request, please retry or contact your Administrator');
+//         response.end();
+//     });
+//     req.end();
+// });
+
+function createRequestObjects() {
+
+}
+
 app.get('/getpdf', function(request, response) {
-    // Variables
-    var zip = archiver.create('zip', {});
-    var file = fs.createWriteStream('outputPdf.pdf');
-    var output = fs.createWriteStream('outputZip.zip');
-    var options = {
-        hostname: 'na22.salesforce.com',
-        path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-        //path: request.session.pdf_results[0].VersionData,
-        method: 'GET',
+    batchConnection = batchClient.connect({
+		url: 'na22.salesforce.com',
         headers: {
-          'Authorization': 'Bearer ' + request.session.accessToken
+            'Authorization': 'Bearer ' + request.session.accessToken
         }
-    };
-    // Bind zip to output
-    zip.pipe(output);
-    // Request
-    var req = http.request(options, function(res) {
-        res.on('data', function (chunk) {
-            // Write file with chunks
-            file.write(chunk);
+	}),
+	items = [// an array of request objects
+		{
+            method: 'GET',
+            path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+        },
+        {
+            method: 'POST',
+            path: '/services/data/v35.0/sobjects/ContentVersion/06815000001WPm4AAG/VersionData',
+        }
+	];
+
+	// sending all items
+	items.forEach(function (item) {
+		batchConnection.send(item, function (error, body, response) {
+            console.log('---------', response);
         });
+	});
 
-        res.on('end', function() {
-            // Close file
-            file.end();
-            // Add file to pdf
-            zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
-
-            response.redirect('/postchatter');
-        });
-    });
-
-    // If error show message and finish response
-    req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
-        response.write('Error in request, please retry or contact your Administrator');
-        response.end();
-    });
-    req.end();
+	batchConnection.close();
 });
-
 
 app.get('/postchatter', function(request, response) {
     var options = {
@@ -208,7 +242,7 @@ app.get('/postchatter', function(request, response) {
     });
 
     req.on('response', function(res) {
-        response.write('SUCCESS: Check Chatter to find the PDF file :)');
+        response.write('SUCCESS: Check Chatter to find the ZIP file :)');
         response.end();
     });
 
