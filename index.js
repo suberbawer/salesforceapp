@@ -166,6 +166,7 @@ app.get('/getpdf', function(request, response) {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
+    zip.pipe(output);
     async.map(request.session.pdf_results, function(content_version, callback){
         console.log('tamo afuera---------', content_version);
         options.path = content_version.VersionData;
@@ -196,7 +197,6 @@ app.get('/getpdf', function(request, response) {
         zip.finalize();
         response.redirect('/postchatter');
     });
-    req.end();
 });
 
 app.get('/postchatter', function(request, response) {
