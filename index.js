@@ -232,15 +232,18 @@ app.get('/postchatter', function(request, response) {
         console.log('en la responseeeeeeeeeeeee', res.statusCode);
     });
 
-    console.log('req a ver req a ver', req);
+    //console.log('req a ver req a ver', req);
     // write data to request body
     req.write(postData);
     // writing bytes data
     //var buffer = new Buffer(request.session.pdf_results);
-    request.session.pdf_results.pipe(req, {end:false}).on('end', function() {
-        console.log('EN EL PIPEEEEEEEEEEEEEEEEEEEEEEEE');
-        req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-    });
+    console.log('el file=========', request.session.pdf_results);
+    request.session.pdf_results
+        .pipe(req, {end:false})
+        .on('end', function() {
+            console.log('EN EL PIPEEEEEEEEEEEEEEEEEEEEEEEE');
+            req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+        });
     //req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
     //console.log('req!!!!!!!!!!!!!!!', req);
     //req.end();
