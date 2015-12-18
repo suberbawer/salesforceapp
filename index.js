@@ -3,9 +3,9 @@ var express = require('express');
 var session = require('express-session');
 var app = express();
 var bodyParser = require('body-parser');
-var url = require('url') ;
 var fs = require('fs');
 var http = require('https');
+var archiver = require('archiver');
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -108,6 +108,10 @@ app.get('/attachments', function(req, res) {
 });
 
 app.get('/getpdf', function(request, response) {
+    // Variables
+    var zip = archiver.create('zip', {});
+    var file = fs.createWriteStream('outputPdf.pdf');
+    var output = fs.createWriteStream('outputZip.zip');
     var options = {
         hostname: 'na22.salesforce.com',
         path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
@@ -117,15 +121,21 @@ app.get('/getpdf', function(request, response) {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
-
+    // Bind zip to output
+    zip.pipe(output);
+    // Request
     var req = http.request(options, function(res) {
-        var file = fs.createWriteStream('myOutput.pdf');
-
         res.on('data', function (chunk) {
+            // Write file with chunks
             file.write(chunk);
         });
+
         res.on('end', function() {
+            // Close file
             file.end();
+            // Add file to pdf
+            zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
+
             response.redirect('/postchatter');
         });
     });
@@ -138,6 +148,7 @@ app.get('/getpdf', function(request, response) {
     });
     req.end();
 });
+
 
 app.get('/postchatter', function(request, response) {
     var options = {
@@ -167,7 +178,7 @@ app.get('/postchatter', function(request, response) {
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
                  '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                 '"title":"NewGeneratedZIP.pdf"' + CRLF +
+                 '"title":"NewGeneratedZIP.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -175,7 +186,7 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.pdf"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
@@ -204,7 +215,7 @@ app.get('/postchatter', function(request, response) {
     // write data to request body
     req.write(postData);
 
-    fs.createReadStream('myOutput.pdf')
+    fs.createReadStream('outputZip.zip')
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
