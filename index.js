@@ -166,7 +166,7 @@ app.get('/getpdf', function(request, response) {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
-    async.forEach(req.session.pdf_results, function(content_version, callback){
+    async.forEach(request.session.pdf_results, function(content_version, callback){
         options.path = content_version.VersionData;
 
         var req = http.request(options, function(res) {
@@ -184,7 +184,9 @@ app.get('/getpdf', function(request, response) {
         });
     },
     function(err) {
-        if (err) response.write('ERROR');
+        if (err) {
+            response.write('ERROR');
+        }
         zip.finalize();
         response.redirect('/postchatter');
     });
