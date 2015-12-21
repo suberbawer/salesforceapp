@@ -143,7 +143,7 @@ app.get('/getpdf', function(request, response) {
 
             res.on('end', function() {
                 // Close file
-                file.end();
+                //file.end();
                 // Add file to pdf
                 zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 count++
