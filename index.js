@@ -175,7 +175,7 @@ app.get('/attachments', function(req, res) {
                 }
             };
 
-            async.each(request.session.pdf_results, function(content_version, asyncCallback) {
+            async.parallel(request.session.pdf_results, function(content_version, asyncCallback) {
                     console.log('en el for--------', content_version.Title);
 
                     options.path = content_version.VersionData;
