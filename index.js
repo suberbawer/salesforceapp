@@ -188,7 +188,7 @@ function createFilesToUpoload(pdfs_to_get) {
                     file = fs.createWriteStream(title_pdf);
 
                     // Request
-                    req = http.request(options, function(res) {
+                    var req = http.request(options, function(res) {
                         console.log('requesttttttttt-')
                         //console.log('callback4444444 ', callback);
                         res.on('data', function (chunk) {
