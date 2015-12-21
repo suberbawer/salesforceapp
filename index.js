@@ -151,7 +151,7 @@ app.get('/attachments', function(req, res) {
 //     });
 //     req.end();
 // });
-function callExternalUrl(item, asyncCallback){
+function callExternalUrl(item, request, asyncCallback){
     var file = fs.createWriteStream('outputPdf.pdf');
     var options = {
         hostname: 'na22.salesforce.com',
@@ -196,7 +196,7 @@ function iterateAsync(request, callback) {
 
     var iter = [];
     async.each(request.session.pdf_results,
-        function(item, asyncCallback) {
+        function(item, request, asyncCallback) {
             callExternalUrl(item, asyncCallback);
         },
         function(err) {
