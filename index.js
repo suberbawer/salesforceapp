@@ -3,9 +3,12 @@ var express = require('express');
 var session = require('express-session');
 var app = express();
 var bodyParser = require('body-parser');
-var url = require('url') ;
 var fs = require('fs');
 var http = require('https');
+var archiver = require('archiver');
+//---------- variables test
+var async = require("async");
+//-----------------
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -84,10 +87,10 @@ app.get('/attachments', function(req, res) {
                         var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06915000001J99K') {
+                            if (result.records[i].Id == '06815000001VnBOAA0' || result.records[i].Id == '06815000001WPm4AAG') {
                                 console.log('el titulooooooooo');
                                 pdfs.push(result.records[i]);
-                                break;
+
                             }
                         }
 
@@ -107,36 +110,98 @@ app.get('/attachments', function(req, res) {
     }
 });
 
+// app.get('/getpdf', function(request, response) {
+//     // Variables
+//     var zip = archiver.create('zip', {});
+//     var file = fs.createWriteStream('outputPdf.pdf');
+//     var output = fs.createWriteStream('outputZip.zip');
+//     var options = {
+//         hostname: 'na22.salesforce.com',
+//         path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+//         //path: request.session.pdf_results[0].VersionData,
+//         method: 'GET',
+//         headers: {
+//           'Authorization': 'Bearer ' + request.session.accessToken
+//         }
+//     };
+//     // Bind zip to output
+//     zip.pipe(output);
+//     // Request
+//     var req = http.request(options, function(res) {
+//         res.on('data', function (chunk) {
+//             // Write file with chunks
+//             file.write(chunk);
+//         });
+//
+//         res.on('end', function() {
+//             // Close file
+//             file.end();
+//             // Add file to pdf
+//             zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
+//
+//             response.redirect('/postchatter');
+//         });
+//     });
+//
+//     // If error show message and finish response
+//     req.on('error', function(e) {
+//         console.log('problem with request: ' + e.message);
+//         response.write('Error in request, please retry or contact your Administrator');
+//         response.end();
+//     });
+//     req.end();
+// });
 app.get('/getpdf', function(request, response) {
-    var options = {
-        hostname: 'na22.salesforce.com',
-        path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-        //path: request.session.pdf_results[0].VersionData,
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + request.session.accessToken
-        }
-    };
 
-    var req = http.request(options, function(res) {
-        var file = fs.createWriteStream('myOutput.pdf');
+    // Variables
+    var zip = archiver.create('zip', {});
+    var file;
+    var output = fs.createWriteStream('outputZip.zip');
+    var req;
+    var title_pdf = '';
+    zip.pipe(output);
 
-        res.on('data', function (chunk) {
-            file.write(chunk);
+    request.session.pdf_results.forEach(function(elem){
+        var options = {
+            hostname: 'na22.salesforce.com',
+            //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+            path: elem.VersionData,
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer ' + request.session.accessToken
+            }
+        };
+        // Request
+        req = http.request(options, function(res) {
+            res.on('data', function (chunk) {
+                // Write file with chunks
+                file.write(chunk);
+            });
+
+            res.on('end', function() {
+                // Close file
+                file.end();
+                // Add file to pdf
+                zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
+                req.end();
+            });
         });
-        res.on('end', function() {
-            file.end();
-            response.redirect('/postchatter');
+
+        // If error show message and finish response
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+            response.write('Error in request, please retry or contact your Administrator');
+            response.end();
         });
     });
 
-    // If error show message and finish response
-    req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
-        response.write('Error in request, please retry or contact your Administrator');
-        response.end();
+    req.on('end', function() {
+        zip.finalize();
+        // redirect to post in chatter
+        response.redirect('/postchatter');
+
     });
-    req.end();
+
 });
 
 app.get('/postchatter', function(request, response) {
@@ -167,7 +232,7 @@ app.get('/postchatter', function(request, response) {
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
                  '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                 '"title":"NewGeneratedZIP.pdf"' + CRLF +
+                 '"title":"NewGeneratedZIP.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -175,7 +240,7 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.pdf"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
@@ -197,14 +262,14 @@ app.get('/postchatter', function(request, response) {
     });
 
     req.on('response', function(res) {
-        response.write('SUCCESS: Check Chatter to find the PDF file :)');
+        response.write('SUCCESS: Check Chatter to find the ZIP file :)');
         response.end();
     });
 
     // write data to request body
     req.write(postData);
 
-    fs.createReadStream('myOutput.pdf')
+    fs.createReadStream('outputZip.zip')
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
