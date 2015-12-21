@@ -187,27 +187,29 @@ function callExternalUrl(item, asyncCallback){
     req.end();
 }
 var zip = archiver.create('zip', {});
-app.get('/getpdf', function(request, response) {
-    function iterateAsync(callback) {
-        console.log('empezo--------------------');
-        var output = fs.createWriteStream('outputZip.zip');
-        // Bind zip to output
-        zip.pipe(output);
+function iterateAsync(callback) {
+    console.log('empezo--------------------');
+    var output = fs.createWriteStream('outputZip.zip');
+    // Bind zip to output
+    zip.pipe(output);
 
-        var iter = [];
-        async.each(request.session.pdf_results,
-            function(item, asyncCallback) {
-                callExternalUrl(item, asyncCallback);
-            },
-            function(err) {
-                callback(err);
-            }, function() {
-                console.log('termino---------------');
-                zip.finalize();
-                request.redirect('/postchatter');
-            }
-        );
-    }
+    var iter = [];
+    async.each(request.session.pdf_results,
+        function(item, asyncCallback) {
+            callExternalUrl(item, asyncCallback);
+        },
+        function(err) {
+            callback(err);
+        }
+    );
+}
+
+app.get('/getpdf', function(request, response) {
+    iterateAsync(function(){
+        console.log('termino---------------');
+        zip.finalize();
+        request.redirect('/postchatter');
+    });
 });
 
 app.get('/postchatter', function(request, response) {
