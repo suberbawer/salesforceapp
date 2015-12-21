@@ -141,7 +141,7 @@ app.get('/getpdf', function(request, response) {
                 // Close file
                 file.end();
                 // Add file to pdf
-                zip.append(fs.createReadStream(equest.session.pdf_results[i].Title), { name: equest.session.pdf_results[i].Title });
+                zip.append(fs.createReadStream(request.session.pdf_results[i].Title), { name: request.session.pdf_results[i].Title });
                 count++
             });
         });
@@ -154,7 +154,7 @@ app.get('/getpdf', function(request, response) {
         });
         req.end();
     }
-    
+
     if (count == request.session.pdf_results.length) {
         zip.finalize();
         response.redirect('/postchatter');
