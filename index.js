@@ -188,7 +188,7 @@ function callExternalUrl(item, asyncCallback){
 }
 var zip = archiver.create('zip', {});
 
-function iterateAsync(callback) {
+function iterateAsync(request, callback) {
     console.log('empezo--------------------');
     var output = fs.createWriteStream('outputZip.zip');
     // Bind zip to output
