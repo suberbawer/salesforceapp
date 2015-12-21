@@ -205,7 +205,7 @@ function iterateAsync(callback) {
 }
 
 app.get('/getpdf', function(request, response) {
-    iterateAsync(function(){
+    iterateAsync(function(request){
         console.log('termino---------------');
         zip.finalize();
         request.redirect('/postchatter');
