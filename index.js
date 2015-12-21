@@ -151,6 +151,11 @@ app.get('/attachments', function(req, res) {
 //     });
 //     req.end();
 // });
+function createFilesToUpoload(pdfs_to_get) {
+        for (var i=0; i<pdfs_to_get; i++) {
+
+        }
+}
     app.get('/getpdf', function(request, response) {
         // iterateAsync(request, function(request){
         //     console.log('termino---------------');
@@ -175,11 +180,12 @@ app.get('/attachments', function(req, res) {
                 }
             };
 
-            async.parallel(request.session.pdf_results, function(content_version, asyncCallback) {
+            async.timeSeries(request.session.pdf_results, function(content_version, asyncCallback) {
                     console.log('en el for--------', content_version.Title);
 
                     options.path = content_version.VersionData;
                     title_pdf = content_version.Title;
+
                     file = fs.createWriteStream(title_pdf);
 
                     // Request
@@ -192,9 +198,9 @@ app.get('/attachments', function(req, res) {
 
                         res.on('end', function() {
                             // Close file
-                            file.end();
+                            // file.end();
                             // Add file to zip
-                            zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
+                            zip.append(file, { name: title_pdf });
                         });
                     });
 
