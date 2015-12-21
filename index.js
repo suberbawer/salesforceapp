@@ -145,6 +145,7 @@ app.get('/getpdf', function(request, response) {
                 // Close file
                 //file.end();
                 // Add file to pdf
+                console.log('pdf name', title_pdf);
                 zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 count++
                 if (count == request.session.pdf_results.length) {
