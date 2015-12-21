@@ -201,6 +201,7 @@ function createFilesToUpoload(pdfs_to_get) {
                             // file.end();
                             // Add file to zip
                             zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
+                            asyncCallback();
                         });
                     });
 
