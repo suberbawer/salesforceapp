@@ -184,7 +184,7 @@ function createFilesToUpoload(pdfs_to_get) {
                     console.log('en el for--------', content_version.Title);
 
                     options.path = content_version.VersionData;
-                    console.log('en el for path--------', options);
+                    console.log('en el for path--------', options.path);
                     title_pdf = content_version.Title;
 
                     file = fs.createWriteStream(title_pdf);
