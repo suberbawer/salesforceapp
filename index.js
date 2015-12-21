@@ -171,18 +171,17 @@ function createFilesToUpoload(pdfs_to_get) {
             // Bind zip to output
             zip.pipe(output);
 
-            var options = {
-                hostname: 'na22.salesforce.com',
-                //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-                method: 'GET',
-                headers: {
-                  'Authorization': 'Bearer ' + request.session.accessToken
-                }
-            };
-
             async.eachSeries(request.session.pdf_results, function(content_version, asyncCallback) {
+                var options = {
+                    hostname: 'na22.salesforce.com',
+                    //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+                    path: content_version.VersionData,
+                    method: 'GET',
+                    headers: {
+                      'Authorization': 'Bearer ' + request.session.accessToken
+                    }
+                };
 
-                    options.path = content_version.VersionData;
                     console.log('en el for path--------', options.path);
                     title_pdf = content_version.Title;
                     console.log('en el for--------', title_pdf);
