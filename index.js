@@ -201,7 +201,7 @@ function createFilesToUpoload(pdfs_to_get) {
                         res.on('end', function() {
                             console.log('en el end----', title_pdf);
                             // Close file
-                            file.end();
+                            //file.end();
                             // Add file to zip
                             zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                             asyncCallback();
