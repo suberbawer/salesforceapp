@@ -151,58 +151,64 @@ app.get('/attachments', function(req, res) {
 //     });
 //     req.end();
 // });
+function callExternalUrl(item, asyncCallback){
+    var file = fs.createWriteStream('outputPdf.pdf');
+    var options = {
+        hostname: 'na22.salesforce.com',
+        //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+        path: item.VersionData,
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + request.session.accessToken
+        }
+    };
+    // Request
+    var req = http.request(options, function(res) {
+        res.on('data', function (chunk) {
+            // Write file with chunks
+            file.write(chunk);
+        });
+
+        res.on('end', function() {
+            // Close file
+            file.end();
+            // Add file to pdf
+            zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
+            asyncCallback();
+        });
+    });
+
+    // If error show message and finish response
+    req.on('error', function(e) {
+        console.log('problem with request: ' + e.message);
+        response.write('Error in request, please retry or contact your Administrator');
+        response.end();
+    });
+    req.end();
+}
+var zip = archiver.create('zip', {});
 app.get('/getpdf', function(request, response) {
+    function iterateAsync(callback) {
+        console.log('empezo--------------------');
+        var output = fs.createWriteStream('outputZip.zip');
+        // Bind zip to output
+        zip.pipe(output);
 
-    // Variables
-    var zip = archiver.create('zip', {});
-    var file;
-    var output = fs.createWriteStream('outputZip.zip');
-    var req;
-    var title_pdf = '';
-    zip.pipe(output);
-
-    request.session.pdf_results.forEach(function(elem){
-        var options = {
-            hostname: 'na22.salesforce.com',
-            //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-            path: elem.VersionData,
-            method: 'GET',
-            headers: {
-              'Authorization': 'Bearer ' + request.session.accessToken
+        var iter = [];
+        async.each(request.session.pdf_results,
+            function(item, asyncCallback) {
+                callExternalUrl(item, asyncCallback);
+            },
+            function(err) {
+                callback(err);
+            }, function() {
+                console.log('termino---------------');
+                zip.finalize();
+                request.redirect('/postchatter');
             }
-        };
-        // Request
-        req = http.request(options, function(res) {
-            res.on('data', function (chunk) {
-                // Write file with chunks
-                file.write(chunk);
-            });
-
-            res.on('end', function() {
-                // Close file
-                file.end();
-                // Add file to pdf
-                zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
-                req.end();
-            });
-        });
-
-        // If error show message and finish response
-        req.on('error', function(e) {
-            console.log('problem with request: ' + e.message);
-            response.write('Error in request, please retry or contact your Administrator');
-            response.end();
-        });
-    });
-
-    req.on('end', function() {
-        zip.finalize();
-        // redirect to post in chatter
-        response.redirect('/postchatter');
-
-    });
-
-});
+        );
+    }
+}
 
 app.get('/postchatter', function(request, response) {
     var options = {
