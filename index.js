@@ -115,6 +115,8 @@ app.get('/getpdf', function(request, response) {
     var zip = archiver.create('zip', {});
     var file;
     var output = fs.createWriteStream('outputZip.zip');
+    var title_pdf = '';
+
     var options = {
         hostname: 'na22.salesforce.com',
         //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
@@ -128,8 +130,10 @@ app.get('/getpdf', function(request, response) {
     zip.pipe(output);
     var count = 0;
     for (var i=0; i < request.session.pdf_results.length; i++) {
+        title_pdf = request.session.pdf_results[i].Title;
         options.path = request.session.pdf_results[i].VersionData
-        file = fs.createWriteStream(request.session.pdf_results[i].Title);
+        file = fs.createWriteStream(title_pdf);
+
         // Request
         var req = http.request(options, function(res) {
             res.on('data', function (chunk) {
@@ -141,7 +145,7 @@ app.get('/getpdf', function(request, response) {
                 // Close file
                 file.end();
                 // Add file to pdf
-                zip.append(fs.createReadStream(request.session.pdf_results[i].Title), { name: request.session.pdf_results[i].Title });
+                zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 count++
             });
         });
