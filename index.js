@@ -152,56 +152,56 @@ app.get('/attachments', function(req, res) {
 //     req.end();
 // });
 app.get('/getpdf', function(request, response) {
+
     // Variables
     var zip = archiver.create('zip', {});
     var file;
     var output = fs.createWriteStream('outputZip.zip');
     var req;
     var title_pdf = '';
-    var options = {
-        hostname: 'na22.salesforce.com',
-        //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-        //path: request.session.pdf_results[0].VersionData,
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + request.session.accessToken
-        }
-    };
     zip.pipe(output);
-    async.forEach(request.session.pdf_results, function(content_version, callback){
-        console.log('tamo afuera---------', content_version);
-        options.path = content_version.VersionData;
-        title_pdf = content_version.Title;
 
+    request.session.pdf_results.forEach(function(elem){
+        var options = {
+            hostname: 'na22.salesforce.com',
+            //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
+            path: elem.VersionData,
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer ' + request.session.accessToken
+            }
+        };
+        // Request
         req = http.request(options, function(res) {
-            file = fs.createWriteStream(title_pdf);
-            console.log('title999999999 ', title_pdf);
-            console.log('callback4444444 ', callback);
             res.on('data', function (chunk) {
-                console.log('tamo en el chunk');
                 // Write file with chunks
                 file.write(chunk);
             });
 
             res.on('end', function() {
-                console.log('tamo en el end');
                 // Close file
                 file.end();
-                // Add file to zip
-                zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
+                // Add file to pdf
+                zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
+                req.end();
             });
         });
-    },
-    function(err) {
-        console.log('EL FINNNNNNNNNNNNNNNNNN');
-        if (err) {
-            response.write('ERROR');
-        }
-        zip.finalize();
-        response.redirect('/postchatter');
+
+        // If error show message and finish response
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+            response.write('Error in request, please retry or contact your Administrator');
+            response.end();
+        });
     });
 
-    req.end();
+    req.on('end', function() {
+        zip.finalize();
+        // redirect to post in chatter
+        response.redirect('/postchatter');
+
+    });
+
 });
 
 app.get('/postchatter', function(request, response) {
