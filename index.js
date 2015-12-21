@@ -180,7 +180,7 @@ function createFilesToUpoload(pdfs_to_get) {
                 }
             };
 
-            async.each(request.session.pdf_results, function(content_version, asyncCallback) {
+            async.eachSeries(request.session.pdf_results, function(content_version, asyncCallback) {
                     console.log('en el for--------', content_version.Title);
 
                     options.path = content_version.VersionData;
@@ -199,7 +199,7 @@ function createFilesToUpoload(pdfs_to_get) {
                         res.on('end', function() {
                             console.log('en el end----', title_pdf);
                             // Close file
-                            // file.end();
+                            file.end();
                             // Add file to zip
                             zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                             asyncCallback();
