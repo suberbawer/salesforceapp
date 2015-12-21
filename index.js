@@ -208,7 +208,7 @@ app.get('/getpdf', function(request, response) {
             }
         );
     }
-}
+});
 
 app.get('/postchatter', function(request, response) {
     var options = {
