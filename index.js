@@ -180,7 +180,7 @@ function createFilesToUpoload(pdfs_to_get) {
                 }
             };
 
-            async.timeSeries(request.session.pdf_results, function(content_version, asyncCallback) {
+            async.each(request.session.pdf_results, function(content_version, asyncCallback) {
                     console.log('en el for--------', content_version.Title);
 
                     options.path = content_version.VersionData;
