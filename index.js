@@ -181,12 +181,11 @@ function createFilesToUpoload(pdfs_to_get) {
             };
 
             async.eachSeries(request.session.pdf_results, function(content_version, asyncCallback) {
-                    console.log('en el for--------', content_version.Title);
 
                     options.path = content_version.VersionData;
                     console.log('en el for path--------', options.path);
                     title_pdf = content_version.Title.indexOf > -1 ? content_version.Title : content_version.Title + '.pdf';
-
+                    console.log('en el for--------', title_pdf);
                     file = fs.createWriteStream(title_pdf);
 
                     // Request
