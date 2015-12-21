@@ -200,7 +200,7 @@ function createFilesToUpoload(pdfs_to_get) {
                             // Close file
                             // file.end();
                             // Add file to zip
-                            zip.append(file, { name: title_pdf });
+                            zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                         });
                     });
 
