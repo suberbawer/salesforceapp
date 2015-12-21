@@ -135,7 +135,7 @@ app.get('/getpdf', function(request, response) {
         file = fs.createWriteStream(title_pdf);
         console.log('en el for-----', request.session.pdf_results[i].Title);
         // Request
-        var req = http.request(options, function(res) {
+        var req = http.request(options, function(res, request.session.pdf_results[i].Title) {
             console.log('REQUEST---', request.session.pdf_results[i].Title);
             res.on('data', function (chunk) {
                 // Write file with chunks
