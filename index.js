@@ -151,10 +151,6 @@ app.get('/attachments', function(req, res) {
 //     });
 //     req.end();
 // });
-app.get('/getpdf', function(request, response) {
-
-
-
     app.get('/getpdf', function(request, response) {
         // iterateAsync(request, function(request){
         //     console.log('termino---------------');
@@ -162,7 +158,6 @@ app.get('/getpdf', function(request, response) {
         //     request.redirect('/postchatter');
         // });
 
-        function iterateAsync() {
             var zip = archiver.create('zip', {});
             var file;
             var output = fs.createWriteStream('outputZip.zip');
@@ -174,7 +169,6 @@ app.get('/getpdf', function(request, response) {
             var options = {
                 hostname: 'na22.salesforce.com',
                 //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-                path: item.VersionData,
                 method: 'GET',
                 headers: {
                   'Authorization': 'Bearer ' + request.session.accessToken
@@ -212,18 +206,14 @@ app.get('/getpdf', function(request, response) {
                 },
                 function(err) {
                     console.log('a ver si aca termina---------');
-                    //     console.log('termino---------------');
-                        zip.finalize();
-                        request.redirect('/postchatter');
+                    zip.finalize();
+                    request.redirect('/postchatter');
 
                     //callback(err);
                 }
             );
-        }
-
+        req.end();
     });
-    req.end();
-});
 
 app.get('/postchatter', function(request, response) {
     var options = {
