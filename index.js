@@ -184,6 +184,7 @@ function createFilesToUpoload(pdfs_to_get) {
                     console.log('en el for--------', content_version.Title);
 
                     options.path = content_version.VersionData;
+                    console.log('en el for path--------', options);
                     title_pdf = content_version.Title;
 
                     file = fs.createWriteStream(title_pdf);
@@ -192,6 +193,7 @@ function createFilesToUpoload(pdfs_to_get) {
                     req = http.request(options, function(res) {
                         //console.log('callback4444444 ', callback);
                         res.on('data', function (chunk) {
+                            console.log('en el chunk----', content_version.Title);
                             // Write file with chunks
                             file.write(chunk);
                         });
