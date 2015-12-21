@@ -180,7 +180,7 @@ function createFilesToUpoload(pdfs_to_get) {
                 }
             };
 
-            async.each(request.session.pdf_results, function(content_version, asyncCallback) {
+            async.eachSeries(request.session.pdf_results, function(content_version, asyncCallback) {
 
                     options.path = content_version.VersionData;
                     console.log('en el for path--------', options.path);
@@ -190,6 +190,7 @@ function createFilesToUpoload(pdfs_to_get) {
 
                     // Request
                     req = http.request(options, function(res) {
+                        console.log('requesttttttttt-')
                         //console.log('callback4444444 ', callback);
                         res.on('data', function (chunk) {
                             //console.log('en el chunk----', content_version.Title);
