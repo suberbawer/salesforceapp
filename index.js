@@ -132,10 +132,11 @@ app.get('/getpdf', function(request, response) {
     for (var i=0; i < request.session.pdf_results.length; i++) {
         title_pdf = request.session.pdf_results[i].Title;
         options.path = request.session.pdf_results[i].VersionData
-        file = fs.createWriteStream(title_pdf);
         console.log('en el for-----', request.session.pdf_results[i].Title);
         // Request
-        var req = http.request(options, function(res, title_pdf) {
+        var req = http.request(options, function(res) {
+            file = fs.createWriteStream(title_pdf);
+
             console.log('REQUEST---', title_pdf);
             res.on('data', function (chunk) {
                 // Write file with chunks
