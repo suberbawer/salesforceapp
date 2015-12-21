@@ -176,12 +176,14 @@ app.get('/attachments', function(req, res) {
             };
 
             async.each(request.session.pdf_results, function(content_version, asyncCallback) {
+                    console.log('en el for--------', content_version.Title);
+
                     options.path = content_version.VersionData;
                     title_pdf = content_version.Title;
+                    file = fs.createWriteStream(title_pdf);
 
                     // Request
                     req = http.request(options, function(res) {
-                        file = fs.createWriteStream(title_pdf);
                         //console.log('callback4444444 ', callback);
                         res.on('data', function (chunk) {
                             // Write file with chunks
