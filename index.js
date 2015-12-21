@@ -187,6 +187,7 @@ function callExternalUrl(item, asyncCallback){
     req.end();
 }
 var zip = archiver.create('zip', {});
+
 function iterateAsync(callback) {
     console.log('empezo--------------------');
     var output = fs.createWriteStream('outputZip.zip');
@@ -205,7 +206,7 @@ function iterateAsync(callback) {
 }
 
 app.get('/getpdf', function(request, response) {
-    iterateAsync(function(request){
+    iterateAsync(request, function(request){
         console.log('termino---------------');
         zip.finalize();
         request.redirect('/postchatter');
