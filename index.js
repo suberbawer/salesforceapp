@@ -197,6 +197,7 @@ function createFilesToUpoload(pdfs_to_get) {
                         });
 
                         res.on('end', function() {
+                            console.log('en el end----', title_pdf);
                             // Close file
                             // file.end();
                             // Add file to zip
