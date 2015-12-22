@@ -188,16 +188,16 @@ app.get('/getpdf', function(request, response) {
     //console.log( request.session.pdf_results );
     var lista = request.session.pdf_results;
 
-    for (var i=0, size = lista.length; i < size; i++){
-    	var pdf = lista[i];
-        console.log('LA LISTA DE PDFS', lista[i].VersionData);
+    for (var i=0,; i < request.session.pdf_results.length; i++){
+    	var pdf = request.session.pdf_results[i];
+        console.log('LA LISTA DE PDFS', pdf.VersionData);
         options.path = pdf.VersionData;
     	pdfListWrapper.push(
 			function(callback){
 				//options.path = pdf.VersionData;
                 title_pdf = pdf.Title;
-                console.log('OPTIONS ttitleeeeeeee', title_pdf);
-                console.log('OPTIONS PATH', options.path);
+                //console.log('OPTIONS ttitleeeeeeee' + i, title_pdf);
+                console.log('OPTIONS PATH--' + i, options.path);
 
 				var req = http.request(options, function(res) {
 		            file = fs.createWriteStream(title_pdf);
