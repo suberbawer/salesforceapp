@@ -110,132 +110,65 @@ app.get('/attachments', function(req, res) {
     }
 });
 
+app.get('/getpdf', function(request, response) {
+    // Variables
+    var zip = archiver.create('zip', {});
+    var file;
+    var output = fs.createWriteStream('outputZip.zip');
+    var title_pdf = '';
 
-
-function closureRequest(file, content_version, request, response, i, zip){
     var options = {
         hostname: 'na22.salesforce.com',
         //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-        path: content_version.VersionData,
+        //path: request.session.pdf_results[0].VersionData,
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
-    // console.log('OPTIONSSSS', options);
-    // Request
-    var req = http.request(options, function(res) {
-        // console.log('es 201-----', res);
-        // if (res.statusCode === 201) {
-        //     console.log('es 201-----', res.headers);
-        //     console.log('es 201-----', res.headers.location);
-        //   /* Compression was successful, retrieve output from Location header. */
-        //   http.get(res.headers.location, function(res) {
-        //       console.log('ahora va el pipe');
-        //     res.pipe(file);
-        //   });
-        // } else {
-        //   /* Something went wrong! You can parse the JSON body for details. */
-        //   console.log("Compression failed");
-        // }
-        res.on('data', function (chunk) {
-            // Write file with chunks
-            file.write(chunk);
+    // Bind zip to output
+    zip.pipe(output);
+    var count = 0;
+    for (var i=0; i < request.session.pdf_results.length; i++) {
+        title_pdf = request.session.pdf_results[i].Title;
+        options.path = request.session.pdf_results[i].VersionData
+        console.log('en el for-----', request.session.pdf_results[i].Title);
+        // Request
+        var req = http.request(options, function(res) {
+            file = fs.createWriteStream('Test '+i.toString());
+
+            //console.log('REQUEST---', title_pdf);
+            res.on('data', function (chunk) {
+                // Write file with chunks
+                file.write(chunk);
+            });
+
+            res.on('end', function(a) {
+                // Close file
+                //file.end();
+                // Add file to pdf
+                console.log('pdf name', a);
+                zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
+                count++
+                if (count == request.session.pdf_results.length) {
+                    for (var j=0; j < files.length; j++) {
+                        zip.append(fs.createReadStream('Test '+j.toString()), { 'Test '+j.toString()});
+                        response.redirect('/postchatter');
+                    }
+                    zip.finalize();
+                }
+            });
         });
 
-        res.on('end', function() {
-            // Close file
-            //file.end();
-            // Add file to pdf
-            console.log('EN EL END DE LA REQUEST');
-            zip.append(fs.createReadStream(content_version.Title), { name: content_version.Title });
-            if ((i + 1) == request.session.pdf_results.length) {
-                zip.finalize();
-                response.redirect('/postchatter');
-            }
+        // If error show message and finish response
+        req.on('error', function(e) {
+            console.log('problem with request: ' + e.message);
+            response.write('Error in request, please retry or contact your Administrator');
+            response.end();
         });
-    });
-    // If error show message and finish response
-    req.on('error', function(e) {
-        console.log('problem with request: ' + e.message);
-        response.write('Error in request, please retry or contact your Administrator');
-        response.end();
-    });
-    req.end();
-    return req;
-}
-app.get('/getpdf', function(request, response) {
-    console.log('TAMO AHIIIII');
-    for (var i = 0; i < request.session.pdf_results.length; i++) {
-        var zip = archiver.create('zip', {});
-        var output = fs.createWriteStream('outputZip.zip');
-        // Bind zip to output
-        zip.pipe(output);
-        //var input = fs.createReadStream(request.session.pdf_results[i].Title);
-        var req = closureRequest(fs.createWriteStream(request.session.pdf_results[i].Title), request.session.pdf_results[i], request, response, i, zip);
-        //console.log('REQUEST ', req);
-
+        req.end();
     }
 });
-
-
-
-// app.get('/getpdf', function(request, response) {
-//     // Variables
-//     var zip = archiver.create('zip', {});
-//     var file;
-//     var output = fs.createWriteStream('outputZip.zip');
-//     var title_pdf = '';
-//
-//     var options = {
-//         hostname: 'na22.salesforce.com',
-//         //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-//         //path: request.session.pdf_results[0].VersionData,
-//         method: 'GET',
-//         headers: {
-//           'Authorization': 'Bearer ' + request.session.accessToken
-//         }
-//     };
-//     // Bind zip to output
-//     zip.pipe(output);
-//     var count = 0;
-//     for (var i=0; i < request.session.pdf_results.length; i++) {
-//         title_pdf = request.session.pdf_results[i].Title;
-//         options.path = request.session.pdf_results[i].VersionData
-//         console.log('en el for-----', request.session.pdf_results[i].Title);
-//         // Request
-//         var req = http.request(options, function(res) {
-//             file = fs.createWriteStream(title_pdf);
-//
-//             console.log('REQUEST---', title_pdf);
-//             res.on('data', function (chunk) {
-//                 // Write file with chunks
-//                 file.write(chunk);
-//             });
-//
-//             res.on('end', function(a) {
-//                 // Close file
-//                 //file.end();
-//                 // Add file to pdf
-//                 console.log('pdf name', a);
-//                 zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
-//                 count++
-//                 if (count == request.session.pdf_results.length) {
-//                     zip.finalize();
-//                     response.redirect('/postchatter');
-//                 }
-//             });
-//         });
-//
-//         // If error show message and finish response
-//         req.on('error', function(e) {
-//             console.log('problem with request: ' + e.message);
-//             response.write('Error in request, please retry or contact your Administrator');
-//             response.end();
-//         });
-//         req.end();
-//     }
-// });
 
     // app.get('/getpdf', function(request, response) {
     //     // iterateAsync(request, function(request){
@@ -334,7 +267,7 @@ app.get('/postchatter', function(request, response) {
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
                  '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                 '"title":"NewGeneratedZIP.zip"' + CRLF +
+                 '"title":"test1.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -342,7 +275,7 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.zip"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="Test.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
