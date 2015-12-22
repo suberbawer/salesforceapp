@@ -148,7 +148,7 @@ app.get('/getpdf', function(request, response) {
                 // Add file to pdf
                 console.log('PDF NAME');
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
-                filesNames.push(title);
+                files.push(file);
                 count++;
                 console.log('cookiessssssssssssssssss', request.session.pdf_results);
                 // options.path = request.session.pdf_results[count].VersionData;
