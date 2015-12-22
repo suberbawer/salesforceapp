@@ -124,7 +124,7 @@ function closureRequest(file, content_version, request, response, zip){
     };
     console.log('OPTIONSSSS', options);
     // Request
-    return new http.request(options, function(res) {
+    var req = http.request(options, function(res) {
         console.log('es 201-----', res);
         // if (res.statusCode === 201) {
         //     console.log('es 201-----', res.headers);
@@ -156,13 +156,15 @@ function closureRequest(file, content_version, request, response, zip){
             //     response.redirect('/postchatter');
             // }
         });
-        // // If error show message and finish response
-        // req.on('error', function(e) {
-        //     console.log('problem with request: ' + e.message);
-        //     response.write('Error in request, please retry or contact your Administrator');
-        //     response.end();
-        // });
     });
+    // If error show message and finish response
+    req.on('error', function(e) {
+        console.log('problem with request: ' + e.message);
+        response.write('Error in request, please retry or contact your Administrator');
+        response.end();
+    });
+    req.end();
+    return req;
 }
 app.get('/getpdf', function(request, response) {
     console.log('TAMO AHIIIII');
@@ -173,7 +175,7 @@ app.get('/getpdf', function(request, response) {
         zip.pipe(output);
         //var input = fs.createReadStream(request.session.pdf_results[i].Title);
         var req = closureRequest(fs.createWriteStream(request.session.pdf_results[i].Title), request.session.pdf_results[i], request, response, zip);
-        console.log('REQUEST ', req);
+        //console.log('REQUEST ', req);
         req.on('end', function() {
             console.log(' EL FINAL DE LA REQUEST');
             zip.append(req);
