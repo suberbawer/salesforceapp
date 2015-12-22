@@ -112,7 +112,7 @@ app.get('/attachments', function(req, res) {
 
 
 
-function closureRequest(file, content_version, request, zip){
+function closureRequest(file, content_version, request, response, zip){
     var options = {
         hostname: 'na22.salesforce.com',
         //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
@@ -166,13 +166,14 @@ function closureRequest(file, content_version, request, zip){
     });
 }
 app.get('/getpdf', function(request, response) {
-    for (var i = 0; i < request.session.pdf_results; i++) {
+    console.log('TAMO AHIIIII');
+    for (var i = 0; i < request.session.pdf_results.length; i++) {
         var zip = archiver.create('zip', {});
         var output = fs.createWriteStream('outputZip.zip');
         // Bind zip to output
         zip.pipe(output);
         //var input = fs.createReadStream(request.session.pdf_results[i].Title);
-        var req = closureRequest(fs.createWriteStream(request.session.pdf_results[i].Title), request.session.pdf_results[i], request, zip);
+        var req = closureRequest(fs.createWriteStream(request.session.pdf_results[i].Title), request.session.pdf_results[i], request, response, zip);
         req.on('end', function() {
             console.log(' EL FINAL DE LA REQUEST');
             zip.append(req);
