@@ -221,9 +221,9 @@ app.get('/getpdf', function(request, response) {
         	for ( var i=0, size = results.length; i < size; i++ ) {
         		var pdf = results[i];
         		console.log('===jose');
-        		console.log('===JOSE', pdf);
+        		console.log('===JOSE', pdf.path);
         		var random_integer = Math.random()*101|0;
-        		zip.append('anotherTest'+random_integer+'.pdf', { name : 'anotherTest'+random_integer+'.pdf' });
+        		zip.append(pdf.path, { name : pdf.path });
         	}
             zip.finalize();
             console.log('FUE ZIPPEADO');
