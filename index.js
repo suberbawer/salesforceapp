@@ -78,6 +78,7 @@ app.get('/attachments', function(req, res) {
                 instanceUrl: req.session.instanceUrl,
                 accessToken: req.session.accessToken
             });
+            // || result.records[i].Id == '06815000001WYElAAO'
             // First query on documents then into content documents to retrieve the file
             conn.query(query, function(err, result) {
                 if (err) {
@@ -87,7 +88,7 @@ app.get('/attachments', function(req, res) {
                         var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYEgAAO' || result.records[i].Id == '06815000001WYElAAO') {
+                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYEgAAO') {
                                 console.log('el titulooooooooo ', result.records[i].Title);
                                 pdfs.push(result.records[i]);
 
@@ -133,6 +134,7 @@ app.get('/getpdf', function(request, response) {
     for (var i=0; i < request.session.pdf_results.length; i++) {
         // Request
         var req = http.request(options, function(res) {
+            console.log('optionsssssssssss', options.path);
             // Create empty file
             file = fs.createWriteStream(title_pdf);
 
