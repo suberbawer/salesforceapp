@@ -209,7 +209,7 @@ app.get('/getpdf', function(request, response) {
             });
 
             res.on('end', function() {
-                file.end();
+                //file.end();
                 zip.append(fs.createReadStream(pdf.Title), { name: pdf.Title});
                 callback();
                 // count++;
