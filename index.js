@@ -127,7 +127,7 @@ function closureRequest(file, content_version, request, response, zip){
     return http.request(options, function(res) {
         console.log('es 201-----', res.headers);
         if (res.statusCode === 201) {
-            console.log('es 201-----', res.headers);
+            console.log('es 201-----', res);
             console.log('es 201-----', res.headers.location);
           /* Compression was successful, retrieve output from Location header. */
           http.get(res.headers.location, function(res) {
