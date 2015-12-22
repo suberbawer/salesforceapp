@@ -94,9 +94,9 @@ app.get('/attachments', function(req, res) {
                             }
                         }
 
-                        if (pdfs.length == 0) {
-                            pdfs = result.records;
-                        }
+                        // if (pdfs.length == 0) {
+                        //     pdfs = result.records;
+                        // }
                         req.session.pdf_results = pdfs;
                         // get pdf from salesforce to process
                         res.redirect('/getpdf');
@@ -187,7 +187,7 @@ app.get('/getpdf', function(request, response) {
 
     //console.log( request.session.pdf_results );
     var lista = request.session.pdf_results;
-
+    console.log('TAMAAAAAANAIOOOOOOOOO ', request.session.pdf_results.length);
     for (var i=0; i < request.session.pdf_results.length; i++){
     	var pdf = request.session.pdf_results[i];
         var count = i;
