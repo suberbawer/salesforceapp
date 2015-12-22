@@ -117,12 +117,10 @@ app.get('/getpdf', function(request, response) {
     var output = fs.createWriteStream('outputZip.zip');
     var count = 0;
     var file;
-    // First title
-    var title_pdf = request.session.pdf_results[0].Title;
-
+    
     var options = {
         hostname: 'na22.salesforce.com',
-        path: request.session.pdf_results[0].VersionData,
+        path: '',
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
@@ -131,48 +129,46 @@ app.get('/getpdf', function(request, response) {
 
     // Bind zip to output
     zip.pipe(output);
-    getPdfsAsync();
-    function getPdfsAsync() {
-        // Request
-        var req = http.request(options, function(res) {
-            // Create empty file
-            file = fs.createWriteStream(title_pdf);
-
-            res.on('data', function (chunk) {
-                // Write file with chunks
-                file.write(chunk);
-            });
-
-            res.on('end', function() {
-                file.end();
-                count++;
-                console.log('---------------------3', count);
-
-                // Change options to get next pdf and asign next pdf title
-                if (count < request.session.pdf_results.length) {
-                    options.path = request.session.pdf_results[count].VersionData;
-                    title_pdf = request.session.pdf_results[count].Title;
-                    getPdfsAsync();
-                }
-                // If every get is already requested then append to zip and redirect to post
-                if (count == request.session.pdf_results.length) {
-                    for (var j=0; j < count; j++) {
-                        zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
-                    }
-                    zip.finalize();
-                    response.redirect('/postchatter');
-                }
-            });
-        });
-
-        // If error show message and finish response
-        req.on('error', function(e) {
-            console.log('problem with request: ' + e.message);
-            response.write('Error in request, please retry or contact your Administrator');
-            response.end();
-        });
-        req.end();
-    }
+    //PDF List
+    var pdfList = request.session.pdf_results;
+    var pdfListWrapper = [];
+    
+    pdfList.each(function(pdf){
+    	pdfListWrapper.push(
+    			function(callback){
+    				
+    				options.path = pdf.VersionData;
+	                title_pdf = pdf.Title;
+    				
+    				var req = http.request(options, function(res) {
+    		            file = fs.createWriteStream(title_pdf);
+    		            res.on('data', function (chunk) {
+    		                file.write(chunk);
+    		            });
+    		            res.on('end', function() {
+    		                file.end();
+    		                callback(null,file);
+    		            });
+    		            res.on('error',function(error){
+    		            	callback(error);
+    		            });
+    		        });    				
+    			}
+		);    	
+    });
+    
+    
+    async.series(pdfListWrapper,
+              // optional callback
+              function(err, results){
+			    	results.each(function(pdf){
+			    		var random_integer = Math.random()*101|0;
+			    		zip.append(fs.createReadStream(pdf), { name : 'anotherTest'+random_integer });
+			    	})
+			        zip.finalize();
+		    		req.end();
+			        response.redirect('/postchatter');
+              });
 });
 
 app.get('/postchatter', function(request, response) {
