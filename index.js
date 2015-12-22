@@ -112,7 +112,7 @@ app.get('/attachments', function(req, res) {
 
 
 
-function closureRequest(file, content_version, request, response, zip){
+function closureRequest(file, content_version, request, response, i, zip){
     var options = {
         hostname: 'na22.salesforce.com',
         //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
@@ -148,12 +148,11 @@ function closureRequest(file, content_version, request, response, zip){
             //file.end();
             // Add file to pdf
             console.log('EN EL END DE LA REQUEST');
-            // zip.append(fs.createReadStream(content_version), { name: title_pdf });
-            // count++
-            // if (count == request.session.pdf_results.length) {
-            //     zip.finalize();
-            //     response.redirect('/postchatter');
-            // }
+            zip.append(fs.createReadStream(content_version.Title), { name: content_version.Title });
+            if ((i + 1) == request.session.pdf_results.length) {
+                zip.finalize();
+                response.redirect('/postchatter');
+            }
         });
     });
     // If error show message and finish response
@@ -173,14 +172,12 @@ app.get('/getpdf', function(request, response) {
         // Bind zip to output
         zip.pipe(output);
         //var input = fs.createReadStream(request.session.pdf_results[i].Title);
-        var req = closureRequest(fs.createWriteStream(request.session.pdf_results[i].Title), request.session.pdf_results[i], request, response, zip);
+        var req = closureRequest(fs.createWriteStream(request.session.pdf_results[i].Title), request.session.pdf_results[i], request, response, i, zip);
         //console.log('REQUEST ', req);
-        req.on('end', function() {
+
             console.log(' EL FINAL DE LA REQUEST');
-            zip.append(req);
-            request.redirect('/postchatter');
-        });
-     }
+
+
 });
 
 
