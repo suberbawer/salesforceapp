@@ -191,26 +191,25 @@ app.get('/getpdf', function(request, response) {
     for (var i=0, size = lista.length; i < size; i++){
     	var pdf = lista[i];
     	pdfListWrapper.push(
-    			function(callback){
+			function(callback){
+				options.path = pdf.VersionData;
+                title_pdf = pdf.Title;
 
-    				options.path = pdf.VersionData;
-	                title_pdf = pdf.Title;
-
-    				var req = http.request(options, function(res) {
-    		            file = fs.createWriteStream(title_pdf);
-    		            res.on('data', function (chunk) {
-    		                file.write(chunk);
-    		            });
-    		            res.on('end', function() {
-    		                file.end();
-    		                callback(null,file);
-    		            });
-    		            res.on('error',function(error){
-    		            	callback(error);
-    		            });
-    		        });
-    				req.end();
-    			}
+				var req = http.request(options, function(res) {
+		            file = fs.createWriteStream(title_pdf);
+		            res.on('data', function (chunk) {
+		                file.write(chunk);
+		            });
+		            res.on('end', function() {
+		                file.end();
+		                callback(null,file);
+		            });
+		            res.on('error',function(error){
+		            	callback(error);
+		            });
+		        });
+				req.end();
+			}
 		);
     }
 
