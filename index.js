@@ -152,10 +152,12 @@ app.get('/getpdf', function(request, response) {
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 files.push(file);
                 console.log('cookiessssssssssssssssss', results[count].VersionData);
-                options.path = results[count].VersionData;
-                title_pdf = results[count].Title;
-
                 count++;
+                if (count < request.session.pdf_results.length) {
+                    options.path = results[count].VersionData;
+                    title_pdf = results[count].Title;
+                }
+                
                 if (count == request.session.pdf_results.length) {
                     for (var j=0; j < files.length; j++) {
                         console.log('A VER LOS TITULOS', request.session.pdf_results[j].Title);
