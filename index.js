@@ -190,7 +190,7 @@ app.get('/getpdf', function(request, response) {
 
     for (var i=0, size = lista.length; i < size; i++){
     	var pdf = lista[i];
-        console.log('LA LISTA DE PDFS', lista);
+        console.log('LA LISTA DE PDFS', lista[i].VersionData);
         options.path = pdf.VersionData;
     	pdfListWrapper.push(
 			function(callback){
@@ -221,7 +221,7 @@ app.get('/getpdf', function(request, response) {
         pdfListWrapper,
         // optional callback
         function(err, results) {
-            console.log('RESULTS ', results);
+            //console.log('RESULTS ', results);
         	for ( var i=0, size = results.length; i < size; i++ ) {
         		var pdf = results[i];
         		console.log('===JOSE', pdf.path);
