@@ -88,7 +88,7 @@ app.get('/attachments', function(req, res) {
                         var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYElAAO' || result.records[i].Id == '06815000001WYEgAAO') {
+                            if (result.records[i].FileType == 'PDF') {
                                 console.log('el titulooooooooo ', result.records[i].Title);
                                 pdfs.push(result.records[i]);
                             }
@@ -121,8 +121,8 @@ app.get('/getpdf', function(request, response) {
 
     var options = {
         hostname: 'na22.salesforce.com',
-        method: 'GET',
         path: request.session.pdf_results[0].VersionData,
+        method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
@@ -133,7 +133,6 @@ app.get('/getpdf', function(request, response) {
     async.forEachOf(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
         var req = http.request(options, function(res) {
-            console.log('options path*****' + key, options.path);
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
 
