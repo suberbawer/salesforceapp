@@ -113,55 +113,43 @@ app.get('/attachments', function(req, res) {
 app.get('/getpdf', function(request, response) {
     // Variables
     var zip = archiver.create('zip', {});
-    var file;
     var output = fs.createWriteStream('outputZip.zip');
+    var count = 0;
+    var file;
+    // First title
     var title_pdf = request.session.pdf_results[0].Title;
 
     var options = {
         hostname: 'na22.salesforce.com',
-        //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
         path: request.session.pdf_results[0].VersionData,
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
-    var results = request.session.pdf_results;
 
     // Bind zip to output
     zip.pipe(output);
-    var count = 0;
     for (var i=0; i < request.session.pdf_results.length; i++) {
-        console.log('en el for-----', request.session.pdf_results[i].Title);
-        var files = [];
         // Request
         var req = http.request(options, function(res) {
-            console.log('iiiiiiiiiiiiiiiiiiiiiii', count);
+            // Create empty file
             file = fs.createWriteStream(title_pdf);
-            //console.log('REQUEST---', title_pdf);
+
             res.on('data', function (chunk) {
                 // Write file with chunks
                 file.write(chunk);
             });
-            ///services/data/v34.0/sobjects/ContentVersion/06815000001WPv2AAG/VersionData
             res.on('end', function() {
-                // Close file
-                //file.end();
-                // Add file to pdf
-                console.log('PDF NAME');
-                //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
-                files.push(file);
-                console.log('cookiessssssssssssssssss', results[count].VersionData);
-                console.log('cookiessssssssssssssssss2', request.session.pdf_results[count].VersionData);
                 count++;
+                // Change options to get next pdf and asign next pdf title
                 if (count < request.session.pdf_results.length) {
-                    options.path = results[count].VersionData;
-                    title_pdf = results[count].Title;
+                    options.path = request.session.pdf_results[count].VersionData;
+                    title_pdf = request.session.pdf_results[count].Title;
                 }
-
+                // If every get is already requested then append to zip and redirect to post
                 if (count == request.session.pdf_results.length) {
-                    for (var j=0; j < files.length; j++) {
-                        console.log('A VER LOS TITULOS', request.session.pdf_results[j].Title);
+                    for (var j=0; j < count; j++) {
                         zip.append(fs.createReadStream(results[j].Title), { name: results[j].Title});
                     }
                     zip.finalize();
@@ -179,75 +167,6 @@ app.get('/getpdf', function(request, response) {
         req.end();
     }
 });
-
-    // app.get('/getpdf', function(request, response) {
-    //     // iterateAsync(request, function(request){
-    //     //     console.log('termino---------------');
-    //     //     zip.finalize();
-    //     //     request.redirect('/postchatter');
-    //     // });
-    //
-    //         var zip = archiver.create('zip', {});
-    //         var file;
-    //         var output = fs.createWriteStream('outputZip.zip');
-    //         var req;
-    //         var title_pdf = '';
-    //         // Bind zip to output
-    //         zip.pipe(output);
-    //
-    //         async.eachSeries(request.session.pdf_results, function(content_version, asyncCallback) {
-    //             var options = {
-    //                 hostname: 'na22.salesforce.com',
-    //                 //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-    //                 path: content_version.VersionData,
-    //                 method: 'GET',
-    //                 headers: {
-    //                   'Authorization': 'Bearer ' + request.session.accessToken
-    //                 }
-    //             };
-    //
-    //                 console.log('en el for path--------', options.path);
-    //                 title_pdf = content_version.Title;
-    //                 console.log('en el for--------', title_pdf);
-    //                 file = fs.createWriteStream(title_pdf);
-    //
-    //                 // Request
-    //                 req = http.request(options, function(res) {
-    //                     console.log('requesttttttttt-')
-    //                     //console.log('callback4444444 ', callback);
-    //                     res.on('data', function (chunk) {
-    //                         //console.log('en el chunk----', content_version.Title);
-    //                         // Write file with chunks
-    //                         file.write(chunk);
-    //                     });
-    //
-    //                     res.on('end', function() {
-    //                         console.log('en el end----', title_pdf);
-    //                         // Close file
-    //                         //file.end();
-    //                         // Add file to zip
-    //                         zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
-    //                         asyncCallback();
-    //                     });
-    //                 });
-    //
-    //                 // If error show message and finish response
-    //                 req.on('error', function(e) {
-    //                     console.log('problem with request: ' + e.message);
-    //                     response.write('Error in request, please retry or contact your Administrator');
-    //                     response.end();
-    //                 });
-    //             },
-    //             function(err) {
-    //                 console.log('a ver si aca termina---------');
-    //                 zip.finalize();
-    //                 request.redirect('/postchatter');
-    //
-    //                 //callback(err);
-    //             }
-    //         );
-    //     req.end();
-    // });
 
 app.get('/postchatter', function(request, response) {
     var options = {
