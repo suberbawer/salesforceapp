@@ -175,9 +175,7 @@ app.get('/getpdf', function(request, response) {
         var req = closureRequest(fs.createWriteStream(request.session.pdf_results[i].Title), request.session.pdf_results[i], request, response, i, zip);
         //console.log('REQUEST ', req);
 
-            console.log(' EL FINAL DE LA REQUEST');
-
-
+    }
 });
 
 
