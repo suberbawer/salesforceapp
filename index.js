@@ -149,7 +149,7 @@ app.get('/getpdf', function(request, response) {
                 console.log('pdf name');
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 files.push(file);
-                count++
+                count++;
                 options.path = request.session.pdf_results[count].VersionData;
                 title_pdf = request.session.pdf_results[count].Title;
 
