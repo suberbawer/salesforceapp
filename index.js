@@ -194,7 +194,7 @@ app.get('/getpdf', function(request, response) {
 			function(callback){
 				options.path = pdf.VersionData;
                 title_pdf = pdf.Title;
-
+                console.log('OPTIONS PATH', options.path);
 				var req = http.request(options, function(res) {
 		            file = fs.createWriteStream(title_pdf);
 		            res.on('data', function (chunk) {
