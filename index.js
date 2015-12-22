@@ -165,10 +165,10 @@ app.get('/getpdf', function(request, response) {
             readFile.on('open', function() {
                 console.log('OPEN FILE');
             });
-            readFile.on('close', function(){
+            readFile.on('close', function() {
                     console.log('COLSE FILE');
             });
-            zip.append(, { name: files[i].Title});
+            zip.append(readFile, { name: files[i].Title});
             if (i+1 == files.length) {
                 zip.finalize();
                 response.redirect('/postchatter');
