@@ -139,8 +139,6 @@ app.get('/getpdf', function(request, response) {
             console.log('optionsssssssssss', options.path);
             console.log('---------------------1', request.session.pdf_results[count]);
             console.log('---------------------2', title_pdf);
-            console.log('---------------------3');
-            console.log('---------------------4');
             // Create empty file
             file = fs.createWriteStream(title_pdf);
 
@@ -151,6 +149,9 @@ app.get('/getpdf', function(request, response) {
             res.on('end', function() {
                 file.end();
                 count++;
+                console.log('---------------------3', count);
+                console.log('---------------------4', file);
+
                 // Change options to get next pdf and asign next pdf title
                 if (count < request.session.pdf_results.length) {
                     options.path = request.session.pdf_results[count].VersionData;
