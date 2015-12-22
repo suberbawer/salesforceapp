@@ -173,6 +173,7 @@ app.get('/getpdf', function(request, response) {
         zip.pipe(output);
         //var input = fs.createReadStream(request.session.pdf_results[i].Title);
         var req = closureRequest(fs.createWriteStream(request.session.pdf_results[i].Title), request.session.pdf_results[i], request, response, zip);
+        console.log('REQUEST ', req);
         req.on('end', function() {
             console.log(' EL FINAL DE LA REQUEST');
             zip.append(req);
