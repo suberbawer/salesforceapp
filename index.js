@@ -121,7 +121,6 @@ app.get('/getpdf', function(request, response) {
 
     var options = {
         hostname: 'na22.salesforce.com',
-        path: request.session.pdf_results[0].VersionData,
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
