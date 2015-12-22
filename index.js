@@ -87,8 +87,8 @@ app.get('/attachments', function(req, res) {
                     if (result.done && result.records.length > 0) {
                         var pdfs = [];
                         // Hack to test with selected pdf
-                        for (var i=0; i < 4; i++) {
-                            if (result.records[i].FileT == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYElAAO' || result.records[i].Id == '06815000001WYEgAAO') {
+                        for (var i=0; i < result.records.length; i++) {
+                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYElAAO' || result.records[i].Id == '06815000001WYEgAAO') {
                                 console.log('el titulooooooooo ', result.records[i].Title);
                                 pdfs.push(result.records[i]);
                             }
@@ -122,6 +122,7 @@ app.get('/getpdf', function(request, response) {
     var options = {
         hostname: 'na22.salesforce.com',
         method: 'GET',
+        //path: request.session.pdf_results[0].VersionData,
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
