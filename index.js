@@ -132,6 +132,7 @@ app.get('/getpdf', function(request, response) {
     async.forEachOf(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
         var req = http.request(options, function(res) {
+            console.log('options path*****', options.path);
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
 
