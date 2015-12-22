@@ -123,7 +123,7 @@ app.get('/getpdf', function(request, response) {
 
     var options = {
         hostname: 'na22.salesforce.com',
-        path: request.session.pdf_results[0].VersionData,
+        path: '',
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
@@ -134,11 +134,9 @@ app.get('/getpdf', function(request, response) {
 
     async.forEachOfSeries(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
-        console.log('A VER EL PATH afueraaaaaaaaaaa', options.path);
         req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
-            console.log('A VER EL PATH', options.path);
             res.on('data', function (chunk) {
                 // Write file with chunks
                 file.write(chunk);
@@ -163,10 +161,19 @@ app.get('/getpdf', function(request, response) {
             response.end();
         };
         for (var i=0; i < files.length; i++) {
-            zip.append(fs.createReadStream(files[i].Title), { name: files[i].Title});
+            var readFile = fs.createReadStream(files[i].Title);
+            readFile.on('open', function() {
+                console.log('OPEN FILE');
+            });
+            readFile.on('close', function(){
+                    console.log('COLSE FILE');
+            });
+            zip.append(, { name: files[i].Title});
+            if (i+1 == files.length) {
+                zip.finalize();
+                response.redirect('/postchatter');
+            }
         }
-        zip.finalize();
-        response.redirect('/postchatter');
     });
 });
 
