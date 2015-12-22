@@ -165,10 +165,10 @@ app.get('/getpdf', function(request, response) {
             var name = files[i].Title;
             readFile.on('open', function() {
                 console.log('OPEN FILE');
-                zip.append(readFile, {name: name});
             });
             readFile.on('close', function() {
                     console.log('COLSE FILE');
+                    zip.append(readFile, {name: name});
             });
 
             if (i+1 == files.length) {
