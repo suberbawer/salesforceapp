@@ -125,24 +125,24 @@ function closureRequest(file, content_version, request, response, zip){
     console.log('OPTIONSSSS', options);
     // Request
     return http.request(options, function(res) {
-        // console.log('es 201-----', res);
-        // if (res.statusCode === 201) {
-        //     console.log('es 201-----', res);
-        //     console.log('es 201-----', res.headers.location);
-        //   /* Compression was successful, retrieve output from Location header. */
-        //   http.get(res.headers.location, function(res) {
-        //       console.log('ahora va el pipe');
-        //     res.pipe(file);
-        //   });
-        // } else {
-        //   /* Something went wrong! You can parse the JSON body for details. */
-        //   console.log("Compression failed");
-        // }
-        console.log('REQUEST---');
-        res.on('data', function (chunk) {
-            // Write file with chunks
-            file.write(chunk);
-        });
+        console.log('es 201-----', res);
+        if (res.statusCode === 201) {
+            console.log('es 201-----', res.headers);
+            console.log('es 201-----', res.headers.location);
+          /* Compression was successful, retrieve output from Location header. */
+          http.get(res.headers.location, function(res) {
+              console.log('ahora va el pipe');
+            res.pipe(file);
+          });
+        } else {
+          /* Something went wrong! You can parse the JSON body for details. */
+          console.log("Compression failed");
+        }
+        //console.log('REQUEST---');
+        // res.on('data', function (chunk) {
+        //     // Write file with chunks
+        //     file.write(chunk);
+        // });
 
         res.on('end', function(a) {
             // Close file
@@ -156,12 +156,12 @@ function closureRequest(file, content_version, request, response, zip){
             //     response.redirect('/postchatter');
             // }
         });
-        // If error show message and finish response
-        req.on('error', function(e) {
-            console.log('problem with request: ' + e.message);
-            response.write('Error in request, please retry or contact your Administrator');
-            response.end();
-        });
+        // // If error show message and finish response
+        // req.on('error', function(e) {
+        //     console.log('problem with request: ' + e.message);
+        //     response.write('Error in request, please retry or contact your Administrator');
+        //     response.end();
+        // });
     });
 }
 app.get('/getpdf', function(request, response) {
