@@ -223,7 +223,7 @@ app.get('/getpdf', function(request, response) {
         		console.log('===jose');
         		console.log('===JOSE', pdf.path);
         		var random_integer = Math.random()*101|0;
-        		zip.append(pdf.path, { name : pdf.path });
+        		zip.append(fs.createReadStream(pdf.path), { name : pdf.path });
         	}
             zip.finalize();
             console.log('FUE ZIPPEADO');
