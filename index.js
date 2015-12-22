@@ -213,8 +213,8 @@ app.get('/getpdf', function(request, response) {
 		            });
 		        });
 				req.end();
+                count++;
 			}
-            count++;
 		);
     }
 
