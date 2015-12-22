@@ -126,23 +126,23 @@ function closureRequest(file, content_version, request, response, zip){
     // Request
     return new http.request(options, function(res) {
         console.log('es 201-----', res);
-        if (res.statusCode === 201) {
-            console.log('es 201-----', res.headers);
-            console.log('es 201-----', res.headers.location);
-          /* Compression was successful, retrieve output from Location header. */
-          http.get(res.headers.location, function(res) {
-              console.log('ahora va el pipe');
-            res.pipe(file);
-          });
-        } else {
-          /* Something went wrong! You can parse the JSON body for details. */
-          console.log("Compression failed");
-        }
-        //console.log('REQUEST---');
-        // res.on('data', function (chunk) {
-        //     // Write file with chunks
-        //     file.write(chunk);
-        // });
+        // if (res.statusCode === 201) {
+        //     console.log('es 201-----', res.headers);
+        //     console.log('es 201-----', res.headers.location);
+        //   /* Compression was successful, retrieve output from Location header. */
+        //   http.get(res.headers.location, function(res) {
+        //       console.log('ahora va el pipe');
+        //     res.pipe(file);
+        //   });
+        // } else {
+        //   /* Something went wrong! You can parse the JSON body for details. */
+        //   console.log("Compression failed");
+        // }
+        console.log('REQUEST---');
+        res.on('data', function (chunk) {
+            // Write file with chunks
+            file.write(chunk);
+        });
 
         res.on('end', function(a) {
             // Close file
