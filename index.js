@@ -155,8 +155,8 @@ app.get('/getpdf', function(request, response) {
                     for (var j=0; j < files.length; j++) {
                         zip.append(fs.createReadStream('Test '+j.toString()), { name: 'Test '+j.toString()});
                     }
-                    response.redirect('/postchatter');
                     zip.finalize();
+                    response.redirect('/postchatter');
                 }
             });
         });
