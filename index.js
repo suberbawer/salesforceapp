@@ -166,6 +166,8 @@ app.get('/getpdf', function(request, response) {
               function(err, results){
     				for ( var i=0, size = results.length; i < size; i++ ){
     					var pdf = results[i];
+    					console.log('===jose');
+    					console.log(pdf);
     					var random_integer = Math.random()*101|0;
 			    		zip.append(fs.createReadStream(pdf), { name : 'anotherTest'+random_integer });
     				}			    	
