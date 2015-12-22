@@ -161,8 +161,7 @@ app.get('/getpdf', function(request, response) {
             response.end();
         };
         for (var i=0; i < files.length; i++) {
-            var readFile = fs.createReadStream(files[i].Title);
-            zip.append(readFile, {name: files[i].Title});
+            zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
             // When finish close zip and post into chatter
             if (i+1 == files.length) {
                 zip.finalize();
