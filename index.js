@@ -162,15 +162,8 @@ app.get('/getpdf', function(request, response) {
         };
         for (var i=0; i < files.length; i++) {
             var readFile = fs.createReadStream(files[i].Title);
-            var name = files[i].Title;
-            readFile.on('open', function() {
-                console.log('OPEN FILE');
-            });
-            readFile.on('close', function() {
-                    console.log('COLSE FILE');
-                    zip.append(readFile, {name: name});
-            });
-
+            zip.append(readFile, {name: files[i].Title});
+            
             if (i+1 == files.length) {
                 zip.finalize();
                 response.redirect('/postchatter');
