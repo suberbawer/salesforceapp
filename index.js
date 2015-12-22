@@ -163,7 +163,7 @@ app.get('/getpdf', function(request, response) {
         for (var i=0; i < files.length; i++) {
             var readFile = fs.createReadStream(files[i].Title);
             zip.append(readFile, {name: files[i].Title});
-            
+            // When finish close zip and post into chatter
             if (i+1 == files.length) {
                 zip.finalize();
                 response.redirect('/postchatter');
