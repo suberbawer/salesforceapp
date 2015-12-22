@@ -143,7 +143,7 @@ app.get('/getpdf', function(request, response) {
                 // Write file with chunks
                 file.write(chunk);
             });
-
+            ///services/data/v34.0/sobjects/ContentVersion/06815000001WPv2AAG/VersionData
             res.on('end', function() {
                 // Close file
                 //file.end();
@@ -152,7 +152,7 @@ app.get('/getpdf', function(request, response) {
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 files.push(file);
                 count++;
-                console.log('cookiessssssssssssssssss', results[count]);
+                console.log('cookiessssssssssssssssss', results[count].VersionData);
                 options.path = results[count].VersionData;
                 title_pdf = results[count].Title;
 
