@@ -194,7 +194,7 @@ app.get('/getpdf', function(request, response) {
         pdfObject[i] = request.session.pdf_results[i];
 
     	pdfListWrapper.push(
-			i
+			console.log('iiiiiiiiii', i);
 		);
     }
 
