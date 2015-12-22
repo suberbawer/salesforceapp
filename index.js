@@ -125,6 +125,7 @@ function closureRequest(file, content_version, zip){
 
     // Request
     return new http.request(options, function(res) {
+        console.log('es 201-----', res.headers);
         if (res.statusCode === 201) {
             console.log('es 201-----', res.headers);
             console.log('es 201-----', res.headers.location);
