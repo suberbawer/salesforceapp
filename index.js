@@ -78,6 +78,7 @@ app.get('/attachments', function(req, res) {
                 instanceUrl: req.session.instanceUrl,
                 accessToken: req.session.accessToken
             });
+            //|| result.records[i].Id == '06815000001WYEgAAO'
             // First query on documents then into content documents to retrieve the file
             conn.query(query, function(err, result) {
                 if (err) {
@@ -86,13 +87,13 @@ app.get('/attachments', function(req, res) {
                     if (result.done && result.records.length > 0) {
                         var pdfs = [];
                         // Hack to test with selected pdf
-                        for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06815000001VnBOAA0' || result.records[i].Id == '06815000001WPm4AAG') {
-                                console.log('el titulooooooooo');
-                                pdfs.push(result.records[i]);
-
-                            }
-                        }
+                        // for (var i=0; i < result.records.length; i++) {
+                            // if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYElAAO') {
+                            //     console.log('el titulooooooooo ', result.records[i].Title);
+                            //     pdfs.push(result.records[i]);
+                            //
+                            // }
+                        // }
 
                         if (pdfs.length == 0) {
                             pdfs = result.records;
@@ -110,80 +111,57 @@ app.get('/attachments', function(req, res) {
     }
 });
 
-// app.get('/getpdf', function(request, response) {
-//     // Variables
-//     var zip = archiver.create('zip', {});
-//     var file = fs.createWriteStream('outputPdf.pdf');
-//     var output = fs.createWriteStream('outputZip.zip');
-//     var options = {
-//         hostname: 'na22.salesforce.com',
-//         path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-//         //path: request.session.pdf_results[0].VersionData,
-//         method: 'GET',
-//         headers: {
-//           'Authorization': 'Bearer ' + request.session.accessToken
-//         }
-//     };
-//     // Bind zip to output
-//     zip.pipe(output);
-//     // Request
-//     var req = http.request(options, function(res) {
-//         res.on('data', function (chunk) {
-//             // Write file with chunks
-//             file.write(chunk);
-//         });
-//
-//         res.on('end', function() {
-//             // Close file
-//             file.end();
-//             // Add file to pdf
-//             zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
-//
-//             response.redirect('/postchatter');
-//         });
-//     });
-//
-//     // If error show message and finish response
-//     req.on('error', function(e) {
-//         console.log('problem with request: ' + e.message);
-//         response.write('Error in request, please retry or contact your Administrator');
-//         response.end();
-//     });
-//     req.end();
-// });
 app.get('/getpdf', function(request, response) {
-
     // Variables
     var zip = archiver.create('zip', {});
-    var file;
     var output = fs.createWriteStream('outputZip.zip');
-    var req;
-    var title_pdf = '';
-    zip.pipe(output);
+    var count = 0;
+    var file;
+    // First title
+    var title_pdf = request.session.pdf_results[0].Title;
 
-    request.session.pdf_results.forEach(function(elem){
-        var options = {
-            hostname: 'na22.salesforce.com',
-            //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-            path: elem.VersionData,
-            method: 'GET',
-            headers: {
-              'Authorization': 'Bearer ' + request.session.accessToken
-            }
-        };
+    var options = {
+        hostname: 'na22.salesforce.com',
+        path: request.session.pdf_results[0].VersionData,
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + request.session.accessToken
+        }
+    };
+
+    // Bind zip to output
+    zip.pipe(output);
+    getPdfsAsync();
+    function getPdfsAsync() {
         // Request
-        req = http.request(options, function(res) {
+        var req = http.request(options, function(res) {
+            // Create empty file
+            file = fs.createWriteStream(title_pdf);
+
             res.on('data', function (chunk) {
                 // Write file with chunks
                 file.write(chunk);
             });
 
             res.on('end', function() {
-                // Close file
                 file.end();
-                // Add file to pdf
-                zip.append(fs.createReadStream('outputPdf.pdf'), { name: 'test.pdf' }).finalize();
-                req.end();
+                count++;
+                console.log('---------------------3', count);
+
+                // Change options to get next pdf and asign next pdf title
+                if (count < request.session.pdf_results.length) {
+                    options.path = request.session.pdf_results[count].VersionData;
+                    title_pdf = request.session.pdf_results[count].Title;
+                    getPdfsAsync();
+                }
+                // If every get is already requested then append to zip and redirect to post
+                if (count == request.session.pdf_results.length) {
+                    for (var j=0; j < count; j++) {
+                        zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
+                    }
+                    zip.finalize();
+                    response.redirect('/postchatter');
+                }
             });
         });
 
@@ -193,15 +171,8 @@ app.get('/getpdf', function(request, response) {
             response.write('Error in request, please retry or contact your Administrator');
             response.end();
         });
-    });
-
-    req.on('end', function() {
-        zip.finalize();
-        // redirect to post in chatter
-        response.redirect('/postchatter');
-
-    });
-
+        req.end();
+    }
 });
 
 app.get('/postchatter', function(request, response) {
@@ -232,7 +203,7 @@ app.get('/postchatter', function(request, response) {
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
                  '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                 '"title":"NewGeneratedZIP.zip"' + CRLF +
+                 '"title":"test1.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -240,7 +211,7 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="NewGeneratedZIP.zip"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="Test.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
