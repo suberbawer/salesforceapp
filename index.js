@@ -150,7 +150,7 @@ app.get('/getpdf', function(request, response) {
                 // If every get is already requested then append to zip and redirect to post
                 if (count == request.session.pdf_results.length) {
                     for (var j=0; j < count; j++) {
-                        zip.append(fs.createReadStream(results[j].Title), { name: results[j].Title});
+                        zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
                     }
                     zip.finalize();
                     response.redirect('/postchatter');
