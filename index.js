@@ -154,7 +154,6 @@ function closureRequest(file, content_version, request, response, zip){
             //     zip.finalize();
             //     response.redirect('/postchatter');
             // }
-            req.end();
         });
     });
     // If error show message and finish response
@@ -163,6 +162,7 @@ function closureRequest(file, content_version, request, response, zip){
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
+    req.end();
     return req;
 }
 app.get('/getpdf', function(request, response) {
