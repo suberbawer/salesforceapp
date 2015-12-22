@@ -164,11 +164,12 @@ app.get('/getpdf', function(request, response) {
             var readFile = fs.createReadStream(files[i].Title);
             readFile.on('open', function() {
                 console.log('OPEN FILE');
+                zip.append(readFile, { name: files[i].Title});
             });
             readFile.on('close', function() {
                     console.log('COLSE FILE');
             });
-            zip.append(readFile, { name: files[i].Title});
+            
             if (i+1 == files.length) {
                 zip.finalize();
                 response.redirect('/postchatter');
