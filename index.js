@@ -150,12 +150,13 @@ app.get('/getpdf', function(request, response) {
     		            });
     		            res.on('end', function() {
     		                file.end();
-    		                callback(null,file);
+    		                callback(null,file);    		                
     		            });
     		            res.on('error',function(error){
     		            	callback(error);
     		            });
-    		        });    				
+    		        });
+    				req.end();
     			}
 		);
     }
@@ -168,8 +169,7 @@ app.get('/getpdf', function(request, response) {
 			    		zip.append(fs.createReadStream(pdf), { name : 'anotherTest'+random_integer });
 			    	})
 			        zip.finalize();
-		    		req.end();
-			        response.redirect('/postchatter');
+		    		response.redirect('/postchatter');
               });
 });
 
