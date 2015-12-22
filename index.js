@@ -115,12 +115,12 @@ app.get('/getpdf', function(request, response) {
     var zip = archiver.create('zip', {});
     var file;
     var output = fs.createWriteStream('outputZip.zip');
-    var title_pdf = '';
+    var title_pdf = request.session.pdf_results[0].Title;
 
     var options = {
         hostname: 'na22.salesforce.com',
         //path: '/services/data/v35.0/sobjects/ContentVersion/06815000001VnBOAA0/VersionData',
-        //path: request.session.pdf_results[0].VersionData,
+        path: request.session.pdf_results[0].VersionData,
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
@@ -130,14 +130,12 @@ app.get('/getpdf', function(request, response) {
     zip.pipe(output);
     var count = 0;
     for (var i=0; i < request.session.pdf_results.length; i++) {
-        title_pdf = request.session.pdf_results[i].Title;
-        options.path = request.session.pdf_results[i].VersionData
         console.log('en el for-----', request.session.pdf_results[i].Title);
         var files = [];
         // Request
         var req = http.request(options, function(res) {
             console.log('iiiiiiiiiiiiiiiiiiiiiii', count);
-            file = fs.createWriteStream('Test '+count.toString());
+            file = fs.createWriteStream(title_pdf);
             //console.log('REQUEST---', title_pdf);
             res.on('data', function (chunk) {
                 // Write file with chunks
@@ -152,9 +150,12 @@ app.get('/getpdf', function(request, response) {
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 files.push(file);
                 count++
+                options.path = request.session.pdf_results[count].VersionData;
+                title_pdf = request.session.pdf_results[count].Title;
+
                 if (count == request.session.pdf_results.length) {
                     for (var j=0; j < files.length; j++) {
-                        zip.append(fs.createReadStream('Test '+j.toString()), { name: 'Test '+j.toString()});
+                        zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
                     }
                     zip.finalize();
                     response.redirect('/postchatter');
