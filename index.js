@@ -72,7 +72,7 @@ app.get('/attachments', function(req, res) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, Title, ContentSize, VersionData FROM ContentVersion';
+            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -88,10 +88,9 @@ app.get('/attachments', function(req, res) {
                         var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYElAAO' || result.records[i].Id == '06815000001WYEgAAO') {
+                            if (result.records[i].FileType == 'PDF') {
                                 console.log('el titulooooooooo ', result.records[i].Title);
                                 pdfs.push(result.records[i]);
-
                             }
                         }
 
@@ -110,70 +109,6 @@ app.get('/attachments', function(req, res) {
         }
     }
 });
-
-// app.get('/getpdf', function(request, response) {
-//     // Variables
-//     var zip = archiver.create('zip', {});
-//     var output = fs.createWriteStream('outputZip.zip');
-//     var count = 0;
-//     var file;
-//     // First title
-//     var title_pdf = request.session.pdf_results[0].Title;
-//
-//     var options = {
-//         hostname: 'na22.salesforce.com',
-//         path: request.session.pdf_results[0].VersionData,
-//         method: 'GET',
-//         headers: {
-//           'Authorization': 'Bearer ' + request.session.accessToken
-//         }
-//     };
-//
-//     // Bind zip to output
-//     zip.pipe(output);
-//     getPdfsAsync();
-//     function getPdfsAsync() {
-//         // Request
-//         var req = http.request(options, function(res) {
-//             // Create empty file
-//             file = fs.createWriteStream(title_pdf);
-//
-//             res.on('data', function (chunk) {
-//                 // Write file with chunks
-//                 file.write(chunk);
-//             });
-//
-//             res.on('end', function() {
-//                 file.end();
-//                 count++;
-//                 console.log('---------------------3', count);
-//
-//                 // Change options to get next pdf and asign next pdf title
-//                 if (count < request.session.pdf_results.length) {
-//                     options.path = request.session.pdf_results[count].VersionData;
-//                     title_pdf = request.session.pdf_results[count].Title;
-//                     getPdfsAsync();
-//                 }
-//                 // If every get is already requested then append to zip and redirect to post
-//                 if (count == request.session.pdf_results.length) {
-//                     for (var j=0; j < count; j++) {
-//                         zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
-//                     }
-//                     zip.finalize();
-//                     response.redirect('/postchatter');
-//                 }
-//             });
-//         });
-//
-//         // If error show message and finish response
-//         req.on('error', function(e) {
-//             console.log('problem with request: ' + e.message);
-//             response.write('Error in request, please retry or contact your Administrator');
-//             response.end();
-//         });
-//         req.end();
-//     }
-// });
 
 app.get('/getpdf', function(request, response) {
     // Variables
@@ -197,9 +132,7 @@ app.get('/getpdf', function(request, response) {
 
     async.forEachOf(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
-        console.log('options path******', options.path);
         var req = http.request(options, function(res) {
-            console.log('titulo-------- '+key, pdf.Title);
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
 
@@ -209,40 +142,23 @@ app.get('/getpdf', function(request, response) {
             });
 
             res.on('end', function() {
-                //file.end();
                 zip.append(fs.createReadStream(pdf.Title), { name: pdf.Title});
                 callback();
-                // count++;
-                // console.log('---------------------3', count);
-                //
-                // // Change options to get next pdf and asign next pdf title
-                // if (count < request.session.pdf_results.length) {
-                //     options.path = request.session.pdf_results[count].VersionData;
-                //     title_pdf = request.session.pdf_results[count].Title;
-                //     getPdfsAsync();
-                // }
-                // // If every get is already requested then append to zip and redirect to post
-                // if (count == request.session.pdf_results.length) {
-                //     for (var j=0; j < count; j++) {
-                //         zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
-                //     }
-                //     zip.finalize();
-                //     response.redirect('/postchatter');
-                // }
             });
         });
 
         // If error show message and finish response
         req.on('error', function(e) {
             console.log('problem with request: ' + e.message);
-            response.write('Error in request, please retry or contact your Administrator');
-            return callback(err);
-            response.end();
+            return callback(e);
         });
         req.end();
     }, function (err) {
-        if (err) console.error(err.message);
-        console.log('EL FINAL DEL CALLBVACK');
+        if (err) {
+            console.error(err.message)
+            response.write('Error in request, please retry or contact your Administrator');
+            response.end();
+        };
         zip.finalize();
         response.redirect('/postchatter');
     });
