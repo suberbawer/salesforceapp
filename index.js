@@ -122,7 +122,7 @@ app.get('/getpdf', function(request, response) {
     var options = {
         hostname: 'na22.salesforce.com',
         method: 'GET',
-        //path: request.session.pdf_results[0].VersionData,
+        path: request.session.pdf_results[0].VersionData,
         headers: {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
@@ -133,7 +133,7 @@ app.get('/getpdf', function(request, response) {
     async.forEachOf(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
         var req = http.request(options, function(res) {
-            console.log('options path*****', options.path);
+            console.log('options path*****' + key, options.path);
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
 
