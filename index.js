@@ -72,7 +72,7 @@ app.get('/attachments', function(req, res) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
+            var query = 'SELECT Id, Title, ContentSize, VersionData FROM ContentVersion';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -85,13 +85,15 @@ app.get('/attachments', function(req, res) {
                 } else {
                     if (result.done && result.records.length > 0) {
                         var pdfs = [];
-                        // Hack to test just with pdfs
+                        // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].FileType == 'PDF') {
-                                console.log('en la CONDICION');
+                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYEgAAO') {
+                                console.log('el titulooooooooo ', result.records[i].Title);
                                 pdfs.push(result.records[i]);
+
                             }
                         }
+
                         if (pdfs.length == 0) {
                             pdfs = result.records;
                         }
@@ -143,7 +145,6 @@ app.get('/getpdf', function(request, response) {
                 // Change options to get next pdf and asign next pdf title
                 if (count < request.session.pdf_results.length) {
                     options.path = request.session.pdf_results[count].VersionData;
-                    console.log('titulooooooooo', request.session.pdf_results[count].Title);
                     title_pdf = request.session.pdf_results[count].Title;
                 }
                 // If every get is already requested then append to zip and redirect to post
@@ -195,7 +196,7 @@ app.get('/postchatter', function(request, response) {
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
                  '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                 '"title":"GeneratedZip.zip"' + CRLF +
+                 '"title":"test1.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -203,7 +204,7 @@ app.get('/postchatter', function(request, response) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="GeneratedZip.zip"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="Test.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
