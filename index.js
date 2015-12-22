@@ -198,7 +198,7 @@ app.get('/getpdf', function(request, response) {
 				//options.path = pdf.VersionData;
                 title_pdf = pdf.Title;
                 //console.log('OPTIONS ttitleeeeeeee' + i, title_pdf);
-                console.log('OPTIONS PATH--' + i, options.path);
+                console.log('OPTIONS PATH--' + count, options.path);
 
 				var req = http.request(options, function(res) {
 		            file = fs.createWriteStream(title_pdf);
