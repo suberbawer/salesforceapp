@@ -137,6 +137,10 @@ app.get('/getpdf', function(request, response) {
         // Request
         var req = http.request(options, function(res) {
             console.log('optionsssssssssss', options.path);
+            console.log('---------------------1', request.session.pdf_results[count]);
+            console.log('---------------------2', title_pdf);
+            console.log('---------------------3');
+            console.log('---------------------4');
             // Create empty file
             file = fs.createWriteStream(title_pdf);
 
