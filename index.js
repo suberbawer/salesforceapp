@@ -143,6 +143,7 @@ app.get('/getpdf', function(request, response) {
                 // Change options to get next pdf and asign next pdf title
                 if (count < request.session.pdf_results.length) {
                     options.path = request.session.pdf_results[count].VersionData;
+                    console.log('titulooooooooo', request.session.pdf_results[count].Title);
                     title_pdf = request.session.pdf_results[count].Title;
                 }
                 // If every get is already requested then append to zip and redirect to post
