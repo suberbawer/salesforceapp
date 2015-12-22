@@ -132,7 +132,7 @@ app.get('/getpdf', function(request, response) {
     //PDF List
     var pdfList = request.session.pdf_results;
     var pdfListWrapper = [];
-    
+    console.log(pdfList);
     pdfList.each(function(pdf){
     	pdfListWrapper.push(
     			function(callback){
