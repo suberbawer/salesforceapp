@@ -87,7 +87,7 @@ app.get('/attachments', function(req, res) {
                         var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYEgAAO') {
+                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYEgAAO' || result.records[i].Id == '06815000001WYElAAO') {
                                 console.log('el titulooooooooo ', result.records[i].Title);
                                 pdfs.push(result.records[i]);
 
@@ -141,6 +141,7 @@ app.get('/getpdf', function(request, response) {
                 file.write(chunk);
             });
             res.on('end', function() {
+                file.end();
                 count++;
                 // Change options to get next pdf and asign next pdf title
                 if (count < request.session.pdf_results.length) {
