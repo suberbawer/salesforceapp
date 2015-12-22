@@ -136,6 +136,7 @@ app.get('/getpdf', function(request, response) {
         var files = [];
         // Request
         var req = http.request(options, function(res) {
+            console.log('iiiiiiiiiiiiiiiiiiiiiii', i);
             file = fs.createWriteStream('Test '+i.toString());
             //console.log('REQUEST---', title_pdf);
             res.on('data', function (chunk) {
