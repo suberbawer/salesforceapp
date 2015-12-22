@@ -190,6 +190,7 @@ app.get('/getpdf', function(request, response) {
 
     for (var i=0,; i < request.session.pdf_results.length; i++){
     	var pdf = request.session.pdf_results[i];
+        var count = i;
         console.log('LA LISTA DE PDFS', pdf.VersionData);
         options.path = pdf.VersionData;
     	pdfListWrapper.push(
@@ -197,7 +198,7 @@ app.get('/getpdf', function(request, response) {
 				//options.path = pdf.VersionData;
                 title_pdf = pdf.Title;
                 //console.log('OPTIONS ttitleeeeeeee' + i, title_pdf);
-                console.log('OPTIONS PATH--' + i, options.path);
+                console.log('OPTIONS PATH--' + count, options.path);
 
 				var req = http.request(options, function(res) {
 		            file = fs.createWriteStream(title_pdf);
