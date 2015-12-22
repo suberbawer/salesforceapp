@@ -122,9 +122,9 @@ function closureRequest(file, content_version, request, response, zip){
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
-
+    console.log('OPTIONSSSS', options);
     // Request
-    return new http.request(options, function(res) {
+    return http.request(options, function(res) {
         console.log('es 201-----', res.headers);
         if (res.statusCode === 201) {
             console.log('es 201-----', res.headers);
