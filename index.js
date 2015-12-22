@@ -148,20 +148,20 @@ app.get('/getpdf', function(request, response) {
                 // Add file to pdf
                 console.log('PDF NAME');
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
-                files.push(file);
+                filesNames.push(title);
                 count++;
                 console.log('cookiessssssssssssssssss', request.session.pdf_results);
-                options.path = request.session.pdf_results[count].VersionData;
-                title_pdf = request.session.pdf_results[count].Title;
-
-                if (count == request.session.pdf_results.length) {
-                    for (var j=0; j < files.length; j++) {
-                        console.log('A VER LOS TITULOS', request.session.pdf_results[j].Title);
-                        zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
-                    }
-                    zip.finalize();
-                    response.redirect('/postchatter');
-                }
+                // options.path = request.session.pdf_results[count].VersionData;
+                // title_pdf = request.session.pdf_results[count].Title;
+                //
+                // if (count == request.session.pdf_results.length) {
+                //     for (var j=0; j < files.length; j++) {
+                //         console.log('A VER LOS TITULOS', request.session.pdf_results[j].Title);
+                //         zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
+                //     }
+                //     zip.finalize();
+                //     response.redirect('/postchatter');
+                // }
             });
         });
 
