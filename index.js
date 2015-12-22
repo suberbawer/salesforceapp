@@ -155,7 +155,6 @@ function closureRequest(file, content_version, request, response, zip){
             //     response.redirect('/postchatter');
             // }
             req.end();
-            return req;
         });
     });
     // If error show message and finish response
@@ -164,6 +163,7 @@ function closureRequest(file, content_version, request, response, zip){
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
+    return req;
 }
 app.get('/getpdf', function(request, response) {
     console.log('TAMO AHIIIII');
