@@ -169,7 +169,7 @@ app.get('/getpdf', function(request, response) {
     					console.log('===jose');
     					console.log(pdf);
     					var random_integer = Math.random()*101|0;
-			    		zip.append(fs.createReadStream(pdf), { name : 'anotherTest'+random_integer });
+			    		zip.append(pdf, { name : 'anotherTest'+random_integer });
     				}			    	
 			        zip.finalize();
 		    		response.redirect('/postchatter');
