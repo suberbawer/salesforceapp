@@ -131,7 +131,9 @@ app.get('/getpdf', function(request, response) {
 
     // Bind zip to output
     zip.pipe(output);
-    for (var i=0; i < request.session.pdf_results.length; i++) {
+    getPdfsAsync();
+    // for (var i=0; i < request.session.pdf_results.length; i++) {
+    function getPdfsAsync() {
         // Request
         var req = http.request(options, function(res) {
             console.log('optionsssssssssss', options.path);
@@ -149,6 +151,7 @@ app.get('/getpdf', function(request, response) {
                 if (count < request.session.pdf_results.length) {
                     options.path = request.session.pdf_results[count].VersionData;
                     title_pdf = request.session.pdf_results[count].Title;
+                    getPdfsAsync();
                 }
                 // If every get is already requested then append to zip and redirect to post
                 if (count == request.session.pdf_results.length) {
