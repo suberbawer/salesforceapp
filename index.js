@@ -152,7 +152,7 @@ app.get('/getpdf', function(request, response) {
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 files.push(file);
                 console.log('cookiessssssssssssssssss', results[count].VersionData);
-                console.log('cookiessssssssssssssssss', request.session.pdf_results[count]);
+                console.log('cookiessssssssssssssssss2', request.session.pdf_results[count].VersionData);
                 count++;
                 if (count < request.session.pdf_results.length) {
                     options.path = results[count].VersionData;
