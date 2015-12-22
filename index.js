@@ -126,6 +126,8 @@ app.get('/getpdf', function(request, response) {
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
+    var results = request.session.pdf_results;
+
     // Bind zip to output
     zip.pipe(output);
     var count = 0;
@@ -150,18 +152,18 @@ app.get('/getpdf', function(request, response) {
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 files.push(file);
                 count++;
-                console.log('cookiessssssssssssssssss', request.session.pdf_results[count]);
-                // options.path = request.session.pdf_results[count].VersionData;
-                // title_pdf = request.session.pdf_results[count].Title;
-                //
-                // if (count == request.session.pdf_results.length) {
-                //     for (var j=0; j < files.length; j++) {
-                //         console.log('A VER LOS TITULOS', request.session.pdf_results[j].Title);
-                //         zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
-                //     }
-                //     zip.finalize();
-                //     response.redirect('/postchatter');
-                // }
+                console.log('cookiessssssssssssssssss', results);
+                options.path = results[count].VersionData;
+                title_pdf = results[count].Title;
+
+                if (count == request.session.pdf_results.length) {
+                    for (var j=0; j < files.length; j++) {
+                        console.log('A VER LOS TITULOS', request.session.pdf_results[j].Title);
+                        zip.append(fs.createReadStream(results[j].Title), { name: results.Title});
+                    }
+                    zip.finalize();
+                    response.redirect('/postchatter');
+                }
             });
         });
 
