@@ -143,12 +143,13 @@ app.get('/getpdf', function(request, response) {
                 file.write(chunk);
             });
 
-            res.on('end', function(a) {
+            res.on('end', function() {
                 // Close file
                 //file.end();
                 // Add file to pdf
-                console.log('pdf name', a);
-                zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
+                console.log('pdf name');
+                //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
+                files.push(file);
                 count++
                 if (count == request.session.pdf_results.length) {
                     for (var j=0; j < files.length; j++) {
