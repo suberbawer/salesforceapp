@@ -190,11 +190,14 @@ app.get('/getpdf', function(request, response) {
 
     for (var i=0, size = lista.length; i < size; i++){
     	var pdf = lista[i];
+        options.path = pdf.VersionData;
     	pdfListWrapper.push(
 			function(callback){
-				options.path = pdf.VersionData;
+				//options.path = pdf.VersionData;
                 title_pdf = pdf.Title;
+                console.log('OPTIONS ttitleeeeeeee', title_pdf);
                 console.log('OPTIONS PATH', options.path);
+
 				var req = http.request(options, function(res) {
 		            file = fs.createWriteStream(title_pdf);
 		            res.on('data', function (chunk) {
