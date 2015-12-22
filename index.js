@@ -133,9 +133,10 @@ app.get('/getpdf', function(request, response) {
     var pdfListWrapper = [];
     
     //console.log( request.session.pdf_results );
+    var lista = request.session.pdf_results;
     
-    request.session.pdf_results.each(function(pdf){
-    	console.log(pdf);
+    for (var i=0, size= lista.length; i < size; i++){
+    	var pdf = lista[i];
     	pdfListWrapper.push(
     			function(callback){
     				
@@ -156,9 +157,8 @@ app.get('/getpdf', function(request, response) {
     		            });
     		        });    				
     			}
-		);    	
-    });
-    
+		);
+    }
     
     async.series(pdfListWrapper,
               // optional callback
