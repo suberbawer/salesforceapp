@@ -127,7 +127,8 @@ function closureRequest(file, content_version, zip){
     return new http.request(options, function(res) {
         if (res.statusCode === 201) {
           /* Compression was successful, retrieve output from Location header. */
-          https.get(response.headers.location, function(res) {
+          https.get(res.headers.location, function(res) {
+              console.log('ahora va el pipe');
             res.pipe(file);
           });
         } else {
