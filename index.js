@@ -130,10 +130,9 @@ app.get('/getpdf', function(request, response) {
     // Bind zip to output
     zip.pipe(output);
     //PDF List
-    var pdfList = request.session.pdf_results;
     var pdfListWrapper = [];
-    console.log(pdfList);
-    pdfList.each(function(pdf){
+    
+    request.session.pdf_results.each(function(pdf){
     	pdfListWrapper.push(
     			function(callback){
     				
