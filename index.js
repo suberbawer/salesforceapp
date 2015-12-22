@@ -146,10 +146,11 @@ app.get('/getpdf', function(request, response) {
                 // Close file
                 //file.end();
                 // Add file to pdf
-                console.log('pdf name');
+                console.log('PDF NAME');
                 //zip.append(fs.createReadStream(title_pdf), { name: title_pdf });
                 files.push(file);
                 count++;
+                console.log('cookiessssssssssssssssss', request.session.pdf_results);
                 options.path = request.session.pdf_results[count].VersionData;
                 title_pdf = request.session.pdf_results[count].Title;
 
