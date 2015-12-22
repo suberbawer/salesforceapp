@@ -154,8 +154,8 @@ app.get('/getpdf', function(request, response) {
                 if (count == request.session.pdf_results.length) {
                     for (var j=0; j < files.length; j++) {
                         zip.append(fs.createReadStream('Test '+j.toString()), { name: 'Test '+j.toString()});
-                        response.redirect('/postchatter');
                     }
+                    response.redirect('/postchatter');
                     zip.finalize();
                 }
             });
