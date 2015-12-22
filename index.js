@@ -164,10 +164,11 @@ app.get('/getpdf', function(request, response) {
     async.series(pdfListWrapper,
               // optional callback
               function(err, results){
-			    	results.each(function(pdf){
-			    		var random_integer = Math.random()*101|0;
+    				for ( var i=0, size = results.length; i < size; i++ ){
+    					var pdf = results[i];
+    					var random_integer = Math.random()*101|0;
 			    		zip.append(fs.createReadStream(pdf), { name : 'anotherTest'+random_integer });
-			    	})
+    				}			    	
 			        zip.finalize();
 		    		response.redirect('/postchatter');
               });
