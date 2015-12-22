@@ -210,7 +210,7 @@ app.get('/getpdf', function(request, response) {
 
             res.on('end', function() {
                 file.end();
-                zip.append(fs.createReadStream(rpdf.Title), { name: pdf.Title});
+                zip.append(fs.createReadStream(pdf.Title), { name: pdf.Title});
                 callback();
                 // count++;
                 // console.log('---------------------3', count);
