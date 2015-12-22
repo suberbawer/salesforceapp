@@ -88,8 +88,8 @@ app.get('/attachments', function(req, res) {
                         // Hack to test just with pdfs
                         for (var i=0; i < result.records.length; i++) {
                             if (result.records[i].FileType == 'PDF') {
+                                console.log('en la CONDICION');
                                 pdfs.push(result.records[i]);
-
                             }
                         }
                         if (pdfs.length == 0) {
