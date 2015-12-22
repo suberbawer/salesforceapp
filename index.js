@@ -72,7 +72,7 @@ app.get('/attachments', function(req, res) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, Title, ContentSize, VersionData FROM ContentVersion';
+            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: req.session.instanceUrl,
@@ -85,15 +85,13 @@ app.get('/attachments', function(req, res) {
                 } else {
                     if (result.done && result.records.length > 0) {
                         var pdfs = [];
-                        // Hack to test with selected pdf
+                        // Hack to test just with pdfs
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].Id == '06815000001VnBOAA0' || result.records[i].Id == '06815000001WPv2AAG') {
-                                console.log('el titulooooooooo ', result.records[i].Title);
+                            if (result.records[i].FileType == 'PDF') {
                                 pdfs.push(result.records[i]);
 
                             }
                         }
-
                         if (pdfs.length == 0) {
                             pdfs = result.records;
                         }
