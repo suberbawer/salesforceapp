@@ -184,37 +184,17 @@ app.get('/getpdf', function(request, response) {
     zip.pipe(output);
     //PDF List
     var pdfListWrapper = [];
-
+    var pdfObject = {};
     //console.log( request.session.pdf_results );
     var lista = request.session.pdf_results;
     console.log('TAMAAAAAANAIOOOOOOOOO ', request.session.pdf_results.length);
     for (var i=0; i < request.session.pdf_results.length; i++){
     	var pdf = request.session.pdf_results[i];
         var count = i;
-        console.log('LA LISTA DE PDFS', pdf.VersionData);
-        options.path = pdf.VersionData;
-    	pdfListWrapper.push(
-			function(callback){
-				//options.path = pdf.VersionData;
-                title_pdf = pdf.Title;
-                //console.log('OPTIONS ttitleeeeeeee' + i, title_pdf);
-                console.log('OPTIONS PATH--' + count, options.path);
+        pdfObject[i] = request.session.pdf_results[i];
 
-				var req = http.request(options, function(res) {
-		            file = fs.createWriteStream(title_pdf);
-		            res.on('data', function (chunk) {
-		                file.write(chunk);
-		            });
-		            res.on('end', function() {
-		                file.end();
-		                callback(null,file);
-		            });
-		            res.on('error',function(error){
-		            	callback(error);
-		            });
-		        });
-				req.end();
-			}
+    	pdfListWrapper.push(
+			i
 		);
     }
 
