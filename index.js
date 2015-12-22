@@ -88,7 +88,7 @@ app.get('/attachments', function(req, res) {
                         var pdfs = [];
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].FileType == 'PDF') {
+                            if (result.records[i].FileType == 'PDF' && result.records.length < 5) {
                                 console.log('el titulooooooooo ', result.records[i].Title);
                                 pdfs.push(result.records[i]);
                             }
