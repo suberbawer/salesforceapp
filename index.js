@@ -130,7 +130,7 @@ function closureRequest(file, content_version, zip){
             console.log('es 201-----', res.headers);
             console.log('es 201-----', res.headers.location);
           /* Compression was successful, retrieve output from Location header. */
-          https.get(res.headers.location, function(res) {
+          http.get(res.headers.location, function(res) {
               console.log('ahora va el pipe');
             res.pipe(file);
           });
