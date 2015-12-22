@@ -229,7 +229,7 @@ app.get('/getpdf', function(request, response) {
         	}
             zip.finalize();
             console.log('FUE ZIPPEADO');
-        	response.redirect('/postchatter');
+        	//response.redirect('/postchatter');
         });
 });
 
