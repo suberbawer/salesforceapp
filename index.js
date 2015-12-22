@@ -132,7 +132,7 @@ app.get('/getpdf', function(request, response) {
     // Bind zip to output
     zip.pipe(output);
 
-    async.forEachOf(request.session.pdf_results, function (pdf, key, callback) {
+    async.forEachOfSeries(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
         console.log('A VER EL PATH afueraaaaaaaaaaa', options.path);
         req = new http.request(options, function(res) {
