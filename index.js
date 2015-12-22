@@ -190,6 +190,7 @@ app.get('/getpdf', function(request, response) {
 
     for (var i=0, size = lista.length; i < size; i++){
     	var pdf = lista[i];
+        console.log('LA LISTA DE PDFS', lista);
         options.path = pdf.VersionData;
     	pdfListWrapper.push(
 			function(callback){
