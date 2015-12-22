@@ -87,13 +87,13 @@ app.get('/attachments', function(req, res) {
                     if (result.done && result.records.length > 0) {
                         var pdfs = [];
                         // Hack to test with selected pdf
-                        // for (var i=0; i < result.records.length; i++) {
-                            // if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYElAAO') {
-                            //     console.log('el titulooooooooo ', result.records[i].Title);
-                            //     pdfs.push(result.records[i]);
-                            //
-                            // }
-                        // }
+                        for (var i=0; i < result.records.length; i++) {
+                            if (result.records[i].Id == '06815000001WYEbAAO' || result.records[i].Id == '06815000001WYElAAO') {
+                                console.log('el titulooooooooo ', result.records[i].Title);
+                                pdfs.push(result.records[i]);
+
+                            }
+                        }
 
                         if (pdfs.length == 0) {
                             pdfs = result.records;
