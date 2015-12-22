@@ -217,9 +217,9 @@ app.get('/getpdf', function(request, response) {
         pdfListWrapper,
         // optional callback
         function(err, results) {
+            console.log('RESULTS ', results);
         	for ( var i=0, size = results.length; i < size; i++ ) {
         		var pdf = results[i];
-        		console.log('===jose');
         		console.log('===JOSE', pdf.path);
         		var random_integer = Math.random()*101|0;
         		zip.append(fs.createReadStream(pdf.path), { name : pdf.path });
