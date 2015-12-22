@@ -122,10 +122,10 @@ function closureRequest(file, content_version, request, response, zip){
           'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
-    console.log('OPTIONSSSS', options);
+    // console.log('OPTIONSSSS', options);
     // Request
     var req = http.request(options, function(res) {
-        console.log('es 201-----', res);
+        // console.log('es 201-----', res);
         // if (res.statusCode === 201) {
         //     console.log('es 201-----', res.headers);
         //     console.log('es 201-----', res.headers.location);
@@ -138,23 +138,24 @@ function closureRequest(file, content_version, request, response, zip){
         //   /* Something went wrong! You can parse the JSON body for details. */
         //   console.log("Compression failed");
         // }
-        console.log('REQUEST---');
         res.on('data', function (chunk) {
             // Write file with chunks
             file.write(chunk);
         });
 
-        res.on('end', function(a) {
+        res.on('end', function() {
             // Close file
             //file.end();
             // Add file to pdf
-            console.log('pdf name', a);
+            console.log('EN EL END DE LA REQUEST');
             // zip.append(fs.createReadStream(content_version), { name: title_pdf });
             // count++
             // if (count == request.session.pdf_results.length) {
             //     zip.finalize();
             //     response.redirect('/postchatter');
             // }
+            req.end();
+            return req;
         });
     });
     // If error show message and finish response
@@ -163,8 +164,6 @@ function closureRequest(file, content_version, request, response, zip){
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
-    req.end();
-    return req;
 }
 app.get('/getpdf', function(request, response) {
     console.log('TAMO AHIIIII');
