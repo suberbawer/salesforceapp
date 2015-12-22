@@ -116,6 +116,7 @@ app.get('/getpdf', function(request, response) {
     var output = fs.createWriteStream('outputZip.zip');
     var count = 0;
     var file;
+    var req;
     var files = [];
     // First title
     //var title_pdf = request.session.pdf_results[0].Title;
@@ -133,7 +134,8 @@ app.get('/getpdf', function(request, response) {
 
     async.forEachOf(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
-        var req = http.request(options, function(res) {
+        console.log('A VER EL PATH afueraaaaaaaaaaa', options.path);
+        req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
             console.log('A VER EL PATH', options.path);
@@ -161,7 +163,7 @@ app.get('/getpdf', function(request, response) {
             response.end();
         };
         for (var i=0; i < files.length; i++) {
-            zip.append(fs.createReadStream(files[i].Title), { name: files[i].Title})
+            zip.append(fs.createReadStream(files[i].Title), { name: files[i].Title});
         }
         zip.finalize();
         response.redirect('/postchatter');
