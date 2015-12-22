@@ -155,6 +155,7 @@ app.get('/getpdf', function(request, response) {
 
                 if (count == request.session.pdf_results.length) {
                     for (var j=0; j < files.length; j++) {
+                        console.log('A VER LOS TITULOS', request.session.pdf_results[j].Title);
                         zip.append(fs.createReadStream(request.session.pdf_results[j].Title), { name: request.session.pdf_results[j].Title});
                     }
                     zip.finalize();
