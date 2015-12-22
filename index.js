@@ -194,10 +194,10 @@ app.get('/getpdf', function(request, response) {
         pdfObject[i] = request.session.pdf_results[i];
 
     	pdfListWrapper.push(
-			console.log('iiiiiiiiii', i);
+			i
 		);
     }
-
+    console.log('la lista del wrapper DEL WRAPER',pdfListWrapper);
     async.series(
         pdfListWrapper,
         // optional callback
