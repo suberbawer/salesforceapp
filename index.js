@@ -171,15 +171,6 @@ app.get('/getpdf', function(request, response) {
     var count = 0;
     var file;
 
-    var options = {
-        hostname: 'na22.salesforce.com',
-        path: '',
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + request.session.accessToken
-        }
-    };
-
     // Bind zip to output
     zip.pipe(output);
     //PDF List
@@ -190,29 +181,58 @@ app.get('/getpdf', function(request, response) {
     console.log('TAMAAAAAANAIOOOOOOOOO ', request.session.pdf_results.length);
     for (var i=0; i < request.session.pdf_results.length; i++){
     	var pdf = request.session.pdf_results[i];
-        var count = i;
+        var count = 0;
         pdfObject[i] = request.session.pdf_results[i];
 
     	pdfListWrapper.push(
-			i
+			function(callback){
+
+                var options = {
+                    hostname: 'na22.salesforce.com',
+                    path: pdfObject[count].VersionData,
+                    method: 'GET',
+                    headers: {
+                      'Authorization': 'Bearer ' + request.session.accessToken
+                    }
+                };
+                title_pdf = pdfObject[count].Title;
+                //console.log('OPTIONS ttitleeeeeeee' + i, title_pdf);
+                console.log('OPTIONS PATH--' + count, options.path);
+
+				var req = http.request(options, function(res) {
+		            file = fs.createWriteStream(title_pdf);
+		            res.on('data', function (chunk) {
+		                file.write(chunk);
+		            });
+		            res.on('end', function() {
+		                file.end();
+		                callback(null,file);
+		            });
+		            res.on('error',function(error){
+		            	callback(error);
+		            });
+		        });
+				req.end();
+			}
+            count++;
 		);
     }
-    console.log('la lista del wrapper DEL WRAPER',pdfListWrapper);
-    async.series(
-        pdfListWrapper,
-        // optional callback
-        function(err, results) {
-            //console.log('RESULTS ', results);
-        	for ( var i=0, size = results.length; i < size; i++ ) {
-        		var pdf = results[i];
-        		console.log('===JOSE', pdf.path);
-        		var random_integer = Math.random()*101|0;
-        		zip.append(fs.createReadStream(pdf.path), { name : pdf.path });
-        	}
-            zip.finalize();
-            console.log('FUE ZIPPEADO');
-        	//response.redirect('/postchatter');
-        });
+
+    // async.series(
+    //     pdfListWrapper,
+    //     // optional callback
+    //     function(err, results) {
+    //         //console.log('RESULTS ', results);
+    //     	for ( var i=0, size = results.length; i < size; i++ ) {
+    //     		var pdf = results[i];
+    //     		console.log('===JOSE', pdf.path);
+    //     		var random_integer = Math.random()*101|0;
+    //     		zip.append(fs.createReadStream(pdf.path), { name : pdf.path });
+    //     	}
+    //         zip.finalize();
+    //         console.log('FUE ZIPPEADO');
+    //     	//response.redirect('/postchatter');
+    //     });
 });
 
 app.get('/postchatter', function(request, response) {
