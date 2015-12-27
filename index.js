@@ -78,7 +78,6 @@ app.get('/attachments', function(req, res) {
                 instanceUrl: req.session.instanceUrl,
                 accessToken: req.session.accessToken
             });
-            //|| result.records[i].Id == '06815000001WYEgAAO'
             // First query on documents then into content documents to retrieve the file
             conn.query(query, function(err, result) {
                 if (err) {
@@ -89,7 +88,6 @@ app.get('/attachments', function(req, res) {
                         // Hack to test with selected pdf
                         for (var i=0; i < result.records.length; i++) {
                             if (result.records[i].FileType == 'PDF') {
-                                console.log('el titulooooooooo ', result.records[i].Title);
                                 pdfs.push(result.records[i]);
                             }
                         }
@@ -214,7 +212,6 @@ app.get('/postchatter', function(request, response) {
     var req = http.request(options, function(res) {
       res.on('end', function() {
         //   res.write('Check Chatter to see message');
-        console.log('ES EL FIN*****');
         });
     });
 
@@ -251,9 +248,11 @@ app.post('/test', function(req, res) {
         message = 'SUCCESS';
     }
     res.send(message);
+    console.log('LOS IDS DE LOS DOCS SON', docIds);
+    app.redirect('/');
 });
 
-// // DATABAES OPERATIONS
+// DATABAES OPERATIONS
 app.get('/db/readRecords', function(req,res){
     dbOperations.getRecords(req,res);
 });
