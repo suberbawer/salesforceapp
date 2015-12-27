@@ -56,7 +56,8 @@ app.get('/callback', function(req, res) {
             req.session.instanceUrl = conn.instanceUrl;
             req.session.refreshToken = conn.refreshToken;
             // Fetch attachments to procees in zip
-            res.redirect('/attachments');
+            //res.redirect('/attachments');
+            res.end();
         }
     });
 });
@@ -249,7 +250,7 @@ app.post('/test', function(req, res) {
     }
     res.send(message);
     console.log('LOS IDS DE LOS DOCS SON', docIds);
-    app.redirect('/');
+    res.redirect('/attachments');
 });
 
 // DATABAES OPERATIONS
