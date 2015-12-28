@@ -162,14 +162,11 @@ function getDocuments(request, response, accessToken) {
                 console.log('REQUEST END');
                 file.end();
 
-                file.on('end', function() {
-                    console.log('EN EL FINISH DEL WRITE');
-                    var streamRead = fs.createReadStream(pdf.Title);
-                    streamRead.on('end', function() {
-                        files.push(streamRead);
-                        console.log('statssssssssssssss----', fs.stat(pdf.Title));
-                        callback();
-                    });
+                var streamRead = fs.createReadStream(pdf.Title);
+                streamRead.on('end', function() {
+                    files.push(streamRead);
+                    console.log('statssssssssssssss----', fs.stat(pdf.Title));
+                    callback();
                 });
             });
         });
