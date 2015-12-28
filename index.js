@@ -67,7 +67,7 @@ function queryDocuments(req, res, credentials) {
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion WHERE Id = 06815000001VnBOAA0';
+            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
 
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
@@ -242,11 +242,12 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', function(req, res) {
     console.log('el body', req.body);
     if (req.body) {
-        docIds = Object.keys(docIds).map(function(k) { 
+        docIds = Object.keys(req.body).map(function(k) { 
             return k.substring(1, k.length-1).split('","') 
         });
+        console.log('los documentos', docIds);
         // Get credentials from postgres
-        getRecords(req, res);
+        //getRecords(req, res);
     }
 });
 
