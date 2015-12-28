@@ -159,6 +159,7 @@ function getDocuments(request, response, accessToken) {
 
 
             res.on('end', function() {
+                console.log('REQUEST END');
                 file.on('finish', function() {
                     console.log('EN EL FINISH DEL WRITE');
                     var streamRead = createReadStream(pdf.Title);
