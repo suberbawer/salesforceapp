@@ -106,7 +106,7 @@ function queryDocuments(req, res, credentials) {
                         req.session.pdf_results = pdfs;
                         // get pdf from salesforce to process
                         //res.redirect('/getpdf');
-                        console.log('QUERY DOCUMENTS REDIRECT', req.session.pdf_results);
+                        console.log('QUERY DOCUMENTS REDIRECT');
                         getDocuments(req, res);
                     }
                 }
@@ -227,6 +227,7 @@ function postToChatter(request, response) {
 
     var req = http.request(options, function(res) {
       res.on('end', function() {
+          console.log('respuesta en end-------');
         //   res.write('Check Chatter to see message');
         });
     });
@@ -241,6 +242,10 @@ function postToChatter(request, response) {
         console.log('SUCESS: CHECK CHATTER');
         response.write('SUCCESS: Check Chatter to find the ZIP file :)');
         response.end();
+    });
+    req.on('end', function(res) {
+        console.log('EN EL END', res);
+
     });
 
     // write data to request body
