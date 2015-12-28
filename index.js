@@ -269,7 +269,7 @@ function postToChatter(request, response, accessToken) {
                     });
                 })
                 .on('close', function() {
-                    console.log('CLOSEEEEEEEEEE', JSON.stringify(req));
+                    console.log('CLOSEEEEEEEEEE');
 
                 });
         }
