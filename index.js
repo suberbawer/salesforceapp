@@ -157,19 +157,20 @@ function getDocuments(request, response, accessToken) {
                 zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
                 //files.push(pdf);
                 zip.on('entry', function(entry) {
-                    console.log('ENTRY', entry);
                     
-                    // if (files.indexOf(entry) == -1) {
-                    //     console.log('ENTRY obj', entry);
-                    //     console.log('ENTRY key', key);
-                    //     files.push(entry.name);
-                    // }
-                    // if (files.length == request.session.pdf_results.length) {
-                    //     console.log('ENTRY una vez key', key);
-                    // }
+                    if (files.indexOf(entry['name']) == -1) {
+                        console.log('ENTRY obj', entry['name']);
+                        console.log('ENTRY key', key);
+                        files.push(entry['name']);
+                        callback();
+
+                    }
+                    
+                    if (files.length == request.session.pdf_results.length) {
+                        console.log('ENTRY una vez key', key);
+                    }
                 });
                 console.log('the key', key);
-                callback();
             });
         });
 
