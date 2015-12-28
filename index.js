@@ -261,11 +261,11 @@ function postToChatter(request, response, accessToken) {
                 })
                 .on('end', function() {
                     console.log('END');
-                    req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+                    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
                 })
                 .on('close', function() {
                     console.log('CLOSEEEEEEEEEE');
-                    //req.end();
+                    req.end();
                 });
         }
     });
