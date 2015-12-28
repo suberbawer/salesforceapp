@@ -262,6 +262,7 @@ app.post('/test', function(req, res) {
 
 // DATABAES OPERATIONS
 function getRecords() {
+    console.log('A VER ACA Q ONDA----', dbOperations.getRecords());
     return dbOperations.getRecords();
 }
 
