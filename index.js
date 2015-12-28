@@ -185,7 +185,7 @@ function getDocuments(request, response, accessToken) {
 //);
 
 // app.get('/postchatter', function(request, response) {
-function postToChatter(request, response, accessToken) {
+function postToChatter(request, response, accessToken, stream) {
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
