@@ -81,6 +81,7 @@ function queryDocuments(req, res, credentials) {
             });
 
             var accessToken = credentials[credentials.length - 1].access_token;
+
             conn.on("refresh", function(accessToken, res) {
                 console.log('SE REFRESCO');
               // Refresh event will be fired when renewed access token
@@ -107,7 +108,7 @@ function queryDocuments(req, res, credentials) {
                         // get pdf from salesforce to process
                         //res.redirect('/getpdf');
                         console.log('QUERY DOCUMENTS REDIRECT');
-                        getDocuments(req, res);
+                        getDocuments(req, res, accessToken);
                     }
                 }
             });
@@ -120,7 +121,7 @@ function queryDocuments(req, res, credentials) {
 //);
 
 //app.get('/getpdf', function(request, response) {
-function getDocuments(request, response) {
+function getDocuments(request, response, accessToken) {
     // Variables
     var zip = archiver.create('zip', {});
     var output = fs.createWriteStream('outputZip.zip');
@@ -136,7 +137,7 @@ function getDocuments(request, response) {
         path: '',
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer ' + request.session.accessToken
+          'Authorization': 'Bearer ' + accessToken
         }
     };
     // Bind zip to output
@@ -177,7 +178,7 @@ function getDocuments(request, response) {
                 zip.finalize();
                 console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
                 //response.redirect('/postchatter');
-                postToChatter(request, response);
+                postToChatter(request, response, accessToken);
             }
         }
     });
@@ -185,14 +186,14 @@ function getDocuments(request, response) {
 //);
 
 // app.get('/postchatter', function(request, response) {
-function postToChatter(request, response) {
+function postToChatter(request, response, accessToken) {
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
           'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
-          'Authorization': 'OAuth ' + request.session.accessToken
+          'Authorization': 'OAuth ' + accessToken
       }
     };
 
@@ -238,11 +239,12 @@ function postToChatter(request, response) {
         response.end();
     });
 
-    // req.on('response', function(res) {
-    //     console.log('SUCESS: CHECK CHATTER');
-    //     response.write('SUCCESS: Check Chatter to find the ZIP file :)');
-    //     response.end();
-    // });
+    req.on('response', function(res) {
+        console.log('SUCESS: CHECK CHATTER');
+        response.write('SUCCESS: Check Chatter to find the ZIP file :)');
+        response.end();
+    });
+
     req.on('end', function(res) {
         console.log('EN EL END', res);
 
