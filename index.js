@@ -176,8 +176,8 @@ function getDocuments(request, response, accessToken) {
             if (i+1 == files.length) {
                 zip.finalize();
                 console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
-
-                postToChatter(request, response, accessToken);
+                var stream = fs.createReadStream('outputZip.zip')
+                        postToChatter(request, response, accessToken, stream);
             }
         }
     });
@@ -251,12 +251,13 @@ function postToChatter(request, response, accessToken) {
     });
     // write data to request body
     req.write(postData);
+                
+        stream
+            .pipe(req)
+            .on('end', function() {
+                req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+            }
 
-    fs.createReadStream('outputZip.zip')
-        .on('end', function() {
-            req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-        })
-        .pipe(req, {end:false});
 }
 //);
 
