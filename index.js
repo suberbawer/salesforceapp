@@ -142,7 +142,6 @@ function getDocuments(request, response, accessToken) {
     };
     // Bind zip to output
     zip.pipe(output);
-    console.log('PDFS--------', request.session.pdf_results);
 
     async.forEachOfSeries(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
@@ -240,11 +239,11 @@ function postToChatter(request, response, accessToken) {
         response.end();
     });
 
-    req.on('response', function(res) {
-        console.log('SUCESS: CHECK CHATTER');
-        response.write('SUCCESS: Check Chatter to find the ZIP file :)');
-        response.end();
-    });
+    // req.on('response', function(res) {
+    //     console.log('SUCESS: CHECK CHATTER');
+    //     response.write('SUCCESS: Check Chatter to find the ZIP file :)');
+    //     response.end();
+    // });
 
     req.on('end', function(res) {
         console.log('EN EL END', res);
