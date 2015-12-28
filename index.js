@@ -148,13 +148,15 @@ function getDocuments(request, response, accessToken) {
         req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
-            res.on('data', function (chunk) {
-                file.on('open', function() {
-                    console.log('EN EL OPEN DEL WRITE');
+            file.on('open', function() {
+                console.log('EN EL OPEN DEL WRITE');
+
+                res.on('data', function (chunk) {
                     // Write file with chunks
                     file.write(chunk);
                 });
             });
+
 
             res.on('end', function() {
                 file.on('finish', function() {
