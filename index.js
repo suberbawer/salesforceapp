@@ -1,3 +1,4 @@
+// Variables
 var sf           = require('jsforce');
 var express      = require('express');
 var session      = require('express-session');
@@ -8,20 +9,17 @@ var http         = require('https');
 var archiver     = require('archiver');
 var async        = require("async");
 var dbOperations = require("./database/database.js");
-
 var conn;
 var docIds;
-
+// app Configuration
 app.use(session({secret: 'demosalesforceapi'}));
 app.use(bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-
 app.set('port', (process.env.PORT || 5000));
-
 app.use(express.static(__dirname + '/public'));
 
-// views is directory for all template files
+// views is directory for all template files ( to add html to the popup)
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
@@ -65,10 +63,11 @@ function queryDocuments(req, res, credentials) {
         if (docIds) {
             var accessToken = credentials[credentials.length - 1].access_token;
             var pdf_results = [];
+            console.log('LOS DOCUMENTOS', docIds);
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
-            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
+            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion WHERE Id IN :docIds';
 
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
@@ -148,7 +147,6 @@ function getDocuments(request, response, accessToken) {
                 //files.push(pdf);
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
-                        console.log('LA KEY ADENTRO', key);
                         files.push(key);
                         callback();
                     }
@@ -241,7 +239,7 @@ function postToChatter(request, response, accessToken) {
 }
 
 // Recieve contet ids from salesforce
-app.post('/test', function(req, res) {
+app.post('/document_ids', function(req, res) {
     docIds = req.body;
     if (docIds) {
         // Get credentials from postgres
