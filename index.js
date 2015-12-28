@@ -149,7 +149,7 @@ function getDocuments(request, response, accessToken) {
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
             res.on('data', function (chunk) {
-                file.on('open', function( {
+                file.on('open', function() {
                     console.log('EN EL OPEN DEL WRITE');
                     // Write file with chunks
                     file.write(chunk);
