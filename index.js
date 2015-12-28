@@ -63,7 +63,7 @@ app.get('/callback', function(req, res) {
 });
 
 //app.get('/attachments', function(req, res) {
-function getAttachments(req, res) {
+function queryDocuments(req, res) {
     console.log('EN ATTACHMENTS ', docIds);
     docIds = 'just to execute'; // hardcoded to demo
     // if auth has not been set, redirect to index
@@ -100,7 +100,8 @@ function getAttachments(req, res) {
                         }
                         req.session.pdf_results = pdfs;
                         // get pdf from salesforce to process
-                        res.redirect('/getpdf');
+                        //res.redirect('/getpdf');
+                        getDocuments(req, res);
                     }
                 }
             });
@@ -112,7 +113,8 @@ function getAttachments(req, res) {
 }
 //);
 
-app.get('/getpdf', function(request, response) {
+//app.get('/getpdf', function(request, response) {
+function getDocuments(request, response) {
     // Variables
     var zip = archiver.create('zip', {});
     var output = fs.createWriteStream('outputZip.zip');
@@ -167,13 +169,16 @@ app.get('/getpdf', function(request, response) {
             // When finish close zip and post into chatter
             if (i+1 == files.length) {
                 zip.finalize();
-                response.redirect('/postchatter');
+                //response.redirect('/postchatter');
+                postToChatter(request, response);
             }
         }
     });
-});
+}
+//);
 
-app.get('/postchatter', function(request, response) {
+// app.get('/postchatter', function(request, response) {
+function postToChatter(request, response) {
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -242,7 +247,8 @@ app.get('/postchatter', function(request, response) {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
-});
+}
+//);
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
@@ -254,7 +260,7 @@ app.post('/test', function(req, res) {
     // res.send(message);
     console.log('LOS IDS DE LOS DOCS SON', docIds);
     //res.redirect('/attachments');
-    getAttachments(req, res);
+    queryDocuments(req, res);
 });
 
 // DATABAES OPERATIONS
