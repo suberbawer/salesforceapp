@@ -7,9 +7,10 @@ module.exports = {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("select * from loggin_data");
-
+        var result = [];
+        
         query.on("row", function (row) {
-            results.push(row);
+            result.push(row);
         });
 
         query.on("end", function () {
