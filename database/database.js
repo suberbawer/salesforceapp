@@ -14,7 +14,7 @@ module.exports = {
 
         query.on("end", function (result) {
             client.end();
-            console.log(JSON.stringify(result.rows)[0]);
+            console.log(result.rows[0]);
             return JSON.stringify(result.rows);
         });
     },
