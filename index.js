@@ -1,14 +1,12 @@
-var sf = require('jsforce');
-var express = require('express');
-var session = require('express-session');
-var app = express();
-var bodyParser = require('body-parser');
-var fs = require('fs');
-var http = require('https');
-var archiver = require('archiver');
-//---------- variables test
-var async = require("async");
-//-----------------
+var sf           = require('jsforce');
+var express      = require('express');
+var session      = require('express-session');
+var app          = express();
+var bodyParser   = require('body-parser');
+var fs           = require('fs');
+var http         = require('https');
+var archiver     = require('archiver');
+var async        = require("async");
 var dbOperations = require("./database/database.js");
 
 var conn;
@@ -59,14 +57,13 @@ app.get('/callback', function(req, res) {
     });
 });
 
-//app.get('/attachments', function(req, res) {
 function queryDocuments(req, res, credentials) {
     // if auth has not been set, redirect to index
     if (credentials.length == 0 || !credentials[credentials.length - 1].access_token || !credentials[credentials.length - 1].instance_url) {
         console.log('LOGIN PLEASE');
-        res.redirect('/');
     } else {
         if (docIds) {
+            var accessToken = credentials[credentials.length - 1].access_token;
             var pdf_results = [];
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
@@ -76,16 +73,9 @@ function queryDocuments(req, res, credentials) {
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: credentials[credentials.length - 1].instance_url,
-                accessToken: credentials[credentials.length - 1].access_token,
+                accessToken: accessToken,
             });
 
-            var accessToken = credentials[credentials.length - 1].access_token;
-
-            conn.on("refresh", function(accessToken, res) {
-                console.log('SE REFRESCO');
-              // Refresh event will be fired when renewed access token
-              // to store it in your storage for next request
-            });
             // First query on documents then into content documents to retrieve the file
             conn.query(query, function(err, result) {
                 if (err) {
@@ -105,8 +95,6 @@ function queryDocuments(req, res, credentials) {
                         }
                         req.session.pdf_results = pdfs;
                         // get pdf from salesforce to process
-                        //res.redirect('/getpdf');
-                        console.log('QUERY DOCUMENTS REDIRECT');
                         getDocuments(req, res, accessToken);
                     }
                 }
@@ -117,9 +105,7 @@ function queryDocuments(req, res, credentials) {
         }
     }
 }
-//);
 
-//app.get('/getpdf', function(request, response) {
 function getDocuments(request, response, accessToken) {
     // Variables
     var zip = archiver.create('zip', {});
@@ -128,8 +114,6 @@ function getDocuments(request, response, accessToken) {
     var file;
     var req;
     var files = [];
-    // First title
-    //var title_pdf = request.session.pdf_results[0].Title;
 
     var options = {
         hostname: 'na22.salesforce.com',
@@ -156,33 +140,19 @@ function getDocuments(request, response, accessToken) {
             });
 
             file.on('drain', function() {
-                console.log('DRAINNNNNNNNNNNNN');
                 res.resume();
             });
 
             res.on('end', function() {
-                console.log('---------------', pdf.Title);
                 zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
                 //files.push(pdf);
                 zip.on('entry', function(entry) {
-                    
-                    // if (files.indexOf(entry['name']) == -1) {
-                    //     console.log('ENTRY obj', entry['name']);
-                    //     console.log('ENTRY key', key);
-                    //     files.push(entry['name']);
-                    //     callback();
-
-                    // }
                     if (files.indexOf(key) == -1) {
                         console.log('LA KEY ADENTRO', key);
                         files.push(key);
                         callback();
                     }
-                    // if (files.length == request.session.pdf_results.length) {
-                    //     console.log('ENTRY una vez key', key);
-                    // }
                 });
-                console.log('the key', key);
             });
         });
 
@@ -198,21 +168,6 @@ function getDocuments(request, response, accessToken) {
             response.write('Error in request, please retry or contact your Administrator');
             response.end();
         };
-        
-        // for (var i=0; i < files.length; i++) {
-        //     console.log('-----', files[i].Title);
-
-        //     zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
-        //     zip.on('entry', function() {
-        //         count++;
-        //         console.log('ES IGUAL????? ', count);
-        //         if ( count == files.length ){
-        //             console.log('termine!');    
-        //             zip.finalize();
-        //         }
-        //     });            
-        // }
-        console.log('FINALIZE');
         zip.finalize();
         zip.on('end', function() {
             console.log('SIZE', zip.pointer());
@@ -220,9 +175,7 @@ function getDocuments(request, response, accessToken) {
         });
     });
 }
-//);
 
-// app.get('/postchatter', function(request, response) {
 function postToChatter(request, response, accessToken) {
     var options = {
       hostname: 'na22.salesforce.com',
@@ -264,52 +217,36 @@ function postToChatter(request, response, accessToken) {
         CRLF;
 
     var req = new http.request(options, function(res) {
-        res.on('end', function() {
-        console.log('respuesta en end-------');
-        //   res.write('Check Chatter to see message');
-        });
-        console.log('status code---', res.statusCode);
-        // if (res.statusCode == 201) {
-        //     response.end();
-        // } 
+        if (res.statusCode == 201) {
+            response.end();
+        } 
     });
 
     // If error show message and finish response
     req.on('error', function(e) {
-        console.log('ERROR EN LA REQUEST-----', e);
+        console.log('Error in request, please retry or contact your Administrator', e);
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
-
-    // req.on('response', function(res) {
-    //     console.log('SUCESS: CHECK CHATTER');
-    //     response.write('SUCCESS: Check Chatter to find the ZIP file :)');
-    //     response.end();
-    // });
 
     // write data to request body
     req.write(postData);
 
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
-            console.log('EN EL END')
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
 
 }
-//);
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
-    var message = 'ERROR';
     docIds = req.body;
     if (docIds) {
-        message = 'SUCCESS';
+        // Get credentials from postgres
+        getRecords(req, res);
     }
-    console.log('LOS IDS DE LOS DOCS SON', docIds);
-    // Get credentials from postgres
-    getRecords(req, res);
 });
 
 // DATABAES OPERATIONS
