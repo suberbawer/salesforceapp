@@ -164,11 +164,10 @@ function getDocuments(request, response, accessToken) {
                         console.log('ENTRY obj', entry.name);
                         console.log('ENTRY key', key);
                         files.push(entry.name);
-                        callback();
                     }
                     if (files.length == request.session.pdf_results.length) {
                         console.log('ENTRY una vez key', key);
-
+                        callback();
                     }
                 });
                 
