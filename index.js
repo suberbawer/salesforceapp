@@ -261,7 +261,7 @@ app.post('/test', function(req, res) {
 
 // DATABAES OPERATIONS
 function getRecords() {
-    dbOperations.getRecords();
+    return dbOperations.getRecords();
 }
 
 function addRecord (accessToken, refreshToken, instance_url) {
