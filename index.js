@@ -153,8 +153,6 @@ function getDocuments(request, response, accessToken) {
             });
 
             res.on('end', function() {
-                //file.close();
-                //zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
                 files.push(pdf.Title);
                 callback();
             });
@@ -165,7 +163,7 @@ function getDocuments(request, response, accessToken) {
             console.log('problem with request: ' + e.message);
             return callback(e);
         });
-        req.end();
+        //req.end();
     }, function (err) {
         if (err) {
             console.error(err.message)
