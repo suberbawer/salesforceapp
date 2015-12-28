@@ -128,6 +128,7 @@ function getDocuments(request, response, accessToken) {
     var file;
     var req;
     var files = [];
+    var stream;
     // First title
     //var title_pdf = request.session.pdf_results[0].Title;
 
@@ -148,13 +149,23 @@ function getDocuments(request, response, accessToken) {
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
             res.on('data', function (chunk) {
-                // Write file with chunks
-                file.write(chunk);
+                file.on('open', function( {
+                    console.log('EN EL OPEN DEL WRITE');
+                    // Write file with chunks
+                    file.write(chunk);
+                });
             });
 
             res.on('end', function() {
-                files.push(pdf);
-                callback();
+                file.on('finish', function() {
+                    console.log('EN EL FINISH DEL WRITE');
+                    var streamRead = createReadStream(pdf.Title);
+                    streamRead.on('end', function() {
+                        files.push(streamRead);
+                        console.log('statssssssssssssss----', fs.stat(pdf.Title);
+                        callback();
+                    });
+                });
             });
         });
 
@@ -173,10 +184,13 @@ function getDocuments(request, response, accessToken) {
         
         for (var i=0; i < files.length; i++) {
             console.log('-----', files[i].Title);
-            zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
+            
+            
+            zip.append(files, {name: 'test' + i.pdf});
+           
             zip.on('entry', function() {
                 count++;
-                console.log('ES IGUAL????? ', count == files.length);
+                console.log('ES IGUAL????? ', count);
                 if ( count == files.length ){
                     console.log('termine!');    
                     zip.finalize();
@@ -185,7 +199,7 @@ function getDocuments(request, response, accessToken) {
         }
         
         zip.on('end', function() {
-            console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
+            console.log('SIZE', zip.pointer());
             postToChatter(request, response, accessToken);
         });
     });
