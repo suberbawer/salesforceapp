@@ -237,7 +237,7 @@ function postToChatter(request, response, accessToken) {
         });
         console.log('status code---', res.statusCode);
         if (res.statusCode == 201) {
-            response.end();
+            //response.end();
         }
     });
 
