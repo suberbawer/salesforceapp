@@ -243,12 +243,8 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', function(req, res) {
     console.log('el body', req.body);
     if (req.body) {
-        docIds = Object.keys(req.body).map(function(k) { 
-            return k; 
-        });
-
-        console.log('asdfasdfasdfasdfasdfasd', docIds);
-        console.log('asdfasdfasdfasdfasdfasd', typeof docIds);
+        // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
+        docIds = req.body;
         // Get credentials from postgres
         getRecords(req, res);
     }
