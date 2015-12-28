@@ -153,6 +153,7 @@ function getDocuments(request, response, accessToken) {
             });
 
             res.on('end', function() {
+                console.log('EKL TUI', pdf.Title);
                 files.push(pdf.Title);
                 callback();
             });
