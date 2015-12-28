@@ -78,7 +78,6 @@ function queryDocuments(req, res, credentials) {
             conn = new sf.Connection({
                 instanceUrl: credentials[credentials.length - 1].instance_url,
                 accessToken: credentials[credentials.length - 1].access_token,
-                refreshToken: credentials[credentials.length - 1].refresh_token
             });
 
             var accessToken = credentials[credentials.length - 1].access_token;
