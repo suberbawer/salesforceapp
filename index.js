@@ -254,13 +254,12 @@ function postToChatter(request, response, accessToken) {
     });
     // write data to request body
     req.write(postData);
-    var stream = fs.createReadStream('outputZip.zip');
-    stream
-        .on('end', function() {
-            req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-        });
-    stream.pipe(req, {end:false});
 
+    fs.createReadStream('outputZip.zip')
+        // .on('end', function() {
+        //     req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+        // })
+        .pipe(req, {end:false});
 
 }
 //);
