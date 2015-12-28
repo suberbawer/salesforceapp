@@ -176,8 +176,7 @@ function getDocuments(request, response, accessToken) {
             if (i+1 == files.length) {
                 zip.finalize();
                 console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
-                var stream = fs.createReadStream('outputZip.zip');
-                postToChatter(request, response, accessToken, stream);
+                postToChatter(request, response, accessToken);
             }
         }
     });
@@ -252,7 +251,7 @@ function postToChatter(request, response, accessToken, stream) {
     // write data to request body
     req.write(postData);
 
-    stream
+    fs.createReadStream('outputZip.zip')
         .pipe(req)
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
