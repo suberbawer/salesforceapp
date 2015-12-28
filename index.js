@@ -159,7 +159,7 @@ function getDocuments(request, response, accessToken) {
                 zip.on('entry', function(entry) {
                     count++;
                     console.log('ENTRY', count);
-                    console.log('ENTRY', entry.path);
+                    console.log('ENTRY obj', entry);
                 });
                 callback();
             });
