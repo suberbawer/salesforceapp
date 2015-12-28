@@ -256,20 +256,21 @@ function postToChatter(request, response, accessToken) {
             var readStream = fs.createReadStream('outputZip.zip');
             readStream
                 .on('open', function(){
-                    console.log('OPEN');
                     readStream.pipe(req);
+                    console.log('OPEN', readStream);
                 })
                 .on('end', function() {
                     console.log('END');
-                })
-                .on('close', function() {
-                    console.log('CLOSEEEEEEEEEE');
                     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF, function(err) {
                         if (!err) {
                             console.log('deberia TERMINAR ACA');
                             req.end();
                         }
                     });
+                })
+                .on('close', function() {
+                    console.log('CLOSEEEEEEEEEE');
+
                 });
         }
     });
