@@ -259,8 +259,8 @@ function postToChatter(request, response, accessToken) {
                 })
                 .pipe(req, {end:false})
                 .on('close', function() {
-                    console.log('CLOSEEEEEEEEEE');
-                    req.end();
+                    console.log('CLOSEEEEEEEEEE', req);
+                    //req.end();
                 });
         }
     });
