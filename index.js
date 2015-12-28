@@ -52,18 +52,19 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
-            // Saving in postgres
-            addRecord(conn.accessToken, conn.refreshToken, conn.instanceUrl);
-            res.end();
+            req.session.accessToken = conn.accessToken;
+            req.session.instanceUrl = conn.instanceUrl;
+            req.session.refreshToken = conn.refreshToken;
+            // Fetch attachments to procees in zip
+            res.redirect('/attachments');
         }
     });
 });
 
-//app.get('/attachments', function(req, res) {
-function queryDocuments(req, res, credentials) {
+app.get('/attachments', function(req, res) {
+    docIds = 'just to execute'; // hardcoded to demo
     // if auth has not been set, redirect to index
-    if (credentials.length == 0 || !credentials[credentials.length - 1].access_token || !credentials[credentials.length - 1].instance_url) {
-        console.log('LOGIN PLEASE');
+    if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
         res.redirect('/');
     } else {
         if (docIds) {
@@ -72,19 +73,10 @@ function queryDocuments(req, res, credentials) {
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
             var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
-
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
-                instanceUrl: credentials[credentials.length - 1].instance_url,
-                accessToken: credentials[credentials.length - 1].access_token,
-            });
-
-            var accessToken = credentials[credentials.length - 1].access_token;
-
-            conn.on("refresh", function(accessToken, res) {
-                console.log('SE REFRESCO');
-              // Refresh event will be fired when renewed access token
-              // to store it in your storage for next request
+                instanceUrl: req.session.instanceUrl,
+                accessToken: req.session.accessToken
             });
             // First query on documents then into content documents to retrieve the file
             conn.query(query, function(err, result) {
@@ -105,9 +97,7 @@ function queryDocuments(req, res, credentials) {
                         }
                         req.session.pdf_results = pdfs;
                         // get pdf from salesforce to process
-                        //res.redirect('/getpdf');
-                        console.log('QUERY DOCUMENTS REDIRECT');
-                        getDocuments(req, res, accessToken);
+                        res.redirect('/getpdf');
                     }
                 }
             });
@@ -116,11 +106,9 @@ function queryDocuments(req, res, credentials) {
             res.end();
         }
     }
-}
-//);
+});
 
-//app.get('/getpdf', function(request, response) {
-function getDocuments(request, response, accessToken) {
+app.get('/getpdf', function(request, response) {
     // Variables
     var zip = archiver.create('zip', {});
     var output = fs.createWriteStream('outputZip.zip');
@@ -136,7 +124,7 @@ function getDocuments(request, response, accessToken) {
         path: '',
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer ' + accessToken
+          'Authorization': 'Bearer ' + request.session.accessToken
         }
     };
     // Bind zip to output
@@ -153,8 +141,7 @@ function getDocuments(request, response, accessToken) {
             });
 
             res.on('end', function() {
-                console.log('EKL TUI', pdf.Title);
-                files.push(pdf.Title);
+                files.push(pdf);
                 callback();
             });
         });
@@ -164,49 +151,32 @@ function getDocuments(request, response, accessToken) {
             console.log('problem with request: ' + e.message);
             return callback(e);
         });
-        //req.end();
+        req.end();
     }, function (err) {
         if (err) {
             console.error(err.message)
             response.write('Error in request, please retry or contact your Administrator');
             response.end();
         };
-        var contadorTruchoEntry = 0;
-        console.log('FILES LENGHT', files.length);
         for (var i=0; i < files.length; i++) {
-            console.log('lq tiene estoooooooooooooo', files[i]);
-            zip.append(fs.createReadStream(files[i]), {name: files[i]});
+            zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
             // When finish close zip and post into chatter
-            zip.on('entry', function(){
-                contadorTruchoEntry++;
-                console.log('CPMTADPR TRUCHO', contadorTruchoEntry);
-                if ( contadorTruchoEntry == files.length ) {
-                    console.log('termine!');
-                    zip.finalize();
-                }
-            });
+            if (i+1 == files.length) {
+                zip.finalize();
+                response.redirect('/postchatter');
+            }
         }
-        // if (!err && i+1 == files.length) {
-            //zip.finalize();
-            zip.on('end', function() {
-                console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST', zip.pointer());
-                postToChatter(request, response, accessToken);
-            });
-        // }
-
     });
-}
-//);
+});
 
-// app.get('/postchatter', function(request, response) {
-function postToChatter(request, response, accessToken) {
+app.get('/postchatter', function(request, response) {
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
       method: 'POST',
       headers: {
           'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
-          'Authorization': 'OAuth ' + accessToken
+          'Authorization': 'OAuth ' + request.session.accessToken
       }
     };
 
@@ -243,7 +213,6 @@ function postToChatter(request, response, accessToken) {
       res.on('end', function() {
         //   res.write('Check Chatter to see message');
         });
-        console.log('STATUS CODE-----', res.statusCode);
     });
 
     req.on('end', function() {
@@ -256,10 +225,10 @@ function postToChatter(request, response, accessToken) {
         response.end();
     });
 
-    // req.on('response', function(res) {
-    //     response.write('SUCCESS: Check Chatter to find the ZIP file :)');
-    //     response.end();
-    // });
+    req.on('response', function(res) {
+        response.write('SUCCESS: Check Chatter to find the ZIP file :)');
+        response.end();
+    });
 
     // write data to request body
     req.write(postData);
@@ -269,9 +238,7 @@ function postToChatter(request, response, accessToken) {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
-
-}
-//);
+});
 
 // Recieve contet ids from salesforce
 app.post('/test', function(req, res) {
@@ -280,36 +247,18 @@ app.post('/test', function(req, res) {
     if (docIds) {
         message = 'SUCCESS';
     }
+    res.send(message);
     console.log('LOS IDS DE LOS DOCS SON', docIds);
-    // Get credentials from postgres
-    getRecords(req, res);
+    app.redirect('/');
 });
 
 // DATABAES OPERATIONS
-function getRecords(req, res) {
-    var pg = require('pg');
-    //You can run command "heroku config" to see what is Database URL from Heroku belt
-    var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
-    var f_result = new Object;
-    var client = new pg.Client(conString);
-    client.connect();
-    var query = client.query("select * from loggin_data");
-    var results = [];
-
-    query.on("row", function (row) {
-        results.push(row);
-    });
-
-    query.on("end", function () {
-        client.end();
-        queryDocuments(req, res, results);
-    });
-}
-
-function addRecord (accessToken, refreshToken, instance_url) {
-    dbOperations.addRecord(accessToken, refreshToken, instance_url);
-}
-
+app.get('/db/readRecords', function(req,res){
+    dbOperations.getRecords(req,res);
+});
+app.get('/db/addRecord', function(req,res){
+    dbOperations.addRecord(req,res);
+});
 app.get('/db/delRecord', function(req,res){
     dbOperations.delRecord(req,res);
 });
