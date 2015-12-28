@@ -257,14 +257,14 @@ function postToChatter(request, response, accessToken) {
             readStream
                 .on('open', function(){
                     console.log('OPEN');
-                    readStream.pipe(req, {end:false});
+                    readStream.pipe(req);
                 })
                 .on('end', function() {
                     console.log('END');
                     req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
                 })
                 .on('close', function() {
-                    console.log('CLOSEEEEEEEEEE');
+                    console.log('CLOSEEEEEEEEEE', JSON.stringify(req));
                     req.end();
                 });
         }
