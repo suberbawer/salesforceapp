@@ -256,7 +256,8 @@ function postToChatter(request, response, accessToken) {
         if (!err) {
             readStream
                 .on('open', function(){
-                    readStream.pipe(res, {end:false});
+                    console.log('OPEN');
+                    readStream.pipe(req, {end:false});
                 })
                 .on('end', function() {
                     req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
