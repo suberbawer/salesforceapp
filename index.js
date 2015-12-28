@@ -234,6 +234,7 @@ function postToChatter(request, response, accessToken) {
 
     // If error show message and finish response
     req.on('error', function(e) {
+        console.log('ERROR EN LA REQUEST-----');
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
@@ -257,6 +258,8 @@ function postToChatter(request, response, accessToken) {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
+
+    req.end();
 }
 //);
 
