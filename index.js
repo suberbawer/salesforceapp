@@ -60,11 +60,10 @@ app.get('/callback', function(req, res) {
 });
 
 //app.get('/attachments', function(req, res) {
-function queryDocuments(req, res) {
+function queryDocuments(req, res, credentials) {
     // if auth has not been set, redirect to index
-    var credentials = getRecords(res);
     console.log('CREDENTIALS---------', credentials);
-    if (credentials.lengt == 0 || !credentials.access_token || !credentials.instance_url) {
+    if (credentials.lengt == 0 || !credentials[credentials.lengt - 1].access_token || !credentials[credentials.lengt - 1].instance_url) {
         console.log('LOGIN PLEASE');
         res.redirect('/');
     } else {
@@ -254,16 +253,30 @@ app.post('/test', function(req, res) {
     if (docIds) {
         message = 'SUCCESS';
     }
-    // res.send(message);
     console.log('LOS IDS DE LOS DOCS SON', docIds);
-    //res.redirect('/attachments');
-    queryDocuments(req, res);
+    // Get credentials from postgres
+    getRecords(req, res);
 });
 
 // DATABAES OPERATIONS
-function getRecords(res) {
-    console.log('A VER ACA Q ONDA----', dbOperations.getRecords());
-    return dbOperations.getRecords(res);
+function getRecords(req, res) {
+    var pg = require('pg');
+    //You can run command "heroku config" to see what is Database URL from Heroku belt
+    var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
+    var f_result = new Object;
+    var client = new pg.Client(conString);
+    client.connect();
+    var query = client.query("select * from loggin_data");
+    var results = [];
+
+    query.on("row", function (row) {
+        results.push(row);
+    });
+
+    query.on("end", function () {
+        client.end();
+        queryDocuments(req, res, results);
+    });
 }
 
 function addRecord (accessToken, refreshToken, instance_url) {
