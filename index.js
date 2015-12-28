@@ -73,10 +73,17 @@ function queryDocuments(req, res, credentials) {
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
             var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
+
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: credentials.access_token,
-                accessToken: credentials.instance_url
+                accessToken: credentials.instance_url,
+                refreshToken: credentials.refresh_token
+            });
+            conn.on("refresh", function(credentials.access_token, res) {
+                console.log('SE REFRESCO');
+              // Refresh event will be fired when renewed access token
+              // to store it in your storage for next request
             });
             // First query on documents then into content documents to retrieve the file
             conn.query(query, function(err, result) {
