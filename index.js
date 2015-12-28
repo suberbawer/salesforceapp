@@ -150,7 +150,6 @@ function getDocuments(request, response, accessToken) {
             res.on('data', function (chunk) {
                 // Write file with chunks
                 file.write(chunk);
-                console.log('---------------file', file);
             });
 
             res.on('end', function() {
