@@ -166,7 +166,7 @@ function getDocuments(request, response, accessToken) {
 
                     // }
                     if (files.indexOf(key) == -1) {
-                        console.log('LA KEY ADENTRO');
+                        console.log('LA KEY ADENTRO', key);
                         files.push(key);
                         callback();
                     }
