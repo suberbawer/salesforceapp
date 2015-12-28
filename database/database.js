@@ -8,14 +8,14 @@ module.exports = {
         client.connect();
         var query = client.query("select * from loggin_data");
 
-        query.on("row", function (row, result) {
-            result.addRow(row);
+        query.on("row", function (row) {
+            results.push(row);
         });
 
-        query.on("end", function (result) {
-            client.end();
-            console.log(result.rows[0]);
-            return result.rows;
+        query.on("end", function () {
+            done();
+            console.log('EL PRIMER RESULTADO', result[0]);
+            return result;
         });
     },
     addRecord : function(access_token, refresh_token, instance_url) {
