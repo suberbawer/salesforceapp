@@ -167,10 +167,9 @@ function getDocuments(request, response, accessToken) {
                     }
                     if (files.length == request.session.pdf_results.length) {
                         console.log('ENTRY una vez key', key);
-                        callback();
                     }
                 });
-                
+                callback();
             });
         });
 
