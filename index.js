@@ -63,7 +63,8 @@ app.get('/callback', function(req, res) {
 function queryDocuments(req, res) {
     // if auth has not been set, redirect to index
     var credentials = getRecords();
-    if (credentials.lengt > 0 && credentials.access_token && credentials.instance_url) {
+    console.log('CREDENTIALS---------', credentials);
+    if (credentials.lengt == 0 || !credentials.access_token || !credentials.instance_url) {
         console.log('LOGIN PLEASE');
         res.redirect('/');
     } else {
