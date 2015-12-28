@@ -172,10 +172,12 @@ function getDocuments(request, response, accessToken) {
         };
         var contadorTruchoEntry = 0;
         for (var i=0; i < files.length; i++) {
+            console.log('lq tiene estoooooooooooooo', files[i]);
             zip.append(fs.createReadStream(files[i]), {name: files[i]});
             // When finish close zip and post into chatter
             zip.on('entry', function(){
                 contadorTruchoEntry++;
+                console.log('CPMTADPR TRUCHO', contadorTruchoEntry);
                 if ( contadorTruchoEntry == files.length ) {
                     console.log('termine!');
                     zip.finalize();
