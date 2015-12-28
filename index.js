@@ -262,7 +262,7 @@ function postToChatter(request, response, accessToken) {
         .pipe(req, {end:false});
         setTimeout(function () {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-        }, 10000);
+        }, 1000000000);
 
 
 }
