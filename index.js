@@ -177,7 +177,6 @@ function getDocuments(request, response, accessToken) {
                 zip.finalize();
                 console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
 
-                //response.redirect('/postchatter');
                 postToChatter(request, response, accessToken);
             }
         }
@@ -226,7 +225,7 @@ function postToChatter(request, response, accessToken) {
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
-    var req = http.request(options, function(res) {
+    var req = new http.request(options, function(res) {
         res.on('end', function() {
         console.log('respuesta en end-------');
         //   res.write('Check Chatter to see message');
@@ -257,7 +256,7 @@ function postToChatter(request, response, accessToken) {
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
-        .pipe(req);
+        .pipe(req, {end:false});
 }
 //);
 
