@@ -234,7 +234,7 @@ function postToChatter(request, response, accessToken) {
 
     // If error show message and finish response
     req.on('error', function(e) {
-        console.log('ERROR EN LA REQUEST-----');
+        console.log('ERROR EN LA REQUEST-----', e);
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
