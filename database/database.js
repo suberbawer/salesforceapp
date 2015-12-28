@@ -2,7 +2,7 @@ module.exports = {
     getRecords: function(req, res) {
         var pg = require('pg');
         //You can run command "heroku config" to see what is Database URL from Heroku belt
-        var conString = process.env.DATABASE_URL;
+        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
         var f_result = new Object;
         var client = new pg.Client(conString);
         client.connect();
@@ -23,7 +23,7 @@ module.exports = {
     },
     addRecord : function(res, access_token, refresh_token, instance_url) {
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL;
+        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("INSERT INTO loggin_data(access_token, refresh_token, instance_url) values($1, $2, $3)", [access_token, refresh_token, instance_url]);
@@ -36,7 +36,7 @@ module.exports = {
     },
      delRecord : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL;
+        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "Delete from loggin_data Where id ="+req.query.id);
@@ -69,7 +69,7 @@ module.exports = {
     },
     dropTable : function(req, res){
         var pg = require('pg');
-        var conString = process.env.DATABASE_URL;
+        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "Drop TABLE loggin_data");
