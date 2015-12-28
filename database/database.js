@@ -21,7 +21,7 @@ module.exports = {
             console.log(JSON.stringify(result.rows));
         });
     },
-    addRecord : function(access_token, refresh_token, instance_url){
+    addRecord : function(res, access_token, refresh_token, instance_url) {
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
