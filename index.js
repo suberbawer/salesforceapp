@@ -242,10 +242,14 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', function(req, res) {
     console.log('el body', req.body);
     if (req.body) {
-        docIds = Object.keys(req.body).map(function(k) { 
-            return k.substring(1, k.length-1).split('","')[0] 
+        // docIds = Object.keys(req.body).map(function(k) { 
+        //     return k.substring(1, k.length-1).split('","') 
+        // });
+
+        Object.keys(req.body).map(function(k) { 
+            console.log('1', k.substring(1, k.length-1) );
+            console.log('2', k.substring(1, k.length-1).split('","') );
         });
-        console.log('los documentos', docIds);
         // Get credentials from postgres
         //getRecords(req, res);
     }
