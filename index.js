@@ -261,11 +261,16 @@ function postToChatter(request, response, accessToken) {
                 })
                 .on('end', function() {
                     console.log('END');
-                    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+                    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF, function(err) {
+                        if (!err) {
+                            console.log('deberia TERMINAR ACA');
+                            req.end();
+                        }
+                    });
                 })
                 .on('close', function() {
                     console.log('CLOSEEEEEEEEEE', JSON.stringify(req));
-                    req.end();
+
                 });
         }
     });
