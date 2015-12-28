@@ -170,16 +170,24 @@ function getDocuments(request, response, accessToken) {
             response.write('Error in request, please retry or contact your Administrator');
             response.end();
         };
+        
         for (var i=0; i < files.length; i++) {
             console.log('-----', files[i].Title);
             zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
-            // When finish close zip and post into chatter
-            if (i+1 == files.length) {
-                zip.finalize();
-                console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
-                postToChatter(request, response, accessToken);
-            }
+            zip.on('entry', function() {
+                count++;
+                console.log('ES IGUAL????? ', count == files.length);
+                if ( count == files.length ){
+                    console.log('termine!');    
+                    zip.finalize();
+                }
+            });            
         }
+        
+        zip.on('end', function() {
+            console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
+            postToChatter(request, response, accessToken);
+        });
     });
 }
 //);
