@@ -243,11 +243,12 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', function(req, res) {
     console.log('el body', req.body);
     if (req.body) {
-        docIds = Object.keys(req.body).map(function(k) { 
-            return k.substring(1, k.length-1).split('","') 
+        Object.keys(req.body).map(function(k) { 
+            docIds = k.substring(1, k.length-1).split('","'); 
         });
 
         console.log('asdfasdfasdfasdfasdfasd', docIds);
+        console.log('asdfasdfasdfasdfasdfasd', typeof docIds);
         // Get credentials from postgres
         //getRecords(req, res);
     }
