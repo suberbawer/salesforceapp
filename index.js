@@ -242,6 +242,9 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', function(req, res) {
     docIds = req.body;
     if (docIds) {
+        docIds = Object.keys(docIds).map(function(k) { 
+            return k.substring(1, k.length-1).split('","') 
+        });
         // Get credentials from postgres
         getRecords(req, res);
     }
