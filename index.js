@@ -63,6 +63,7 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/attachments', function(req, res) {
+    console.log('EN ATTACHMENTS ', docIds);
     docIds = 'just to execute'; // hardcoded to demo
     // if auth has not been set, redirect to index
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
