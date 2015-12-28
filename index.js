@@ -176,6 +176,7 @@ function getDocuments(request, response, accessToken) {
             if (i+1 == files.length) {
                 zip.finalize();
                 console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
+
                 //response.redirect('/postchatter');
                 postToChatter(request, response, accessToken);
             }
@@ -249,15 +250,17 @@ function postToChatter(request, response, accessToken) {
         console.log('EN EL END', res);
 
     });
-
+    var readStream = fs.createReadStream('outputZip.zip');
     // write data to request body
     req.write(postData, function(err){
         if (!err) {
-            fs.createReadStream('outputZip.zip')
+            readStream
+                .on('open', function(){
+                    readStream.pipe(res, {end:false});
+                })
                 .on('end', function() {
                     req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
                 })
-                .pipe(req, {end:false})
                 .on('close', function() {
                     console.log('CLOSEEEEEEEEEE', req);
                     //req.end();
