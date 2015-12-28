@@ -73,7 +73,7 @@ function queryDocuments(req, res, credentials) {
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
             //
             var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
-
+            
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: credentials[credentials.length - 1].instance_url,
