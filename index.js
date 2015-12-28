@@ -229,6 +229,7 @@ function postToChatter(request, response, accessToken, stream) {
         console.log('respuesta en end-------');
         //   res.write('Check Chatter to see message');
         });
+        console.log('status code---', res.statusCode);
     });
 
     // If error show message and finish response
@@ -252,7 +253,7 @@ function postToChatter(request, response, accessToken, stream) {
     req.write(postData);
 
     fs.createReadStream('outputZip.zip')
-        .pipe(req)
+        .pipe(req, {end:false})
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         });
