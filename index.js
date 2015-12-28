@@ -154,7 +154,7 @@ function getDocuments(request, response, accessToken) {
 
             res.on('end', function() {
                 file.close();
-                zip.append(fs.createReadStream(file.Title), {name: file.Title});
+                zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
                 files.push(pdf);
                 callback();
             });
