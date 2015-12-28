@@ -265,9 +265,11 @@ app.post('/test', function(req, res) {
 app.get('/db/readRecords', function(req,res){
     dbOperations.getRecords(req,res);
 });
-app.get('/db/addRecord', function(req,res){
-    dbOperations.addRecord(req,res);
+
+function addRecord (accessToken, refreshToken, instance_url) {
+    dbOperations.addRecord(accessToken, refreshToken, instance_url);
 });
+
 app.get('/db/delRecord', function(req,res){
     dbOperations.delRecord(req,res);
 });
