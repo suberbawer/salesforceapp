@@ -166,7 +166,7 @@ function getDocuments(request, response, accessToken) {
 
                     // }
                     if (files.indexOf(key) == -1) {
-                        files.add(key);
+                        files.push(key);
                         callback();
                     }
                     if (files.length == request.session.pdf_results.length) {
