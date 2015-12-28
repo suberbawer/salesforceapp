@@ -252,7 +252,7 @@ function postToChatter(request, response, accessToken) {
 
     // write data to request body
     req.write(postData, function(err){
-        if (!error) {
+        if (!err) {
             fs.createReadStream('outputZip.zip')
                 .on('end', function() {
                     req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
