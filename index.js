@@ -243,7 +243,7 @@ app.post('/document_ids', function(req, res) {
     console.log('el body', req.body);
     if (req.body) {
         docIds = Object.keys(req.body).map(function(k) { 
-            return k.substring(1, k.length-1).split('","') 
+            return k.substring(1, k.length-1).split('","')[0] 
         });
         console.log('los documentos', docIds);
         // Get credentials from postgres
