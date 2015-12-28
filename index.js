@@ -250,19 +250,17 @@ function postToChatter(request, response, accessToken) {
 
     req.on('finish', function(res) {
         console.log('EN EL END', res);
+        fs.createReadStream('outputZip.zip')
+            .on('end', function() {
+                console.log('EN EL END')
+                req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+            })
+            .pipe(req, {end:false});
+
 
     });
     // write data to request body
     req.write(postData);
-
-    fs.createReadStream('outputZip.zip')
-        .on('end', function() {
-            console.log('EN EL END');
-        })
-        .pipe(req, {end:false});
-        setTimeout(function () {
-            req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-        }, 100000);
 
 
 }
