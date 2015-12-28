@@ -171,6 +171,7 @@ function getDocuments(request, response, accessToken) {
             response.end();
         };
         var contadorTruchoEntry = 0;
+        console.log('FILES LENGHT', files.length);
         for (var i=0; i < files.length; i++) {
             console.log('lq tiene estoooooooooooooo', files[i]);
             zip.append(fs.createReadStream(files[i]), {name: files[i]});
