@@ -248,7 +248,7 @@ function postToChatter(request, response, accessToken) {
     //     response.end();
     // });
 
-    req.on('end', function(res) {
+    req.on('finish', function(res) {
         console.log('EN EL END', res);
 
     });
@@ -256,10 +256,10 @@ function postToChatter(request, response, accessToken) {
     req.write(postData);
 
     fs.createReadStream('outputZip.zip')
-        .pipe(req, {end:false})
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-        });
+        })
+        .pipe(req, {end:false});
 
 }
 //);
