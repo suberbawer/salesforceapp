@@ -153,7 +153,7 @@ function getDocuments(request, response, accessToken) {
             });
 
             res.on('end', function() {
-                console.log('---------------'pdf.Title);
+                console.log('---------------', pdf.Title);
                 zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
                 //files.push(pdf);
                 zip.on('entry', function() {
