@@ -149,7 +149,15 @@ function getDocuments(request, response, accessToken) {
             file = fs.createWriteStream(pdf.Title);
             res.on('data', function (chunk) {
                 // Write file with chunks
-                file.write(chunk);
+                var bufferStore = file.write(chunk);
+                if (bufferStore == false) {
+                    res.pause();
+                }
+            });
+
+            file.on('drain', function() {
+                console.log('DRAINNNNNNNNNNNNN');
+                res.resume();
             });
 
             res.on('end', function() {
@@ -170,9 +178,9 @@ function getDocuments(request, response, accessToken) {
                         files.push(key);
                         callback();
                     }
-                    if (files.length == request.session.pdf_results.length) {
-                        console.log('ENTRY una vez key', key);
-                    }
+                    // if (files.length == request.session.pdf_results.length) {
+                    //     console.log('ENTRY una vez key', key);
+                    // }
                 });
                 console.log('the key', key);
             });
