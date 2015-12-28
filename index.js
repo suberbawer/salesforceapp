@@ -171,13 +171,20 @@ function getDocuments(request, response, accessToken) {
             response.end();
         };
         for (var i=0; i < files.length; i++) {
-            zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
+
+            zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title}, function(err) {
+                console.log('---------- IIIIIIII '+i, err);
+                if (!err && i+1 == files.length) {
+                    console.log('ZIP')
+                    zip.finalize(function(err, bytes) {
+                        if (!err) {
+                            console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST', bytes);
+                            postToChatter(request, response, accessToken);
+                        }
+                    });
+                }
+            });
             // When finish close zip and post into chatter
-            if (i+1 == files.length) {
-                zip.finalize();
-                console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
-                postToChatter(request, response, accessToken);
-            }
         }
     });
 }
