@@ -156,7 +156,7 @@ function getDocuments(request, response, accessToken) {
                 console.log('---------------', pdf.Title);
                 zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
                 //files.push(pdf);
-                zip.on('entry', function() {
+                zip.on('entry', function(entry) {
                     count++;
                     console.log('ENTRY', count);
                     console.log('ENTRY', entry.path);
