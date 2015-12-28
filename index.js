@@ -158,14 +158,17 @@ function getDocuments(request, response, accessToken) {
                 //files.push(pdf);
                 zip.on('entry', function(entry) {
                     
-                    if (files.indexOf(entry['name']) == -1) {
-                        console.log('ENTRY obj', entry['name']);
-                        console.log('ENTRY key', key);
-                        files.push(entry['name']);
-                        callback();
+                    // if (files.indexOf(entry['name']) == -1) {
+                    //     console.log('ENTRY obj', entry['name']);
+                    //     console.log('ENTRY key', key);
+                    //     files.push(entry['name']);
+                    //     callback();
 
+                    // }
+                    if (files.indexOf(key) == -1) {
+                        files.add(key);
+                        callback();
                     }
-                    
                     if (files.length == request.session.pdf_results.length) {
                         console.log('ENTRY una vez key', key);
                     }
