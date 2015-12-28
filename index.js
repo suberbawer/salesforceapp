@@ -162,7 +162,7 @@ function getDocuments(request, response, accessToken) {
                     var streamRead = createReadStream(pdf.Title);
                     streamRead.on('end', function() {
                         files.push(streamRead);
-                        console.log('statssssssssssssss----', fs.stat(pdf.Title);
+                        console.log('statssssssssssssss----', fs.stat(pdf.Title));
                         callback();
                     });
                 });
