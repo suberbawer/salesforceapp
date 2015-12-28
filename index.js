@@ -52,7 +52,7 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
-            // Saving in postgres
+            // Saving in postgres (Must update not insert allways)
             addRecord(conn.accessToken, conn.refreshToken, conn.instanceUrl);
             res.end();
         }
@@ -171,6 +171,7 @@ function getDocuments(request, response, accessToken) {
             response.end();
         };
         for (var i=0; i < files.length; i++) {
+            console.log('-----', files[i].Title);
             zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
             // When finish close zip and post into chatter
             if (i+1 == files.length) {
@@ -230,9 +231,9 @@ function postToChatter(request, response, accessToken) {
         //   res.write('Check Chatter to see message');
         });
         console.log('status code---', res.statusCode);
-        if (res.statusCode == 201) {
-            response.end();
-        } 
+        // if (res.statusCode == 201) {
+        //     response.end();
+        // } 
     });
 
     // If error show message and finish response
@@ -248,10 +249,6 @@ function postToChatter(request, response, accessToken) {
     //     response.end();
     // });
 
-    req.on('finish', function(res) {
-        console.log('EN EL END', res);
-
-    });
     // write data to request body
     req.write(postData);
 
