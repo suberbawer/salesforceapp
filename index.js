@@ -184,7 +184,7 @@ function getDocuments(request, response, accessToken) {
 //);
 
 // app.get('/postchatter', function(request, response) {
-function postToChatter(request, response, accessToken, stream) {
+function postToChatter(request, response, accessToken) {
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v34.0/chatter/feed-elements',
@@ -253,7 +253,7 @@ function postToChatter(request, response, accessToken, stream) {
     req.write(postData);
 
     fs.createReadStream('outputZip.zip')
-        .pipe(req, {end:false})
+        .pipe(req)
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         });
