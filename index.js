@@ -260,10 +260,11 @@ function postToChatter(request, response, accessToken) {
                     readStream.pipe(req, {end:false});
                 })
                 .on('end', function() {
+                    console.log('END');
                     req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
                 })
                 .on('close', function() {
-                    console.log('CLOSEEEEEEEEEE', req);
+                    console.log('CLOSEEEEEEEEEE');
                     //req.end();
                 });
         }
