@@ -192,8 +192,9 @@ function getDocuments(request, response, accessToken) {
                     count++;
                     console.log('ENTRY', count);
                     console.log('ENTRY obj', entry);
+                    zip.finalize();
                 });
-        zip.finalize();
+        
         zip.on('end', function() {
             console.log('SIZE', zip.pointer());
             postToChatter(request, response, accessToken);
