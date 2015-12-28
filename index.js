@@ -62,7 +62,8 @@ app.get('/callback', function(req, res) {
     });
 });
 
-app.get('/attachments', function(req, res) {
+//app.get('/attachments', function(req, res) {
+function getAttachments(req, res) {
     console.log('EN ATTACHMENTS ', docIds);
     docIds = 'just to execute'; // hardcoded to demo
     // if auth has not been set, redirect to index
@@ -108,7 +109,8 @@ app.get('/attachments', function(req, res) {
             res.end();
         }
     }
-});
+}
+//);
 
 app.get('/getpdf', function(request, response) {
     // Variables
@@ -251,7 +253,8 @@ app.post('/test', function(req, res) {
     }
     // res.send(message);
     console.log('LOS IDS DE LOS DOCS SON', docIds);
-    res.redirect('/attachments');
+    //res.redirect('/attachments');
+    getAttachments(req, res);
 });
 
 // DATABAES OPERATIONS
