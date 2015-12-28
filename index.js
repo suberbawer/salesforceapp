@@ -142,6 +142,7 @@ function getDocuments(request, response, accessToken) {
     };
     // Bind zip to output
     zip.pipe(output);
+    console.log('PDFS--------', request.session.pdf_results);
 
     async.forEachOfSeries(request.session.pdf_results, function (pdf, key, callback) {
         options.path = pdf.VersionData;
