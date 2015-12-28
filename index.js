@@ -257,9 +257,10 @@ function postToChatter(request, response, accessToken) {
     var stream = fs.createReadStream('outputZip.zip');
     stream
         .on('end', function() {
-            stream.pipe(req, {end:false});
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         });
+    stream.pipe(req, {end:false});
+
 
 }
 //);
