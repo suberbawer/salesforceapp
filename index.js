@@ -153,9 +153,9 @@ function getDocuments(request, response, accessToken) {
             });
 
             res.on('end', function() {
-                //file.close();
-                zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
-                files.push(pdf);
+                file.close();
+                //zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
+                files.push(pdf.Title);
                 callback();
             });
         });
@@ -172,13 +172,20 @@ function getDocuments(request, response, accessToken) {
             response.write('Error in request, please retry or contact your Administrator');
             response.end();
         };
-        // for (var i=0; i < files.length; i++) {
-        //
-        //     zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
-        //     // When finish close zip and post into chatter
-        // }
+        var contadorTruchoEntry = 0;
+        for (var i=0; i < files.length; i++) {
+            zip.append(fs.createReadStream(files[i]), {name: files[i]});
+            // When finish close zip and post into chatter
+            zip.on('entry', function(){
+                contadorTruchoEntry++;
+                if ( contadorTruchoEntry == files.length ) {
+                    console.log('termine!');
+                    zip.finalize();
+                }
+            });
+        }
         // if (!err && i+1 == files.length) {
-            zip.finalize();
+            //zip.finalize();
             zip.on('end', function() {
                 console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST', zip.pointer());
                 postToChatter(request, response, accessToken);
@@ -230,40 +237,32 @@ function postToChatter(request, response, accessToken) {
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
-    var req = new http.request(options, function(res) {
-        res.on('end', function() {
-        console.log('respuesta en end-------');
+    var req = http.request(options, function(res) {
+      res.on('end', function() {
         //   res.write('Check Chatter to see message');
         });
-        console.log('status code---', res.statusCode);
-        if (res.statusCode == 201) {
-            //response.end();
-        }
+    });
+
+    req.on('end', function() {
+        console.log('el final ha llegado');
     });
 
     // If error show message and finish response
     req.on('error', function(e) {
-        console.log('ERROR EN LA REQUEST-----', e);
         response.write('Error in request, please retry or contact your Administrator');
         response.end();
     });
 
-    // req.on('response', function(res) {
-    //     console.log('SUCESS: CHECK CHATTER');
-    //     response.write('SUCCESS: Check Chatter to find the ZIP file :)');
-    //     response.end();
-    // });
-
-    req.on('end', function(res) {
-        console.log('EN EL END', res);
-
+    req.on('response', function(res) {
+        response.write('SUCCESS: Check Chatter to find the ZIP file :)');
+        response.end();
     });
+
     // write data to request body
     req.write(postData);
 
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
-            console.log('EN EL END')
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
