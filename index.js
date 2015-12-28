@@ -54,11 +54,6 @@ app.get('/callback', function(req, res) {
         } else {
             // Saving in postgres
             addRecord(conn.accessToken, conn.refreshToken, conn.instanceUrl);
-            // req.session.accessToken = conn.accessToken;
-            // req.session.instanceUrl = conn.instanceUrl;
-            // req.session.refreshToken = conn.refreshToken;
-            // Fetch attachments to procees in zip
-            //res.redirect('/attachments');
             res.end();
         }
     });
@@ -67,6 +62,7 @@ app.get('/callback', function(req, res) {
 //app.get('/attachments', function(req, res) {
 function queryDocuments(req, res) {
     // if auth has not been set, redirect to index
+    var credentials = getRecords();
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
         console.log('LOGIN PLEASE');
         res.redirect('/');
@@ -264,8 +260,8 @@ app.post('/test', function(req, res) {
 });
 
 // DATABAES OPERATIONS
-app.get('/db/readRecords', function(req,res){
-    dbOperations.getRecords(req,res);
+function getRecords() {
+    dbOperations.getRecords();
 });
 
 function addRecord (accessToken, refreshToken, instance_url) {
