@@ -15,7 +15,7 @@ module.exports = {
         query.on("end", function (result) {
             client.end();
             console.log(result.rows[0]);
-            return JSON.stringify(result.rows);
+            return result.rows;
         });
     },
     addRecord : function(access_token, refresh_token, instance_url) {

@@ -63,7 +63,7 @@ app.get('/callback', function(req, res) {
 function queryDocuments(req, res) {
     // if auth has not been set, redirect to index
     var credentials = getRecords();
-    if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
+    if (credentials.lengt > 0 && credentials.access_token && credentials.instance_url) {
         console.log('LOGIN PLEASE');
         res.redirect('/');
     } else {
@@ -75,8 +75,8 @@ function queryDocuments(req, res) {
             var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
-                instanceUrl: req.session.instanceUrl,
-                accessToken: req.session.accessToken
+                instanceUrl: credentials.access_token,
+                accessToken: credentials.instance_url
             });
             // First query on documents then into content documents to retrieve the file
             conn.query(query, function(err, result) {
