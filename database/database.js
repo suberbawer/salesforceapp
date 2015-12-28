@@ -14,8 +14,7 @@ module.exports = {
         });
 
         query.on("end", function () {
-            //client.end();
-            done();
+            client.end();
             console.log('EL PRIMER RESULTADO', result[0]);
             return res.json(result);
         });
