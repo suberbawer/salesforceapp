@@ -153,7 +153,7 @@ function getDocuments(request, response, accessToken) {
             });
 
             res.on('end', function() {
-                file.close();
+                //file.close();
                 zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
                 files.push(pdf);
                 callback();
@@ -178,8 +178,9 @@ function getDocuments(request, response, accessToken) {
         //     // When finish close zip and post into chatter
         // }
         // if (!err && i+1 == files.length) {
-            zip.finalize();
+            //zip.finalize();
             zip.on('end', function() {
+                zip.finalize();
                 console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST', zip.pointer());
                 postToChatter(request, response, accessToken);
             });
@@ -254,7 +255,7 @@ function postToChatter(request, response, accessToken) {
     //     response.end();
     // });
 
-    req.on('finish', function(res) {
+    req.on('end', function(res) {
         console.log('EN EL END', res);
 
     });
