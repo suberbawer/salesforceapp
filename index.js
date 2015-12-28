@@ -238,11 +238,11 @@ function postToChatter(request, response) {
         response.end();
     });
 
-    req.on('response', function(res) {
-        console.log('SUCESS: CHECK CHATTER');
-        response.write('SUCCESS: Check Chatter to find the ZIP file :)');
-        response.end();
-    });
+    // req.on('response', function(res) {
+    //     console.log('SUCESS: CHECK CHATTER');
+    //     response.write('SUCCESS: Check Chatter to find the ZIP file :)');
+    //     response.end();
+    // });
     req.on('end', function(res) {
         console.log('EN EL END', res);
 
