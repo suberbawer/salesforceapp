@@ -180,9 +180,8 @@ function getDocuments(request, response, accessToken) {
         // if (!err && i+1 == files.length) {
             zip.finalize();
             zip.on('end', function() {
-                    console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST', zip.pointer());
-                    postToChatter(request, response, accessToken);
-                }
+                console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST', zip.pointer());
+                postToChatter(request, response, accessToken);
             });
         // }
 
