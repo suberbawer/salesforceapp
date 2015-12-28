@@ -62,7 +62,7 @@ app.get('/callback', function(req, res) {
 //app.get('/attachments', function(req, res) {
 function queryDocuments(req, res) {
     // if auth has not been set, redirect to index
-    var credentials = getRecords();
+    var credentials = getRecords(res);
     console.log('CREDENTIALS---------', credentials);
     if (credentials.lengt == 0 || !credentials.access_token || !credentials.instance_url) {
         console.log('LOGIN PLEASE');
@@ -261,9 +261,9 @@ app.post('/test', function(req, res) {
 });
 
 // DATABAES OPERATIONS
-function getRecords() {
+function getRecords(res) {
     console.log('A VER ACA Q ONDA----', dbOperations.getRecords());
-    return dbOperations.getRecords();
+    return dbOperations.getRecords(res);
 }
 
 function addRecord (accessToken, refreshToken, instance_url) {

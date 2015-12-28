@@ -1,5 +1,5 @@
 module.exports = {
-    getRecords: function() {
+    getRecords: function(res) {
         var pg = require('pg');
         //You can run command "heroku config" to see what is Database URL from Heroku belt
         var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
@@ -17,7 +17,7 @@ module.exports = {
             //client.end();
             done();
             console.log('EL PRIMER RESULTADO', result[0]);
-            return result;
+            return res.json(result);
         });
     },
     addRecord : function(access_token, refresh_token, instance_url) {
