@@ -76,9 +76,9 @@ function queryDocuments(req, res, credentials) {
 
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
-                instanceUrl: credentials.instance_url,
-                accessToken: credentials.access_token,
-                refreshToken: credentials.refresh_token
+                instanceUrl: credentials[credentials.length - 1].instance_url,
+                accessToken: credentials[credentials.length - 1].access_token,
+                refreshToken: credentials[credentials.length - 1].refresh_token
             });
             conn.on("refresh", function(credentials.access_token, res) {
                 console.log('SE REFRESCO');
