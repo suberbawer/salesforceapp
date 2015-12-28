@@ -178,9 +178,8 @@ function getDocuments(request, response, accessToken) {
         //     // When finish close zip and post into chatter
         // }
         // if (!err && i+1 == files.length) {
-            //zip.finalize();
+            zip.finalize();
             zip.on('end', function() {
-                zip.finalize();
                 console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST', zip.pointer());
                 postToChatter(request, response, accessToken);
             });
