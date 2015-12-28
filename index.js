@@ -128,7 +128,6 @@ function getDocuments(request, response, accessToken) {
     var file;
     var req;
     var files = [];
-    var stream;
     // First title
     //var title_pdf = request.session.pdf_results[0].Title;
 
@@ -148,24 +147,18 @@ function getDocuments(request, response, accessToken) {
         req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(pdf.Title);
-            file.on('open', function() {
-                console.log('EN EL OPEN DEL WRITE');
-
-                res.on('data', function (chunk) {
-                    // Write file with chunks
-                    file.write(chunk)
-                });
+            res.on('data', function (chunk) {
+                // Write file with chunks
+                file.write(chunk);
             });
 
-
             res.on('end', function() {
-                console.log('REQUEST END');
-                file.end();
-
-                var streamRead = fs.createReadStream(pdf.Title);
-                streamRead.on('end', function() {
-                    files.push(streamRead);
-                    console.log('statssssssssssssss----', fs.stat(pdf.Title));
+                console.log('---------------'pdf.Title);
+                zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
+                //files.push(pdf);
+                zip.on('entry', function() {
+                    count++;
+                    console.log('ENTRY', count);
                     callback();
                 });
             });
@@ -176,7 +169,7 @@ function getDocuments(request, response, accessToken) {
             console.log('problem with request: ' + e.message);
             return callback(e);
         });
-        req.end();
+        //req.end();
     }, function (err) {
         if (err) {
             console.error(err.message)
@@ -184,22 +177,21 @@ function getDocuments(request, response, accessToken) {
             response.end();
         };
         
-        for (var i=0; i < files.length; i++) {
-            console.log('-----', files[i].Title);
-            
-            
-            zip.append(files, {name: 'test' + i.pdf});
-           
-            zip.on('entry', function() {
-                count++;
-                console.log('ES IGUAL????? ', count);
-                if ( count == files.length ){
-                    console.log('termine!');    
-                    zip.finalize();
-                }
-            });            
-        }
-        
+        // for (var i=0; i < files.length; i++) {
+        //     console.log('-----', files[i].Title);
+
+        //     zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
+        //     zip.on('entry', function() {
+        //         count++;
+        //         console.log('ES IGUAL????? ', count);
+        //         if ( count == files.length ){
+        //             console.log('termine!');    
+        //             zip.finalize();
+        //         }
+        //     });            
+        // }
+        console.log('FINALIZE');
+        zip.finalize();
         zip.on('end', function() {
             console.log('SIZE', zip.pointer());
             postToChatter(request, response, accessToken);
