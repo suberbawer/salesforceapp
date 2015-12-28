@@ -245,10 +245,15 @@ app.post('/document_ids', function(req, res) {
         // docIds = Object.keys(req.body).map(function(k) { 
         //     return k.substring(1, k.length-1).split('","') 
         // });
-
+        var docIds = [];
+        var docIds2 = [];
         Object.keys(req.body).map(function(k) { 
             console.log('1', k.substring(1, k.length-1) );
             console.log('2', k.substring(1, k.length-1).split('","') );
+            docIds =  k.substring(1, k.length-1).split('","');
+            console.log('3', docIds);
+            docIds2.concat(k.substring(1, k.length-1).split('","'));
+            console.log('4', docIds2);
         });
         // Get credentials from postgres
         //getRecords(req, res);
