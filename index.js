@@ -256,10 +256,10 @@ function postToChatter(request, response, accessToken) {
     req.write(postData);
 
     fs.createReadStream('outputZip.zip')
+        .pipe(req, {end:false})
         .on('end', function() {
-            req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-        })
-        .pipe(req);
+            req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+        });
 
 }
 //);
