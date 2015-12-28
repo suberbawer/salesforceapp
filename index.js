@@ -227,8 +227,8 @@ function postToChatter(request, response, accessToken) {
         CRLF;
 
     var req = http.request(options, function(res) {
-      res.on('end', function() {
-          console.log('respuesta en end-------');
+        res.on('end', function() {
+        console.log('respuesta en end-------');
         //   res.write('Check Chatter to see message');
         });
     });
@@ -255,11 +255,11 @@ function postToChatter(request, response, accessToken) {
 
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
-            req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+            //req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false})
         .on('close', function() {
-            req.end();
+            req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         });
 }
 //);
