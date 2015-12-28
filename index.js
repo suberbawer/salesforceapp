@@ -257,6 +257,7 @@ function postToChatter(request, response, accessToken) {
 
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
+            console.log('EN EL END');
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
         .pipe(req, {end:false});
