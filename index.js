@@ -248,7 +248,7 @@ app.post('/test', function(req, res) {
     if (docIds) {
         message = 'SUCCESS';
     }
-    res.send(message);
+    // res.send(message);
     console.log('LOS IDS DE LOS DOCS SON', docIds);
     res.redirect('/attachments');
 });
