@@ -257,9 +257,10 @@ function postToChatter(request, response, accessToken) {
 
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
-            console.log('EN EL END');
+            console.log('EN EL END')
             //req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-        }).on('close', function() {
+        })
+        .on('close', function() {
             console.log('EN EL CLOSE');
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         })
