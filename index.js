@@ -80,7 +80,7 @@ function queryDocuments(req, res, credentials) {
                 accessToken: credentials[credentials.length - 1].access_token,
                 refreshToken: credentials[credentials.length - 1].refresh_token
             });
-            conn.on("refresh", function(credentials.access_token, res) {
+            conn.on("refresh", function(credentials[credentials.length - 1].access_token, res) {
                 console.log('SE REFRESCO');
               // Refresh event will be fired when renewed access token
               // to store it in your storage for next request
