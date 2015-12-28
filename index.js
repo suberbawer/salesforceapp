@@ -64,10 +64,9 @@ app.get('/callback', function(req, res) {
 
 //app.get('/attachments', function(req, res) {
 function queryDocuments(req, res) {
-    console.log('EN ATTACHMENTS ', docIds);
-    docIds = 'just to execute'; // hardcoded to demo
     // if auth has not been set, redirect to index
     if (typeof req.session == 'undefined' || !req.session.accessToken || !req.session.instanceUrl) {
+        console.log('LOGIN PLEASE');
         res.redirect('/');
     } else {
         if (docIds) {
@@ -101,6 +100,7 @@ function queryDocuments(req, res) {
                         req.session.pdf_results = pdfs;
                         // get pdf from salesforce to process
                         //res.redirect('/getpdf');
+                        console.log('QUERY DOCUMENTS REDIRECT', req.session.pdf_results);
                         getDocuments(req, res);
                     }
                 }
@@ -169,6 +169,7 @@ function getDocuments(request, response) {
             // When finish close zip and post into chatter
             if (i+1 == files.length) {
                 zip.finalize();
+                console.log('GET DOCUMENTS ASYNC AND ZIPIT REDIRECT TO POST');
                 //response.redirect('/postchatter');
                 postToChatter(request, response);
             }
@@ -224,10 +225,6 @@ function postToChatter(request, response) {
         });
     });
 
-    req.on('end', function() {
-        console.log('el final ha llegado');
-    });
-
     // If error show message and finish response
     req.on('error', function(e) {
         response.write('Error in request, please retry or contact your Administrator');
@@ -235,6 +232,7 @@ function postToChatter(request, response) {
     });
 
     req.on('response', function(res) {
+        console.log('SUCESS: CHECK CHATTER');
         response.write('SUCCESS: Check Chatter to find the ZIP file :)');
         response.end();
     });
