@@ -13,7 +13,7 @@ module.exports = {
         });
 
         query.on("end", function () {
-            done();
+            client.end();
             console.log('EL PRIMER RESULTADO', result[0]);
             return result;
         });
