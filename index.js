@@ -153,7 +153,7 @@ function getDocuments(request, response, accessToken) {
             });
 
             res.on('end', function() {
-                file.close();
+                //file.close();
                 //zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
                 files.push(pdf.Title);
                 callback();
@@ -241,6 +241,7 @@ function postToChatter(request, response, accessToken) {
       res.on('end', function() {
         //   res.write('Check Chatter to see message');
         });
+        console.log('STATUS CODE-----', res.statusCode);
     });
 
     req.on('end', function() {
@@ -253,10 +254,10 @@ function postToChatter(request, response, accessToken) {
         response.end();
     });
 
-    req.on('response', function(res) {
-        response.write('SUCCESS: Check Chatter to find the ZIP file :)');
-        response.end();
-    });
+    // req.on('response', function(res) {
+    //     response.write('SUCCESS: Check Chatter to find the ZIP file :)');
+    //     response.end();
+    // });
 
     // write data to request body
     req.write(postData);
