@@ -230,6 +230,9 @@ function postToChatter(request, response, accessToken) {
         //   res.write('Check Chatter to see message');
         });
         console.log('status code---', res.statusCode);
+        if (res.statusCode == 201) {
+            response.end();
+        }
     });
 
     // If error show message and finish response
@@ -251,12 +254,13 @@ function postToChatter(request, response, accessToken) {
     });
     // write data to request body
     req.write(postData);
-
-    fs.createReadStream('outputZip.zip')
+    var stream = fs.createReadStream('outputZip.zip');
+    stream
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
-        })
-        .pipe(req, {end:false});
+        }).on('close', function() {
+            .pipe(req, {end:false});
+        });
 
 }
 //);
