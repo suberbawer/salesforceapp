@@ -8,13 +8,14 @@ module.exports = {
         client.connect();
         var query = client.query("select * from loggin_data");
         var result = [];
-        
+
         query.on("row", function (row) {
             result.push(row);
         });
 
         query.on("end", function () {
-            client.end();
+            //client.end();
+            done();
             console.log('EL PRIMER RESULTADO', result[0]);
             return result;
         });
