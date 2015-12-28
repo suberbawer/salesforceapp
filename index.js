@@ -250,10 +250,10 @@ function postToChatter(request, response, accessToken) {
         console.log('EN EL END', res);
 
     });
-    var readStream = fs.createReadStream('outputZip.zip');
     // write data to request body
     req.write(postData, function(err){
         if (!err) {
+            var readStream = fs.createReadStream('outputZip.zip');
             readStream
                 .on('open', function(){
                     console.log('OPEN');
