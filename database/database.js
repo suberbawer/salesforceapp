@@ -21,7 +21,7 @@ module.exports = {
             console.log(JSON.stringify(result.rows));
         });
     },
-    addRecord : function(res, access_token, refresh_token, instance_url) {
+    addRecord : function(access_token, refresh_token, instance_url) {
         var pg = require('pg');
         var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
         var client = new pg.Client(conString);

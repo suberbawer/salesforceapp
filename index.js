@@ -52,9 +52,11 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
-            req.session.accessToken = conn.accessToken;
-            req.session.instanceUrl = conn.instanceUrl;
-            req.session.refreshToken = conn.refreshToken;
+            // Saving in postgres
+            addRecord(conn.accessToken, conn.refreshToken, conn.instanceUrl);
+            // req.session.accessToken = conn.accessToken;
+            // req.session.instanceUrl = conn.instanceUrl;
+            // req.session.refreshToken = conn.refreshToken;
             // Fetch attachments to procees in zip
             //res.redirect('/attachments');
             res.end();
