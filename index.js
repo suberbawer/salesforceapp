@@ -271,6 +271,8 @@ function postToChatter(request, response, accessToken) {
                 .on('close', function() {
                     console.log('CLOSEEEEEEEEEE');
 
+                }).on('finish', function() {
+                    console.log('FINISH');
                 });
         }
     });
