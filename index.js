@@ -68,7 +68,6 @@ function queryDocuments(req, res, credentials) {
         res.redirect('/');
     } else {
         if (docIds) {
-            var lastCredential = credentials[credentials.length - 1];
             var pdf_results = [];
             //
             // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
@@ -77,12 +76,13 @@ function queryDocuments(req, res, credentials) {
 
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
-                instanceUrl: lastCredentialinstance_url,
-                accessToken: lastCredential.access_token,
-                refreshToken: lastCredential.refresh_token
+                instanceUrl: credentials[credentials.length - 1].instance_url,
+                accessToken: credentials[credentials.length - 1].access_token,
+                refreshToken: credentials[credentials.length - 1].refresh_token
             });
-            var access = lastCredential.access_token;
-            conn.on("refresh", function(access, res) {
+
+            var accessToken = credentials[credentials.length - 1].access_token;
+            conn.on("refresh", function(accessToken, res) {
                 console.log('SE REFRESCO');
               // Refresh event will be fired when renewed access token
               // to store it in your storage for next request
