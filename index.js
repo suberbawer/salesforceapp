@@ -172,7 +172,7 @@ function getDocuments(request, response, accessToken) {
         };
         for (var i=0; i < files.length; i++) {
 
-            zip.file(fs.createReadStream(files[i].Title), {name: files[i].Title});
+            zip.append(fs.createReadStream(files[i].Title), {name: files[i].Title});
             // When finish close zip and post into chatter
         }
         // if (!err && i+1 == files.length) {
