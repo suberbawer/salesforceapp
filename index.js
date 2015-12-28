@@ -259,7 +259,7 @@ function postToChatter(request, response, accessToken) {
         .on('end', function() {
             req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
         }).on('close', function() {
-            .pipe(req, {end:false});
+            stream.pipe(req, {end:false});
         });
 
 }
