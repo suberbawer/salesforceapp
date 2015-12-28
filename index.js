@@ -251,31 +251,14 @@ function postToChatter(request, response, accessToken) {
 
     });
     // write data to request body
-    req.write(postData, function(err){
-        if (!err) {
-            var readStream = fs.createReadStream('outputZip.zip');
-            readStream
-                .on('open', function(){
-                    readStream.pipe(req);
-                    console.log('OPEN', readStream);
-                })
-                .on('end', function() {
-                    console.log('END');
-                    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF, function(err) {
-                        if (!err) {
-                            console.log('deberia TERMINAR ACA');
-                            req.end();
-                        }
-                    });
-                })
-                .on('close', function() {
-                    console.log('CLOSEEEEEEEEEE');
+    req.write(postData);
 
-                }).on('finish', function() {
-                    console.log('FINISH');
-                });
-        }
-    });
+    fs.createReadStream('outputZip.zip')
+        // .on('end', function() {
+        //     req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+        // })
+        .pipe(req, {end:false});
+    req.write(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
 }
 //);
 
