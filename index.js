@@ -240,8 +240,8 @@ function postToChatter(request, response, accessToken) {
 
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {
-    docIds = req.body;
-    if (docIds) {
+    console.log('el body', req.body);
+    if (req.body) {
         docIds = Object.keys(docIds).map(function(k) { 
             return k.substring(1, k.length-1).split('","') 
         });
