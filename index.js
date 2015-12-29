@@ -146,13 +146,11 @@ function getDocuments(request, response, credentials, documents) {
     zip.pipe(output);
 
     async.forEachOfSeries(documents, function (doc, key, callback) {
-        options.path = doc.dId;
-        console.log('--------------------', options.path);
-        console.log('--------------------', doc.dName);
+        options.path = doc.url;
 
         req = new http.request(options, function(res) {
             // Create empty file
-            file = fs.createWriteStream(doc.dName);
+            file = fs.createWriteStream(doc.title);
             res.on('data', function (chunk) {
                 // Write file with chunks
                 var bufferStore = file.write(chunk);
@@ -166,7 +164,7 @@ function getDocuments(request, response, credentials, documents) {
             });
 
             res.on('end', function() {
-                zip.append(fs.createReadStream(doc.dName), {name: doc.dName});
+                zip.append(fs.createReadStream(doc.title), {name: doc.title});
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
                         files.push(key);
@@ -223,8 +221,8 @@ function postToChatter(request, response, accessToken) {
            '},' + CRLF +
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
-                 '"description":"Generated Heroku Zip Pdx",' + CRLF +
-                 '"title":"test1.zip"' + CRLF +
+                 '"description":"Attachments Zip Pdx",' + CRLF +
+                 '"title":"AttachmentsPDX.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -232,7 +230,7 @@ function postToChatter(request, response, accessToken) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="Test.zip"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="AttachmentsPDX.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
@@ -270,8 +268,6 @@ app.post('/document_ids', function(req, res) {
         // Get credentials from postgres
         getRecords(req, res, documents);
     }
-
-
 });
 
 // DATABAES OPERATIONS
