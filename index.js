@@ -147,6 +147,9 @@ function getDocuments(request, response, credentials, documents) {
 
     async.forEachOfSeries(documents, function (doc, key, callback) {
         options.path = doc.dId;
+        console.log('--------------------', options.path);
+        console.log('--------------------', doc.dName);
+
         req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(doc.dName);
