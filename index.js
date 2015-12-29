@@ -9,8 +9,6 @@ var http         = require('https');
 var archiver     = require('archiver');
 var async        = require("async");
 var dbOperations = require("./database/database.js");
-// create application/json parser 
-var jsonParser = bodyParser.json();
 
 var docIds = [];
 var conn;
@@ -235,7 +233,7 @@ function postToChatter(request, response, accessToken) {
 }
 
 // Recieve contet ids from salesforce
-app.post('/document_ids', jsonParser, function(req, res) {
+app.post('/document_ids', function(req, res) {
     console.log('el body =>', req.body);
     // var santi = '';
     // santi = JSON.parse(JSON.stringify(req.body));
