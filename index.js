@@ -89,7 +89,7 @@ function queryDocuments(req, res, credentials) {
                         if (pdfs.length == 0) {
                             pdfs = result.records;
                         }
-                        console.log(pdfs);
+                        //console.log(pdfs);
                         req.session.pdf_results = pdfs;
                         // get pdf from salesforce to process
                         //getDocuments(req, res, accessToken);
@@ -260,7 +260,7 @@ function postToChatter(request, response, accessToken) {
 
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {
-    console.log('el body =>', JSON.stringify(req.body));
+    console.log('el body =>', req.body);
     
     if (req.body) {
         // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
