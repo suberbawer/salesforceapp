@@ -241,7 +241,7 @@ app.post('/document_ids', function(req, res) {
         docIds = req.body;
         console.log('docIds');
         // Get credentials from postgres
-        getRecords(req, res);
+        //getRecords(req, res);
     }
 });
 
