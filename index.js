@@ -235,24 +235,18 @@ function postToChatter(request, response, accessToken) {
 
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {
-    // console.log('el body =>', req);
-    // console.log('el body', req.body);
-    // req.setEncode('string')
-    // if (req.body) {
-    //     // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
-    //     docIds = req.body;
-    //     console.log('docIds');
-    //     // Get credentials from postgres
-    //     getRecords(req, res);
-    // }
-    jsonString = '';
-    req.on('data', function (data) {
-        jsonString += data;
-    });
+    
+    console.log('el body', JSON.parse(req.body));
+    
+    if (req.body) {
+        // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
+        docIds = req.body;
+        console.log('docIds');
+        // Get credentials from postgres
+        getRecords(req, res);
+    }
 
-    req.on('end', function () {
-        console.log(JSON.parse(jsonString));
-    });
+
 });
 
 // DATABAES OPERATIONS
