@@ -16,10 +16,8 @@ var docIds = [];
 var conn;
 // app Configuration
 app.use(session({secret: 'demosalesforceapi'}));
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded());
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 
@@ -237,10 +235,11 @@ function postToChatter(request, response, accessToken) {
 }
 
 // Recieve contet ids from salesforce
-app.post('/document_ids', jsonParser, function(req, res) {
-    // console.log('el body =>', req);
-    var santi = '';
-     console.log('el body', req);
+app.post('/document_ids', function(req, res) {
+    console.log('el body =>', req);
+    // var santi = '';
+    // santi = JSON.parse(JSON.stringify(req.body));
+    //  console.log('el body', santi);
     
     // if (req.body) {
     //     // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
