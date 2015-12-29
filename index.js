@@ -240,7 +240,7 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', jsonParser, function(req, res) {
     // console.log('el body =>', req);
     var santi = '';
-     console.log('el body', req.body);
+     console.log('el body', req);
     
     // if (req.body) {
     //     // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
