@@ -73,7 +73,7 @@ function queryDocuments(req, res, credentials) {
             });
             // retrieve of content version to get Attachments to process to add into the final zip
             conn.sobject("ContentVersion")
-                .find( { Id : { IN : '06815000001WZyeAAG', '06815000001WZyjAAG' } }, 'Id, Title, FileType, ContentSize, VersionData' )
+                .find( { Id : { IN : '06815000001WZyeAAG, 06815000001WZyjAAG' } }, 'Id, Title, FileType, ContentSize, VersionData' )
                 .execute(function(err, records) {
                     if (err) { return console.error(err); }
                     
