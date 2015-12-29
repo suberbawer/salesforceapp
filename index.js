@@ -65,42 +65,32 @@ function queryDocuments(req, res, credentials) {
             var accessToken = credentials[credentials.length - 1].access_token;
             var pdf_results = [];
             console.log('LOS DOCUMENTOS', docIds);
-            //
-            // THIS WILL NEED THE FILTER WHERE Id in content documents ids sent from salesforce - CHANGE METHOD OF QUERY
-            //
-            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
-
+            
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: credentials[credentials.length - 1].instance_url,
                 accessToken: accessToken,
             });
-
-            // First query on documents then into content documents to retrieve the file
-            conn.query(query, function(err, result) {
-                if (err) {
-                    return console.error('Document query error: ', err);
-                } else {
-                    if (result.done && result.records.length > 0) {
-                        var pdfs = [];
-                        // Hack to test with selected pdf
-                        for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].FileType == 'PDF') {
-                                pdfs.push(result.records[i]);
-                            }
-                        }
-
-                        if (pdfs.length == 0) {
-                            pdfs = result.records;
-                        }
-                        req.session.pdf_results = pdfs;
+            // retrieve of content version to get Attachments to process to add into the final zip
+            conn.sobject("ContentVersion")
+                .find( { Id : { IN : ['06815000001WZyeAAG', '06815000001WZyjAAG'] } }, 'Id, Title, FileType, ContentSize, VersionData' )
+                .execute(function(err, records) {
+                    if (err) { return console.error(err); }
+                    
+                    if (records.length > 0) {
+                        req.session.pdf_results = records;
                         // get pdf from salesforce to process
                         getDocuments(req, res, accessToken);
+                    } else {
+                        console.log('Error: No Attachments to process');
+                        res.write('ERROR: No Attachments to process')
+                        res.end();
                     }
-                }
-            });
+                });
+
         } else {
-            res.write('NO ATTACHMENTS IN THIS DOCUMENT  ');
+            console.log('Error: No attachments to process');
+            res.write('Error: No attachments to process');
             res.end();
         }
     }
@@ -245,6 +235,7 @@ app.post('/document_ids', function(req, res) {
     if (req.body) {
         // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
         docIds = req.body;
+        console.log('docIds');
         // Get credentials from postgres
         getRecords(req, res);
     }
