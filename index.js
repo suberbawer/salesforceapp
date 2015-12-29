@@ -71,9 +71,13 @@ function queryDocuments(req, res, credentials) {
                 instanceUrl: credentials[credentials.length - 1].instance_url,
                 accessToken: accessToken,
             });
+
+            docIds.push('06815000001WZyeAAG');
+            docIds.push('06815000001WZyjAAG');
+
             // retrieve of content version to get Attachments to process to add into the final zip
             conn.sobject("ContentVersion")
-                .find( { Id : { IN : '06815000001WZyeAAG, 06815000001WZyjAAG' } }, 'Id, Title, FileType, ContentSize, VersionData' )
+                .find( { Id : { IN : docIds } }, 'Id, Title, FileType, ContentSize, VersionData' )
                 .execute(function(err, records) {
                     if (err) { return console.error(err); }
                     
