@@ -235,7 +235,7 @@ function postToChatter(request, response, accessToken) {
 }
 
 // Recieve contet ids from salesforce
-app.post('/document_ids', function(req, res) {
+app.post('/document_ids', jsonParser, function(req, res) {
     console.log('el body =>', req);
     // var santi = '';
     // santi = JSON.parse(JSON.stringify(req.body));
