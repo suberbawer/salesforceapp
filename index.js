@@ -235,13 +235,14 @@ function postToChatter(request, response, accessToken) {
 
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {
+    console.log('el body =>', req);
     console.log('el body', req.body);
     if (req.body) {
         // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
         docIds = req.body;
         console.log('docIds');
         // Get credentials from postgres
-        //getRecords(req, res);
+        getRecords(req, res);
     }
 });
 
