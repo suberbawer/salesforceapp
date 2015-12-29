@@ -237,7 +237,7 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', function(req, res) {
     console.log('el body =>', req);
     var santi = '';
-    santi = JSON.parse(req.body);
+    santi = JSON.parse(JSON.stringify(req.body));
      console.log('el body', santi);
     
     if (req.body) {
