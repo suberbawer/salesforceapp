@@ -125,11 +125,11 @@ function queryDocuments(req, res, credentials) {
     }
 }
 
-function getDocuments(request, response, accessToken) {
+function getDocuments(request, response, credentials, documents) {
     // Variables
     var zip = archiver.create('zip', {});
     var output = fs.createWriteStream('outputZip.zip');
-    var count = 0;
+    var accessToken = credentials[credentials.length - 1].access_token;
     var file;
     var req;
     var files = [];
@@ -145,11 +145,11 @@ function getDocuments(request, response, accessToken) {
     // Bind zip to output
     zip.pipe(output);
 
-    async.forEachOfSeries(request.session.pdf_results, function (pdf, key, callback) {
-        options.path = pdf.VersionData;
+    async.forEachOfSeries(documents, function (doc, key, callback) {
+        options.path = doc.dId;
         req = new http.request(options, function(res) {
             // Create empty file
-            file = fs.createWriteStream(pdf.Title);
+            file = fs.createWriteStream(doc.dName);
             res.on('data', function (chunk) {
                 // Write file with chunks
                 var bufferStore = file.write(chunk);
@@ -163,8 +163,7 @@ function getDocuments(request, response, accessToken) {
             });
 
             res.on('end', function() {
-                zip.append(fs.createReadStream(pdf.Title), {name: pdf.Title});
-                //files.push(pdf);
+                zip.append(fs.createReadStream(doc.dName), {name: doc.dName});
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
                         files.push(key);
@@ -260,21 +259,20 @@ function postToChatter(request, response, accessToken) {
 
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {
-    console.log('el body =>', req.body);
+    //console.log('el body =>', req.body);
     
     if (req.body) {
         // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
-        docIds = req.body;
-        //console.log('docIds');
+        var documents = req.body;
         // Get credentials from postgres
-        getRecords(req, res);
+        getRecords(req, res, documents);
     }
 
 
 });
 
 // DATABAES OPERATIONS
-function getRecords(req, res) {
+function getRecords(req, res, documents) {
     var pg = require('pg');
     //You can run command "heroku config" to see what is Database URL from Heroku belt
     var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
@@ -290,7 +288,7 @@ function getRecords(req, res) {
 
     query.on("end", function () {
         client.end();
-        queryDocuments(req, res, results);
+        getDocuments(req, res, results, documents);
     });
 }
 
