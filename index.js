@@ -65,31 +65,57 @@ function queryDocuments(req, res, credentials) {
             var pdf_results = [];
             console.log('LOS DOCUMENTOS', docIds);
             
+            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
+
             // open connection with client's stored OAuth details
             conn = new sf.Connection({
                 instanceUrl: credentials[credentials.length - 1].instance_url,
                 accessToken: accessToken,
             });
-            var testA = [];
-            testA.push('06815000001WZyeAAG');
-            testA.push('06815000001WZyjAAG');
 
-            // retrieve of content version to get Attachments to process to add into the final zip
-            conn.sobject("ContentVersion")
-                .find( { Id : { IN : testA } }, 'Id, Title, FileType, ContentSize, VersionData' )
-                .execute(function(err, records) {
-                    if (err) { return console.error(err); }
-                    
-                    if (records.length > 0) {
-                        req.session.pdf_results = records;
+            conn.query(query, function(err, result) {
+                if (err) {
+                    return console.error('Document query error: ', err);
+                } else {
+                    if (result.done && result.records.length > 0) {
+                        var pdfs = [];
+                        // Hack to test with selected pdf
+                        for (var i=0; i < result.records.length; i++) {
+                            if (result.records[i].FileType == 'PDF') {
+                                pdfs.push(result.records[i]);
+                            }
+                        }
+
+                        if (pdfs.length == 0) {
+                            pdfs = result.records;
+                        }
+                        console.log(pdfs);
+                        req.session.pdf_results = pdfs;
                         // get pdf from salesforce to process
-                        getDocuments(req, res, accessToken);
-                    } else {
-                        console.log('Error: No Attachments to process');
-                        res.write('ERROR: No Attachments to process')
-                        res.end();
+                        //getDocuments(req, res, accessToken);
                     }
-                });
+                }
+            });
+            // var testA = [];
+            // testA.push('06815000001WZyeAAG');
+            // testA.push('06815000001WZyjAAG');
+
+            // // retrieve of content version to get Attachments to process to add into the final zip
+            // conn.sobject("ContentVersion")
+            //     .find( { Id : { IN : testA } }, 'Id, Title, FileType, ContentSize, VersionData' )
+            //     .execute(function(err, records) {
+            //         if (err) { return console.error(err); }
+                    
+            //         if (records.length > 0) {
+            //             req.session.pdf_results = records;
+            //             // get pdf from salesforce to process
+            //             getDocuments(req, res, accessToken);
+            //         } else {
+            //             console.log('Error: No Attachments to process');
+            //             res.write('ERROR: No Attachments to process')
+            //             res.end();
+            //         }
+            //     });
 
         } else {
             console.log('Error: No attachments to process');
@@ -235,17 +261,14 @@ function postToChatter(request, response, accessToken) {
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {
     console.log('el body =>', req.body);
-    // var santi = '';
-    // santi = JSON.parse(JSON.stringify(req.body));
-    //  console.log('el body', santi);
     
-    // if (req.body) {
-    //     // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
-    //     docIds = req.body;
-    //     console.log('docIds');
-    //     // Get credentials from postgres
-    //     getRecords(req, res);
-    // }
+    if (req.body) {
+        // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
+        docIds = req.body;
+        console.log('docIds');
+        // Get credentials from postgres
+        getRecords(req, res);
+    }
 
 
 });
