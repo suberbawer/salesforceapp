@@ -24,7 +24,7 @@ var oauth2 = new sf.OAuth2({
     // loginUrl : 'https://test.salesforce.com',
     clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
     clientSecret : '4671395917099215169',
-    redirectUri : 'https://salesforceapi.herokuapp.com/callback'    
+    redirectUri : 'https://salesforceapi.herokuapp.com/callback'
 });
 
 // Get authz url and redirect to it.
@@ -47,11 +47,11 @@ app.get('/callback', function(req, res) {
         } else {
             console.log('LA ID', getRecordsByUser(req, res, userInfo.id, null));
             // Saving/Updating in postgres by salesforce user id
-            // if (getRecordsByUser(req, res, userInfo.id, null)) {
-            //     updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
-            // } else {
+            if (getRecordsByUser(req, res, userInfo.id, null)) {
+                updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+            } else {
                 addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
-            //}
+            }
             res.render('index.ejs');
         }
     });
@@ -192,8 +192,10 @@ function postToChatter(request, response, accessToken) {
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {    
     if (req.body) {
+        console.log(req.body);
+        parentItemName = req.body[0].itemName;
         // Get credentials from postgres
-        getRecordsByUser(req, res, req.body[0].userId, req.body);
+        //getRecordsByUser(req, res, req.body[0].userId, req.body);
     }
 });
 
