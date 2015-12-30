@@ -47,7 +47,7 @@ app.get('/callback', function(req, res) {
             return console.error(err);
         } else {
             // Saving/Updating in postgres by salesforce user id
-            getRecordsByUser(req, res, userInfo.id, null);
+            getRecordsByUser(req, res, userInfo.id, conn, null);
         }
     });
 });
@@ -200,7 +200,7 @@ app.post('/document_ids', function(req, res) {
             }
         }
         // Get credentials from postgres
-        getRecordsByUser(req, res, req.body[0].userId, req.body);
+        getRecordsByUser(req, res, req.body[0].userId, null, req.body);
     } else {
         res.sendStatus('ESTA MAL');
         res.end();
@@ -208,7 +208,7 @@ app.post('/document_ids', function(req, res) {
 });
 
 // DATABAES OPERATIONS
-function getRecordsByUser(req, res, userId, documents) {
+function getRecordsByUser(req, res, userId, conn, documents) {
     var pg = require('pg');
     //You can run command "heroku config" to see what is Database URL from Heroku belt
     var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
@@ -231,10 +231,10 @@ function getRecordsByUser(req, res, userId, documents) {
             if (results) {
                 console.log('UPDATE');
                 // Update record for this user
-                updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl)
+                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl)
             } else {
                 // Add new record for user
-                addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             }
             res.render('index.ejs');
         }
