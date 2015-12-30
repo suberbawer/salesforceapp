@@ -46,15 +46,18 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
-            console.log('LA ID', getRecordsByUser(req, res, userInfo.id, null));
+            getRecordsByUser(req, res, userInfo.id, null).on('end', function(result) {
+                            console.log('LA ID', result);
+
+            });
             // Saving/Updating in postgres by salesforce user id
             if (getRecordsByUser(req, res, userInfo.id, null)) {
                 console.log('UDPATE');
                 updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             } else {
-                addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+                //addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             }
-            res.render('index.ejs');
+            //res.render('index.ejs');
         }
     });
 });
