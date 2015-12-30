@@ -1,7 +1,6 @@
 // Variables
 var sf           = require('jsforce');
 var express      = require('express');
-var session      = require('express-session');
 var app          = express();
 var bodyParser   = require('body-parser');
 var fs           = require('fs');
@@ -10,10 +9,7 @@ var archiver     = require('archiver');
 var async        = require("async");
 var dbOperations = require("./database/database.js");
 
-var docIds = [];
-var conn;
 // app Configuration
-app.use(session({secret: 'demosalesforceapi'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set('port', (process.env.PORT || 5000));
@@ -42,7 +38,7 @@ app.listen(app.get('port'), function() {
 
 /* OAuth callback from SF, pass received auth code and get access token */
 app.get('/callback', function(req, res) {
-    conn = new sf.Connection({oauth2: oauth2});
+    var conn = new sf.Connection({oauth2: oauth2});
     var code = req.param('code');
     conn.authorize(code, function(err, userInfo) {
         if (err) {
@@ -54,76 +50,6 @@ app.get('/callback', function(req, res) {
         }
     });
 });
-
-function queryDocuments(req, res, credentials) {
-    // if auth has not been set, redirect to index
-    if (credentials.length == 0 || !credentials[credentials.length - 1].access_token || !credentials[credentials.length - 1].instance_url) {
-        console.log('LOGIN PLEASE');
-    } else {
-        if (docIds) {
-            var accessToken = credentials[credentials.length - 1].access_token;
-            var pdf_results = [];
-            console.log('LOS DOCUMENTOS', docIds);
-            
-            var query = 'SELECT Id, Title, FileType, ContentSize, VersionData FROM ContentVersion';
-
-            // open connection with client's stored OAuth details
-            conn = new sf.Connection({
-                instanceUrl: credentials[credentials.length - 1].instance_url,
-                accessToken: accessToken,
-            });
-
-            conn.query(query, function(err, result) {
-                if (err) {
-                    return console.error('Document query error: ', err);
-                } else {
-                    if (result.done && result.records.length > 0) {
-                        var pdfs = [];
-                        // Hack to test with selected pdf
-                        for (var i=0; i < result.records.length; i++) {
-                            if (result.records[i].FileType == 'PDF') {
-                                pdfs.push(result.records[i]);
-                            }
-                        }
-
-                        if (pdfs.length == 0) {
-                            pdfs = result.records;
-                        }
-                        //console.log(pdfs);
-                        req.session.pdf_results = pdfs;
-                        // get pdf from salesforce to process
-                        //getDocuments(req, res, accessToken);
-                    }
-                }
-            });
-            // var testA = [];
-            // testA.push('06815000001WZyeAAG');
-            // testA.push('06815000001WZyjAAG');
-
-            // // retrieve of content version to get Attachments to process to add into the final zip
-            // conn.sobject("ContentVersion")
-            //     .find( { Id : { IN : testA } }, 'Id, Title, FileType, ContentSize, VersionData' )
-            //     .execute(function(err, records) {
-            //         if (err) { return console.error(err); }
-                    
-            //         if (records.length > 0) {
-            //             req.session.pdf_results = records;
-            //             // get pdf from salesforce to process
-            //             getDocuments(req, res, accessToken);
-            //         } else {
-            //             console.log('Error: No Attachments to process');
-            //             res.write('ERROR: No Attachments to process')
-            //             res.end();
-            //         }
-            //     });
-
-        } else {
-            console.log('Error: No attachments to process');
-            res.write('Error: No attachments to process');
-            res.end();
-        }
-    }
-}
 
 function getDocuments(request, response, credentials, documents) {
     // Variables
@@ -147,7 +73,6 @@ function getDocuments(request, response, credentials, documents) {
 
     async.forEachOfSeries(documents, function (doc, key, callback) {
         options.path = '/services/data/v35.0/sobjects/ContentVersion/'+doc.docId+'/VersionData';
-        console.log('----------', options.path);
         req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(doc.title);
@@ -259,14 +184,10 @@ function postToChatter(request, response, accessToken) {
 }
 
 // Recieve contet ids from salesforce
-app.post('/document_ids', function(req, res) {
-    //console.log('el body =>', req.body);
-    
+app.post('/document_ids', function(req, res) {    
     if (req.body) {
-        // WE HAVE TO CONVERT FROM JSON TO ARRAY TO MAKE THE QUERY FILTER
-        var documents = req.body;
         // Get credentials from postgres
-        getRecords(req, res, documents);
+        getRecords(req, res, req.body);
     }
 });
 
