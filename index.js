@@ -218,7 +218,12 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     query.on("end", function () {
         client.end();
         if (documents) {
-            getDocuments(req, res, results, documents);
+            if (results) {
+                getDocuments(req, res, results, documents);
+            } else {
+                res.sendStatus('401');
+                res.end();
+            }
         } else {
             if (results) {
                 // Update record for this user
