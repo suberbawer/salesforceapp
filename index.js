@@ -191,6 +191,7 @@ function postToChatter(request, response, accessToken) {
 
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {    
+    console.log('la request', req.body);
     if (req.body) {
         console.log(req.body);
         parentItemName = req.body[0].itemName;
