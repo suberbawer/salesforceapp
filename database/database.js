@@ -15,7 +15,7 @@ module.exports = {
         var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("UPDATE INTO loggin_data(user_id, access_token, refresh_token, instance_url) values($1, $2, $3, $4)", [user_id, access_token, refresh_token, instance_url]);
+        var query = client.query("UPDATE loggin_data SET access_token = ($1), refresh_token = ($2), instance_url = ($3) WHERE user_id = ($4)", [access_token, refresh_token, instance_url, user_id]);
 
         query.on("end", function (result) {
             client.end();

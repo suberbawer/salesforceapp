@@ -46,12 +46,12 @@ app.get('/callback', function(req, res) {
             return console.error(err);
         } else {
             console.log('LA ID', userInfo.id);
-            // // Saving/Updating in postgres by salesforce user id
-            // if (getRecordsByUser(req, res, userInfo.id, null)) {
-            //     updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
-            // } else {
+            // Saving/Updating in postgres by salesforce user id
+            if (getRecordsByUser(req, res, userInfo.id, null)) {
+                updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+            } else {
                 addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
-            // }
+            }
             res.render('index.ejs');
         }
     });
