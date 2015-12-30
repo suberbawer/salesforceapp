@@ -45,9 +45,9 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
-            console.log('LA ID', userInfo.Id);
+            console.log('LA ID', userInfo.id);
             // Saving/Updating in postgres by salesforce user id
-            if (getRecordsByUser(req, res, userInfo.Id, null)) {
+            if (getRecordsByUser(req, res, userInfo.id, null)) {
                 updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             } else {
                 addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
