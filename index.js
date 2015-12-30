@@ -146,8 +146,9 @@ function getDocuments(request, response, credentials, documents) {
     zip.pipe(output);
 
     async.forEachOfSeries(documents, function (doc, key, callback) {
+        console.log('----------', doc.docId);
         options.path = '/services/data/v35.0/sobjects/ContentVersion/'+doc.docId+'/VersionData';
-
+        console.log('url OPTIONS ', options.url);
         req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(doc.title);
