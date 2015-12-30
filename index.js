@@ -218,14 +218,14 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     query.on("end", function () {
         client.end();
         if (documents) {
-            if (results) {
+            if (results.length > 0) {
                 getDocuments(req, res, results, documents);
             } else {
                 res.sendStatus('401');
                 res.end();
             }
         } else {
-            if (results) {
+            if (results.length > 0) {
                 // Update record for this user
                 updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             } else {
