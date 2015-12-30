@@ -39,14 +39,13 @@ app.listen(app.get('port'), function() {
 /* OAuth callback from SF, pass received auth code and get access token */
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({oauth2: oauth2});
-    var code = req.params.code;
-    var updateRecord = false;
+    var code = req.query.code;
 
     conn.authorize(code, function(err, userInfo) {
         if (err) {
             return console.error(err);
         } else {
-            console.log('LA ID', userInfo.Id)
+            console.log('LA ID', userInfo.Id);
             // Saving/Updating in postgres by salesforce user id
             if (getRecordsByUser(req, res, userInfo.Id, null)) {
                 updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
