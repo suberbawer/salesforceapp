@@ -197,13 +197,15 @@ app.post('/document_ids', function(req, res) {
     if (req.body) {
         for (var index in req.body) {
             console.log('INDEX ', index);
-            if (req.body[index] != '') {
+            if (req.body[index].itemName != '') {
                 parentItemName = req.body[index].itemName;
                 break;
             }
         }
         // Get credentials from postgres
         getRecordsByUser(req, res, req.body[0].userId, req.body);
+    } else {
+        res.send('Error')
     }
 });
 
