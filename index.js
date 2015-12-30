@@ -47,11 +47,11 @@ app.get('/callback', function(req, res) {
         } else {
             console.log('LA ID', getRecordsByUser(req, res, userInfo.id, null));
             // Saving/Updating in postgres by salesforce user id
-            if (getRecordsByUser(req, res, userInfo.id, null)) {
-                updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
-            } else {
+            // if (getRecordsByUser(req, res, userInfo.id, null)) {
+            //     updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+            // } else {
                 addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
-            }
+            //}
             res.render('index.ejs');
         }
     });
