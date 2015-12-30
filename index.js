@@ -52,7 +52,7 @@ app.get('/callback', function(req, res) {
             } else {
                 addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             }
-            res.render('index');
+            res.render('index.ejs');
             // res.end();
         }
     });
