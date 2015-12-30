@@ -28,7 +28,7 @@ var oauth2 = new sf.OAuth2({
     // loginUrl : 'https://test.salesforce.com',
     clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
     clientSecret : '4671395917099215169',
-    redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+    redirectUri : 'https://salesforceapi.herokuapp.com/callback'    
 });
 
 // Get authz url and redirect to it.
@@ -146,7 +146,7 @@ function getDocuments(request, response, credentials, documents) {
     zip.pipe(output);
 
     async.forEachOfSeries(documents, function (doc, key, callback) {
-        options.path = doc.url;
+        options.path = '/services/data/v35.0/sobjects/ContentVersion/'+doc.docId+'/VersionData';
 
         req = new http.request(options, function(res) {
             // Create empty file
