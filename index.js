@@ -46,6 +46,7 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
+            console.log('LA ID', userInfo.Id)
             // Saving/Updating in postgres by salesforce user id
             if (getRecordsByUser(req, res, userInfo.Id, null)) {
                 updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
@@ -53,7 +54,6 @@ app.get('/callback', function(req, res) {
                 addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             }
             res.render('index.ejs');
-            // res.end();
         }
     });
 });
