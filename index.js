@@ -39,7 +39,7 @@ app.listen(app.get('port'), function() {
 /* OAuth callback from SF, pass received auth code and get access token */
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({oauth2: oauth2});
-    var code = req.param('code');
+    var code = req.params.code;
     var updateRecord = false;
 
     conn.authorize(code, function(err, userInfo) {
