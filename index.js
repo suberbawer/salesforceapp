@@ -146,9 +146,8 @@ function getDocuments(request, response, credentials, documents) {
     zip.pipe(output);
 
     async.forEachOfSeries(documents, function (doc, key, callback) {
-        console.log('----------', doc.docId);
         options.path = '/services/data/v35.0/sobjects/ContentVersion/'+doc.docId+'/VersionData';
-        console.log('url OPTIONS ', options.url);
+        console.log('----------', options.path);
         req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(doc.title);
@@ -198,7 +197,7 @@ function getDocuments(request, response, credentials, documents) {
 function postToChatter(request, response, accessToken) {
     var options = {
       hostname: 'na22.salesforce.com',
-      path: '/services/data/v34.0/chatter/feed-elements',
+      path: '/services/data/v35.0/chatter/feed-elements',
       method: 'POST',
       headers: {
           'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
