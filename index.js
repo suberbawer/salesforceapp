@@ -108,13 +108,12 @@ function getDocuments(request, response, credentials, documents) {
         req.end();
     }, function (err) {
         if (err) {
-            console.error(err.message)
-            response.write('Error in request, please retry or contact your Administrator');
+            console.error(err.message);
+            response.sendStatus(err.message);
             response.end();
         };
         zip.finalize();
         zip.on('end', function() {
-            console.log('SIZE', zip.pointer());
             postToChatter(request, response, accessToken);
         });
     });
@@ -161,19 +160,14 @@ function postToChatter(request, response, accessToken) {
         CRLF;
 
     var req = new http.request(options, function(res) {
-        if (res.statusCode == 201) {
-            response.sendStatus(res.statusCode);
-            response.end();
-        } else {
-            response.sendStatus(res.statusCode);
-            response.end();
-        } 
+        response.sendStatus(res.statusCode);
+        response.end();
     });
 
     // If error show message and finish response
     req.on('error', function(e) {
         console.log('Error in request, please retry or contact your Administrator', e);
-        response.write('Error in request, please retry or contact your Administrator');
+        response.send(e);
         response.end();
     });
 
@@ -190,10 +184,8 @@ function postToChatter(request, response, accessToken) {
 
 // Recieve contet ids from salesforce
 app.post('/document_ids', function(req, res) {    
-    console.log('la request', req.body);
     if (req.body) {
         for (var index in req.body) {
-            console.log('INDEX ', index);
             if (req.body[index].itemName != '') {
                 parentItemName = req.body[index].itemName;
                 break;
@@ -202,7 +194,7 @@ app.post('/document_ids', function(req, res) {
         // Get credentials from postgres
         getRecordsByUser(req, res, req.body[0].userId, null, req.body);
     } else {
-        res.sendStatus('ESTA MAL');
+        res.sendStatus('Body of request is empty');
         res.end();
     }
 });
@@ -229,7 +221,6 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             getDocuments(req, res, results, documents);
         } else {
             if (results) {
-                console.log('UPDATE');
                 // Update record for this user
                 updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             } else {
