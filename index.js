@@ -40,12 +40,19 @@ app.listen(app.get('port'), function() {
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({oauth2: oauth2});
     var code = req.param('code');
+    var updateRecord = false;
+
     conn.authorize(code, function(err, userInfo) {
         if (err) {
             return console.error(err);
         } else {
-            // Saving in postgres (Must update not insert allways)
-            addRecord(conn.accessToken, conn.refreshToken, conn.instanceUrl);
+            // Saving/Updating in postgres by salesforce user id
+            if (getRecordsByUser(req, res, userInfo.Id, null)) {
+                updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+            } else {
+                addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+            }
+            res.render('index');
             res.end();
         }
     });
@@ -187,19 +194,20 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', function(req, res) {    
     if (req.body) {
         // Get credentials from postgres
-        getRecords(req, res, req.body);
+        getRecordsByUser(req, res, req.body[0].userId, req.body);
     }
 });
 
 // DATABAES OPERATIONS
-function getRecords(req, res, documents) {
+function getRecordsByUser(req, res, userId, documents) {
     var pg = require('pg');
     //You can run command "heroku config" to see what is Database URL from Heroku belt
     var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
     var f_result = new Object;
     var client = new pg.Client(conString);
     client.connect();
-    var query = client.query("select * from loggin_data");
+    
+    var query = client.query("select * from loggin_data where user_id="+ userId);
     var results = [];
 
     query.on("row", function (row) {
@@ -208,12 +216,20 @@ function getRecords(req, res, documents) {
 
     query.on("end", function () {
         client.end();
-        getDocuments(req, res, results, documents);
+        if (documents) {
+            getDocuments(req, res, results, documents);
+        } else {
+            return results;
+        }
     });
 }
 
-function addRecord (accessToken, refreshToken, instance_url) {
-    dbOperations.addRecord(accessToken, refreshToken, instance_url);
+function addRecord(userId, accessToken, refreshToken, instance_url) {
+    dbOperations.addRecord(userId, accessToken, refreshToken, instance_url);
+}
+
+function updateRecord(userId, accessToken, refreshToken, instance_url) {
+    dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url);
 }
 
 app.get('/db/delRecord', function(req,res){
