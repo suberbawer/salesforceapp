@@ -8,6 +8,7 @@ var http         = require('https');
 var archiver     = require('archiver');
 var async        = require("async");
 var dbOperations = require("./database/database.js");
+var parentItemName = '';
 
 // app Configuration
 app.use(bodyParser.json());
@@ -48,6 +49,7 @@ app.get('/callback', function(req, res) {
             console.log('LA ID', getRecordsByUser(req, res, userInfo.id, null));
             // Saving/Updating in postgres by salesforce user id
             if (getRecordsByUser(req, res, userInfo.id, null)) {
+                console.log('UDPATE');
                 updateRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             } else {
                 addRecord(userInfo.id, conn.accessToken, conn.refreshToken, conn.instanceUrl);
@@ -152,8 +154,8 @@ function postToChatter(request, response, accessToken) {
            '},' + CRLF +
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
-                 '"description":"Attachments Zip Pdx",' + CRLF +
-                 '"title":"AttachmentsPDX.zip"' + CRLF +
+                 '"description":"parentItemName Generated Zip",' + CRLF +
+                 '"title":"'+parentItemName+'.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -161,7 +163,7 @@ function postToChatter(request, response, accessToken) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="AttachmentsPDX.zip"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+parentItemName+'.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
@@ -193,10 +195,15 @@ function postToChatter(request, response, accessToken) {
 app.post('/document_ids', function(req, res) {    
     console.log('la request', req.body);
     if (req.body) {
-        console.log(req.body);
-        parentItemName = req.body[0].itemName;
+        for (var index in req.body) {
+            console.log('INDEX ', index);
+            if (req.body[index] != '') {
+                parentItemName = req.body[index].itemName;
+                break;
+            }
+        }
         // Get credentials from postgres
-        //getRecordsByUser(req, res, req.body[0].userId, req.body);
+        getRecordsByUser(req, res, req.body[0].userId, req.body);
     }
 });
 
