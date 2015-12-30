@@ -231,7 +231,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             if (results) {
                 console.log('UPDATE');
                 // Update record for this user
-                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl)
+                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl);
             } else {
                 // Add new record for user
                 addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl);
