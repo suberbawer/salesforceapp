@@ -169,6 +169,10 @@ function postToChatter(request, response, accessToken) {
 
     var req = new http.request(options, function(res) {
         if (res.statusCode == 201) {
+            response.send(res.statusCode);
+            response.end();
+        } else {
+            response.send(res.statusCode);
             response.end();
         } 
     });
@@ -205,7 +209,8 @@ app.post('/document_ids', function(req, res) {
         // Get credentials from postgres
         getRecordsByUser(req, res, req.body[0].userId, req.body);
     } else {
-        res.send('Error')
+        res.send('ESTA MAL');
+        res.end();
     }
 });
 
