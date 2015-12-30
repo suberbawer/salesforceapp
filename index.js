@@ -206,7 +206,7 @@ function getRecordsByUser(req, res, userId, documents) {
     var client = new pg.Client(conString);
     client.connect();
     
-    var query = client.query("select * from loggin_data where user_id="+ userId);
+    var query = client.query("select * from loggin_data where user_id=($1)", [userId]);
     var results = [];
 
     query.on("row", function (row) {
