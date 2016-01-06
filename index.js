@@ -33,6 +33,10 @@ app.get('/', function(req, res) {
     res.redirect(oauth2.getAuthorizationUrl());
 });
 
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
+
 /* OAuth callback from SF, pass received auth code and get access token */
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({oauth2: oauth2});
@@ -179,7 +183,7 @@ function postToChatter(request, response, accessToken) {
 }
 
 // Recieve contet ids from salesforce
-app.post('/document_ids', function(req, res) {    
+app.post('/document_ids', function(req, res) {
     if (req.body) {
         for (var index in req.body) {
             if (req.body[index].itemName != '') {
@@ -203,7 +207,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     var f_result = new Object;
     var client = new pg.Client(conString);
     client.connect();
-    
+
     var query = client.query("select * from loggin_data where user_id=($1)", [userId]);
     var results = [];
 
