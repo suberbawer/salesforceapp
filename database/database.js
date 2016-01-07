@@ -65,7 +65,7 @@ module.exports = {
                                         "access_token VARCHAR (220),"+
                                         "refresh_token VARCHAR (220),"+
                                         "instance_url VARCHAR (220),"+
-                                        "salesforce_version SMALLINT,"+
+                                        "salesforce_version VARCHAR (5),"+
                                         "id serial PRIMARY KEY NOT NULL"+
                                     ")");
 
