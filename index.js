@@ -70,7 +70,7 @@ function getDocuments(request, response, credentials, documents) {
     var files       = [];
     var file;
     var req;
-
+    console.log('ACCESSTOKEN', accessToken);
     var options = {
         hostname: 'na22.salesforce.com',
         path: '',
