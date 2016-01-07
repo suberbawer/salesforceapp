@@ -46,7 +46,6 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
-            console.log('CHECK VERSION OF SALESFORCE ', conn.version);
             // Saving/Updating in postgres by salesforce user id
             getRecordsByUser(req, res, userInfo.id, conn, null);
         }
@@ -72,6 +71,9 @@ function getDocuments(request, response, credentials, documents) {
     };
     // Bind zip to output
     zip.pipe(output);
+    console.log('CHECK VERSION OF SALESFORCE 1-- ', conn.version);
+    var conn = new sf.Connection({oauth2: oauth2});
+    console.log('CHECK VERSION OF SALESFORCE ', conn.version);
 
     async.forEachOfSeries(documents, function (doc, key, callback) {
         options.path = '/services/data/v35.0/sobjects/ContentVersion/'+doc.docId+'/VersionData';
