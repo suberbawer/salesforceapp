@@ -71,7 +71,7 @@ function getDocuments(request, response, credentials, documents) {
     var req;
 
     var options = {
-        hostname: instance_url,
+        hostname: hostUrl,
         path: '',
         method: 'GET',
         headers: {
