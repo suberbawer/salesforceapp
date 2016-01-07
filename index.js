@@ -241,12 +241,12 @@ function getRecordsByUser(req, res, userId, conn, documents) {
 }
 
 
-function addRecord(userId, accessToken, refreshToken, instance_url) {
-    dbOperations.addRecord(userId, accessToken, refreshToken, instance_url);
+function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version) {
+    dbOperations.addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version);
 }
 
-function updateRecord(userId, accessToken, refreshToken, instance_url) {
-    dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url);
+function updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version) {
+    dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version);
 }
 
 app.get('/db/readRecords', function(req,res){
