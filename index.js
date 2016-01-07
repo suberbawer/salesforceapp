@@ -23,8 +23,8 @@ app.set('view engine', 'ejs');
 var oauth2 = new sf.OAuth2({
     // we can change loginUrl to connect to sandbox or prerelease env.
     // loginUrl : 'https://test.salesforce.com',
-    clientId : '3MVG91ftikjGaMd_epnylI.6EF7HD13f4Vz5k27V.mtepNErOxzFVdczAIGPkckY57Uy5V9EK5UohtiJM00t7',
-    clientSecret : '4671395917099215169',
+    clientId : '3MVG9fMtCkV6eLhdV835GqoFVmPFRhrD9E3.yj1lRxKn5OP4B.FLmkRFzkesl_0VqS8edlLuptIVa_kgx_fe7',
+    clientSecret : '5032836692064605706',
     redirectUri : 'https://salesforceapi.herokuapp.com/callback'
 });
 
