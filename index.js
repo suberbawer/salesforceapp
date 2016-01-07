@@ -121,18 +121,19 @@ function getDocuments(request, response, credentials, documents) {
 }
 
 function postToChatter(request, response, accessToken, sVersion) {
+    var boundary = Math.random().toString(37);
+    console.log('BOUNDARY ', boundary);
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v'+ sVersion +'/chatter/feed-elements',
       method: 'POST',
       headers: {
-          'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
+          'Content-Type': 'multipart/form-data; boundary='+boundary,
           'Authorization': 'OAuth ' + accessToken
       }
     };
-
     var CRLF = '\r\n';
-    var postData = '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
+    var postData = '--'+ boundary + CRLF +
         'Content-Disposition: form-data; name="json"' + CRLF +
         'Content-Type: application/json; charset=UTF-8' + CRLF +
         CRLF +
@@ -177,7 +178,7 @@ function postToChatter(request, response, accessToken, sVersion) {
 
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
-            req.end(CRLF + '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq--' + CRLF);
+            req.end(CRLF + '--'+ boundary +'--' + CRLF);
         })
         .pipe(req, {end:false});
 
