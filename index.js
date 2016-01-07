@@ -46,11 +46,11 @@ app.get('/callback', function(req, res) {
         if (err) {
             return console.error(err);
         } else {
+            console.log('CHECK VERSION OF SALESFORCE ', conn.version);
             // Saving/Updating in postgres by salesforce user id
             getRecordsByUser(req, res, userInfo.id, conn, null);
         }
     });
-    console.log('CHECK VERSION OF SALESFORCE ', conn.version);
 });
 
 function getDocuments(request, response, credentials, documents) {
