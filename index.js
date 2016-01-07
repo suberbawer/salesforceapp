@@ -50,6 +50,7 @@ app.get('/callback', function(req, res) {
             getRecordsByUser(req, res, userInfo.id, conn, null);
         }
     });
+    console.log('CHECK VERSION OF SALESFORCE ', conn.version);
 });
 
 function getDocuments(request, response, credentials, documents) {
