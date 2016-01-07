@@ -220,6 +220,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     query.on("end", function () {
         client.end();
         if (documents) {
+            console.log('RESULTS ', results);
             if (results.length > 0) {
                 getDocuments(req, res, results, documents);
             } else {
