@@ -52,6 +52,13 @@ app.get('/callback', function(req, res) {
     });
 });
 
+/**
+ * Function that request documents asyncrhonously from salesforce and create a zip with all documents inside
+ *
+ * @param request, response - express frame request and response
+ * @param crendetials - credentials of logged user to get acces token and some needed information
+ * @param documents - wrapper that represent needed information of documents to get them
+ */
 function getDocuments(request, response, credentials, documents) {
     // Variables
     var zip         = archiver.create('zip', {});
@@ -120,8 +127,17 @@ function getDocuments(request, response, credentials, documents) {
     });
 }
 
+/**
+ * Function that send zip file to salesforce chatter via chatter api
+ *
+ * @param request, response - express frame request and response
+ * @param accesToke - user access token authorization
+ * @param sVersion - api version to set url request
+ */
 function postToChatter(request, response, accessToken, sVersion) {
+    // Boundary
     var boundary = 'a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq';
+    // Options to create the request
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v'+ sVersion +'/chatter/feed-elements',
@@ -132,6 +148,7 @@ function postToChatter(request, response, accessToken, sVersion) {
       }
     };
     var CRLF = '\r\n';
+    // Request
     var postData = '--'+ boundary + CRLF +
         'Content-Disposition: form-data; name="json"' + CRLF +
         'Content-Type: application/json; charset=UTF-8' + CRLF +
@@ -159,7 +176,7 @@ function postToChatter(request, response, accessToken, sVersion) {
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+ parentItemName +'.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
-
+    // Execute request
     var req = new http.request(options, function(res) {
         response.sendStatus(res.statusCode);
         response.end();
@@ -174,7 +191,7 @@ function postToChatter(request, response, accessToken, sVersion) {
 
     // write data to request body
     req.write(postData);
-
+    // Add final boundary and bind request to zip
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
             req.end(CRLF + '--'+ boundary +'--' + CRLF);
@@ -183,16 +200,17 @@ function postToChatter(request, response, accessToken, sVersion) {
 
 }
 
-// Recieve contet ids from salesforce
+// Function that recieve wrapper documents from salesforce to init the process
 app.post('/document_ids', function(req, res) {
     if (req.body) {
         for (var index in req.body) {
             if (req.body[index].itemName != '') {
+                // Get item name to set zip name
                 parentItemName = req.body[index].itemName;
                 break;
             }
         }
-        // Get credentials from postgres
+        // Get credentials by user from postgres
         getRecordsByUser(req, res, req.body[0].userId, null, req.body);
     } else {
         res.sendStatus('Body of request is empty');
@@ -201,25 +219,34 @@ app.post('/document_ids', function(req, res) {
 });
 
 // DATABAES OPERATIONS
+
+/**
+ * Function that get datata by user from database
+ *
+ * @param request, response - express frame request and response
+ * @param userId - unique salesforce user id to get the requested information from db
+ * @param conn - generated connection between sf and nodejs
+ * @param documents - list of wrapper documents from salesforce
+ */
 function getRecordsByUser(req, res, userId, conn, documents) {
-    var pg = require('pg');
-    //You can run command "heroku config" to see what is Database URL from Heroku belt
+    var pg        = require('pg');
     var conString = process.env.DATABASE_URL;
-    var f_result = new Object;
-    var client = new pg.Client(conString);
+    var f_result  = new Object;
+    var client    = new pg.Client(conString);
     client.connect();
-
-    var query = client.query("select * from loggin_data where user_id=($1)", [userId]);
+    // Get loggin_data by sf user
+    var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
     var results = [];
-
+    // Fill list with resutls by row
     query.on("row", function (row) {
         results.push(row);
     });
-
+    // When query finish then proceed
     query.on("end", function () {
         client.end();
         if (documents) {
             if (results.length > 0) {
+                // Continue with flow to post in chatter ( get documents from sf )
                 getDocuments(req, res, results, documents);
             } else {
                 res.sendStatus('401');
@@ -233,30 +260,54 @@ function getRecordsByUser(req, res, userId, conn, documents) {
                 // Add new record for user
                 addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
             }
+            // Render user information
             res.render('index.ejs');
         }
     });
 }
 
-
+/**
+ * Function that insert datata to login_data table in db
+ *
+ * @param userId - unique salesforce user id to get the requested information from db
+ * @param accessToken - sf user access token authorization
+ * @param refreshToken - sf user acces refresh token auth
+ * @param instance_url - sf instance url
+ * @param salesforce_version - api version
+ */
 function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version) {
     dbOperations.addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version);
 }
 
+/**
+ * Function that update datata from login_data table in db
+ *
+ * @param userId - unique salesforce user id to get the requested information from db
+ * @param accessToken - sf user access token authorization
+ * @param refreshToken - sf user acces refresh token auth
+ * @param instance_url - sf instance url
+ * @param salesforce_version - api version
+ */
 function updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version) {
     dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version);
 }
 
+// Function that read all records of loggin_data table
 app.get('/db/readRecords', function(req,res){
     dbOperations.readRecords(req,res);
 });
 
+// Function that delete a record by id of loggin_data table
 app.get('/db/delRecord', function(req,res){
     dbOperations.delRecord(req,res);
 });
+
+// Function that create loggin_data table
 app.get('/db/createTable', function(req,res){
     dbOperations.createTable(req,res);
 });
+
+// Function that drop loggin_data table
 app.get('/db/dropTable', function(req,res){
     dbOperations.dropTable(req,res);
 });
