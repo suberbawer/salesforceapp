@@ -28,7 +28,7 @@ module.exports = {
         query.on("end", function () {
             client.end();
             return res.json(results);
-        }
+        });
     },
     updateRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version) {
         var pg = require('pg');
