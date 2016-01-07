@@ -60,19 +60,18 @@ app.get('/callback', function(req, res) {
  * @param documents - wrapper that represent needed information of documents to get them
  */
 function getDocuments(request, response, credentials, documents) {
-        console.log('get documents-------');
-
     // Variables
     var zip         = archiver.create('zip', {});
     var output      = fs.createWriteStream('outputZip.zip');
     var accessToken = credentials[credentials.length - 1].access_token;
     var sVersion    = credentials[credentials.length - 1].salesforce_version;
+    var hostUrl     = credentials[credentials.length - 1].instance_url.substring(8);
     var files       = [];
     var file;
     var req;
-    console.log('ACCESSTOKEN', accessToken);
+
     var options = {
-        hostname: 'na22.salesforce.com',
+        hostname: instance_url,
         path: '',
         method: 'GET',
         headers: {
@@ -124,7 +123,6 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
-            //console.log('ZIP ', zip);
             postToChatter(request, response, credentials);
         });
     });
@@ -141,7 +139,8 @@ function postToChatter(request, response, credentials) {
     console.log('post to chatter-------');
     var accessToken = credentials[credentials.length - 1].access_token;
     var sVersion    = credentials[credentials.length - 1].salesforce_version;
-    var pathUrl     = credentials[credentials.length - 1].instance_url;
+    var pathUrl     = credentials[credentials.length - 1].instance_url.substring(8);
+    console.log('URL', pathUrl)
     // Boundary
     var boundary = 'a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq';
     // Options to create the request
@@ -185,7 +184,6 @@ function postToChatter(request, response, credentials) {
         CRLF;
     // Execute request
     var req = new http.request(options, function(res) {
-        console.log('REQ CODE', res.statusCode);
         response.sendStatus(res.statusCode);
         response.end();
     });
