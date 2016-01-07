@@ -1,7 +1,7 @@
 module.exports = {
     addRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version) {
         var pg = require('pg');
-        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("INSERT INTO loggin_data(user_id, access_token, refresh_token, instance_url, salesforce_version) values($1, $2, $3, $4, $5)", [user_id, access_token, refresh_token, instance_url, salesforce_version]);
@@ -12,7 +12,7 @@ module.exports = {
     },
     updateRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version) {
         var pg = require('pg');
-        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("UPDATE loggin_data SET access_token = ($1), refresh_token = ($2), instance_url = ($3), salesforce_version = ($5) WHERE user_id = ($4)", [access_token, refresh_token, instance_url, user_id, salesforce_version]);
@@ -23,7 +23,7 @@ module.exports = {
     },
     delRecord : function(req, res){
         var pg = require('pg');
-        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "Delete from loggin_data Where id ="+req.query.id);
@@ -36,7 +36,7 @@ module.exports = {
     },
     createTable: function(req, res) {
         var pg = require('pg');
-        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "CREATE TABLE loggin_data"+
@@ -57,7 +57,7 @@ module.exports = {
     },
     dropTable : function(req, res){
         var pg = require('pg');
-        var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
+        var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query( "Drop TABLE loggin_data");
