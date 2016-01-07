@@ -54,12 +54,13 @@ app.get('/callback', function(req, res) {
 
 function getDocuments(request, response, credentials, documents) {
     // Variables
-    var zip = archiver.create('zip', {});
-    var output = fs.createWriteStream('outputZip.zip');
+    var zip         = archiver.create('zip', {});
+    var output      = fs.createWriteStream('outputZip.zip');
     var accessToken = credentials[credentials.length - 1].access_token;
+    var sVersion    = credentials[credentials.length - 1].salesforce_version;
+    var files       = [];
     var file;
     var req;
-    var files = [];
 
     var options = {
         hostname: 'na22.salesforce.com',
@@ -71,12 +72,9 @@ function getDocuments(request, response, credentials, documents) {
     };
     // Bind zip to output
     zip.pipe(output);
-    //console.log('CHECK VERSION OF SALESFORCE 1-- ', conn.version);
-    var conn = new sf.Connection({oauth2: oauth2});
-    console.log('CHECK VERSION OF SALESFORCE ', conn.version);
 
     async.forEachOfSeries(documents, function (doc, key, callback) {
-        options.path = '/services/data/v35.0/sobjects/ContentVersion/'+doc.docId+'/VersionData';
+        options.path = '/services/data/v'+ sVersion +'/sobjects/ContentVersion/'+doc.docId+'/VersionData';
         req = new http.request(options, function(res) {
             // Create empty file
             file = fs.createWriteStream(doc.title);
@@ -117,15 +115,15 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
-            postToChatter(request, response, accessToken);
+            postToChatter(request, response, accessToken, sVersion);
         });
     });
 }
 
-function postToChatter(request, response, accessToken) {
+function postToChatter(request, response, accessToken, sVersion) {
     var options = {
       hostname: 'na22.salesforce.com',
-      path: '/services/data/v35.0/chatter/feed-elements',
+      path: '/services/data/v'+ sVersion +'/chatter/feed-elements',
       method: 'POST',
       headers: {
           'Content-Type': 'multipart/form-data; boundary=a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq',
@@ -205,6 +203,7 @@ app.post('/document_ids', function(req, res) {
 // DATABAES OPERATIONS
 function getRecordsByUser(req, res, userId, conn, documents) {
     var pg = require('pg');
+    console.log('DB URL---', process.env.DATABASE_URL);
     //You can run command "heroku config" to see what is Database URL from Heroku belt
     var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
     var f_result = new Object;
@@ -230,10 +229,10 @@ function getRecordsByUser(req, res, userId, conn, documents) {
         } else {
             if (results.length > 0) {
                 // Update record for this user
-                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
             } else {
                 // Add new record for user
-                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl);
+                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
             }
             res.render('index.ejs');
         }
