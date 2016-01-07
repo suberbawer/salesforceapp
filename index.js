@@ -121,7 +121,7 @@ function getDocuments(request, response, credentials, documents) {
 }
 
 function postToChatter(request, response, accessToken, sVersion) {
-    var boundary = 'a7V4kRcFA8E79j3l4fx1tukQ85lE4FeoEgJgq';
+    var boundary = 'a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq';
     var options = {
       hostname: 'na22.salesforce.com',
       path: '/services/data/v'+ sVersion +'/chatter/feed-elements',
