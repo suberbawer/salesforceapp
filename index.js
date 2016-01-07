@@ -203,7 +203,7 @@ app.post('/document_ids', function(req, res) {
 // DATABAES OPERATIONS
 function getRecordsByUser(req, res, userId, conn, documents) {
     var pg = require('pg');
-    console.log('DB URL---', process.env.DATABASE_URL);
+    console.log('DB URL---', process.env);
     console.log('DB URL---', process.env.HEROKU_POSTGRESQL_ROSE_URL);
     //You can run command "heroku config" to see what is Database URL from Heroku belt
     var conString = 'postgres://rptskpfekwvldg:A2i0A8XHAl_UZoP6EnxD-G39Ik@ec2-107-22-170-249.compute-1.amazonaws.com:5432/d3l0qan6csusdv';
