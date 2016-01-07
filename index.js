@@ -136,11 +136,9 @@ function getDocuments(request, response, credentials, documents) {
  * @param sVersion - api version to set url request
  */
 function postToChatter(request, response, credentials) {
-    console.log('post to chatter-------');
     var accessToken = credentials[credentials.length - 1].access_token;
     var sVersion    = credentials[credentials.length - 1].salesforce_version;
     var pathUrl     = credentials[credentials.length - 1].instance_url.substring(8);
-    console.log('URL', pathUrl)
     // Boundary
     var boundary = 'a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq';
     // Options to create the request
@@ -182,6 +180,7 @@ function postToChatter(request, response, credentials) {
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+ parentItemName +'.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
+
     // Execute request
     var req = new http.request(options, function(res) {
         response.sendStatus(res.statusCode);
@@ -214,8 +213,6 @@ app.post('/document_ids', function(req, res) {
                 // Get item name to set zip name
                 parentItemName = req.body[index].itemName;
                 break;
-            } else {
-                parentItemName = req.body[index].title;
             }
         }
         // Get credentials by user from postgres
