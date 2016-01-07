@@ -125,7 +125,7 @@ function getDocuments(request, response, credentials, documents) {
         zip.finalize();
         zip.on('end', function() {
             //console.log('ZIP ', zip);
-            postToChatter(request, response, accessToken, sVersion);
+            postToChatter(request, response, credentials);
         });
     });
 }
@@ -137,13 +137,16 @@ function getDocuments(request, response, credentials, documents) {
  * @param accesToke - user access token authorization
  * @param sVersion - api version to set url request
  */
-function postToChatter(request, response, accessToken, sVersion) {
+function postToChatter(request, response, credentials) {
     console.log('post to chatter-------');
+    var accessToken = credentials[credentials.length - 1].access_token;
+    var sVersion    = credentials[credentials.length - 1].salesforce_version;
+    var pathUrl     = credentials[credentials.length - 1].instance_url;
     // Boundary
     var boundary = 'a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq';
     // Options to create the request
     var options = {
-      hostname: 'na22.salesforce.com',
+      hostname: pathUrl,
       path: '/services/data/v'+ sVersion +'/chatter/feed-elements',
       method: 'POST',
       headers: {
