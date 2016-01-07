@@ -124,7 +124,7 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
-            console.log('ZIP ', zip);
+            //console.log('ZIP ', zip);
             postToChatter(request, response, accessToken, sVersion);
         });
     });
