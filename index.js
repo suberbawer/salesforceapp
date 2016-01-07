@@ -36,10 +36,10 @@ app.get('/', function(req, res) {
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
-var conn;
+
 /* OAuth callback from SF, pass received auth code and get access token */
 app.get('/callback', function(req, res) {
-    conn = new sf.Connection({oauth2: oauth2});
+    var conn = new sf.Connection({oauth2: oauth2});
     var code = req.query.code;
 
     conn.authorize(code, function(err, userInfo) {
@@ -71,7 +71,7 @@ function getDocuments(request, response, credentials, documents) {
     };
     // Bind zip to output
     zip.pipe(output);
-    console.log('CHECK VERSION OF SALESFORCE 1-- ', conn.version);
+    //console.log('CHECK VERSION OF SALESFORCE 1-- ', conn.version);
     var conn = new sf.Connection({oauth2: oauth2});
     console.log('CHECK VERSION OF SALESFORCE ', conn.version);
 
