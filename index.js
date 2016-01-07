@@ -121,7 +121,7 @@ function getDocuments(request, response, credentials, documents) {
 }
 
 function postToChatter(request, response, accessToken, sVersion) {
-    var boundary = Math.random().toString(37);
+    var boundary = Math.random().toString(36);
     console.log('BOUNDARY ', boundary);
     var options = {
       hostname: 'na22.salesforce.com',
