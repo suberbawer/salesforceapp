@@ -60,6 +60,8 @@ app.get('/callback', function(req, res) {
  * @param documents - wrapper that represent needed information of documents to get them
  */
 function getDocuments(request, response, credentials, documents) {
+        console.log('get documents-------');
+
     // Variables
     var zip         = archiver.create('zip', {});
     var output      = fs.createWriteStream('outputZip.zip');
@@ -135,6 +137,7 @@ function getDocuments(request, response, credentials, documents) {
  * @param sVersion - api version to set url request
  */
 function postToChatter(request, response, accessToken, sVersion) {
+    console.log('post to chatter-------');
     // Boundary
     var boundary = 'a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq';
     // Options to create the request
@@ -202,6 +205,7 @@ function postToChatter(request, response, accessToken, sVersion) {
 
 // Function that recieve wrapper documents from salesforce to init the process
 app.post('/document_ids', function(req, res) {
+    console.log('First--------', req.body);
     if (req.body) {
         for (var index in req.body) {
             if (req.body[index].itemName != '') {
