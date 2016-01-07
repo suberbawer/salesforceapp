@@ -121,7 +121,7 @@ function getDocuments(request, response, credentials, documents) {
 }
 
 function postToChatter(request, response, accessToken, sVersion) {
-    var boundary = Math.random().toString(36);
+    var boundary = 'a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq';
     console.log('BOUNDARY ', boundary);
     var options = {
       hostname: 'na22.salesforce.com',
@@ -220,7 +220,6 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     query.on("end", function () {
         client.end();
         if (documents) {
-            console.log('RESULTS ', results);
             if (results.length > 0) {
                 getDocuments(req, res, results, documents);
             } else {
