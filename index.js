@@ -124,6 +124,7 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
+            console.log('ZIP ', zip);
             postToChatter(request, response, accessToken, sVersion);
         });
     });
@@ -181,6 +182,7 @@ function postToChatter(request, response, accessToken, sVersion) {
         CRLF;
     // Execute request
     var req = new http.request(options, function(res) {
+        console.log('REQ CODE', res.statusCode);
         response.sendStatus(res.statusCode);
         response.end();
     });
@@ -188,7 +190,7 @@ function postToChatter(request, response, accessToken, sVersion) {
     // If error show message and finish response
     req.on('error', function(e) {
         console.log('Error in request, please retry or contact your Administrator', e);
-        response.send(e);
+        response.sendStatus(e);
         response.end();
     });
 
@@ -205,13 +207,14 @@ function postToChatter(request, response, accessToken, sVersion) {
 
 // Function that recieve wrapper documents from salesforce to init the process
 app.post('/document_ids', function(req, res) {
-    console.log('First--------', req.body);
     if (req.body) {
         for (var index in req.body) {
             if (req.body[index].itemName != '') {
                 // Get item name to set zip name
                 parentItemName = req.body[index].itemName;
                 break;
+            } else {
+                parentItemName = req.body[index].title;
             }
         }
         // Get credentials by user from postgres
