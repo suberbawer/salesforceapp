@@ -148,8 +148,8 @@ function postToChatter(request, response, accessToken, sVersion) {
            '},' + CRLF +
            '"capabilities":{' + CRLF +
               '"content":{' + CRLF +
-                 '"description":"parentItemName Generated Zip",' + CRLF +
-                 '"title":"'+parentItemName+'.zip"' + CRLF +
+                 '"description":"'+ parentItemName +' Generated Zip",' + CRLF +
+                 '"title":"'+ parentItemName +'.zip"' + CRLF +
               '}' + CRLF +
            '},' + CRLF +
            '"feedElementType":"FeedItem",' + CRLF +
@@ -157,7 +157,7 @@ function postToChatter(request, response, accessToken, sVersion) {
         '}' + CRLF +
         CRLF +
         '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
-        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+parentItemName+'.zip"' + CRLF +
+        'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+ parentItemName +'.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
 
