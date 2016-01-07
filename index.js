@@ -240,6 +240,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     });
 }
 
+
 function addRecord(userId, accessToken, refreshToken, instance_url) {
     dbOperations.addRecord(userId, accessToken, refreshToken, instance_url);
 }
@@ -247,6 +248,10 @@ function addRecord(userId, accessToken, refreshToken, instance_url) {
 function updateRecord(userId, accessToken, refreshToken, instance_url) {
     dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url);
 }
+
+app.get('/db/readRecords', function(req,res){
+    dbOperations.readRecords(req,res);
+});
 
 app.get('/db/delRecord', function(req,res){
     dbOperations.delRecord(req,res);

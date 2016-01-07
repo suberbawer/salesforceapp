@@ -10,6 +10,26 @@ module.exports = {
             client.end();
         });
     },
+    readRecords: function(req, res) {
+        var pg = require('pg');
+        //You can run command "heroku config" to see what is Database URL from Heroku belt
+        var conString = process.env.DATABASE_URL;
+        var f_result = new Object;
+        var client = new pg.Client(conString);
+        client.connect();
+
+        var query = client.query("select * from loggin_data");
+        var results = [];
+
+        query.on("row", function (row) {
+            results.push(row);
+        });
+
+        query.on("end", function () {
+            client.end();
+            return res.json(results);
+        }
+    },
     updateRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version) {
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
