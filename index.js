@@ -215,8 +215,13 @@ app.post('/document_ids', function(req, res) {
                 break;
             }
         }
-        // Get credentials by user from postgres
-        getRecordsByUser(req, res, req.body[0].userId, null, req.body);
+        if (parentItemName != '') {
+            // Get credentials by user from postgres
+            getRecordsByUser(req, res, req.body[0].userId, null, req.body);
+        } else {
+            // Prevetn empty item names
+            parentItemName = 'Generated Zip';
+        }
     } else {
         res.sendStatus('Body of request is empty');
         res.end();
