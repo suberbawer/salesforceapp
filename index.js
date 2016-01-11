@@ -215,7 +215,7 @@ app.post('/document_ids', function(req, res) {
                 break;
             }
         }
-        if (parentItemName != '') {
+        if (parentItemName) {
             // Get credentials by user from postgres
             getRecordsByUser(req, res, req.body[0].userId, null, req.body);
         } else {
