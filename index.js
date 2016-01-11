@@ -176,7 +176,7 @@ function postToChatter(request, response, credentials) {
            '"subjectId":"me"' + CRLF +
         '}' + CRLF +
         CRLF +
-        '--a7V4kRcFA8E79pivMuV2tukQ85cmNKeoEgJgq' + CRLF +
+        '--'+ boundary + CRLF +
         'Content-Disposition: form-data; name="feedElementFileUpload"; filename="'+ parentItemName +'.zip"' + CRLF +
         'Content-Type: application/octet-stream; charset=ISO-8859-1' + CRLF +
         CRLF;
@@ -219,7 +219,7 @@ app.post('/document_ids', function(req, res) {
             // Get credentials by user from postgres
             getRecordsByUser(req, res, req.body[0].userId, null, req.body);
         } else {
-            // Prevetn empty item names
+            // Prevent empty item names
             parentItemName = 'Generated Zip';
         }
     } else {
