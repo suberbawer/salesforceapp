@@ -97,7 +97,7 @@ function getDocuments(request, response, credentials, documents) {
             }
 
             if (docNames.indexOf(doc_title) > -1) {
-                i++;
+                i = i+1;
                 doc_title = doc_title + i;
             }
             docNames.push(doc_title);
