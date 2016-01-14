@@ -86,8 +86,24 @@ function getDocuments(request, response, credentials, documents) {
     async.forEachOfSeries(documents, function (doc, key, callback) {
         options.path = '/services/data/v'+ sVersion +'/sobjects/ContentVersion/'+doc.docId+'/VersionData';
         req = new http.request(options, function(res) {
+            var title_extension = doc.title.split('.');
+            var doc_title       = '';
+            var doc_extension   = '';
+
+            if (title_extension.length > 0){
+                doc_title = title_extension[0];
+            } if (title_extension.length > 1){
+                doc_extension = title_extension[1];
+            }
+
+            if (docNames.indexOf(doc_title) > -1) {
+                i++;
+                doc_title = doc_title + i;
+            }
+            docNames.push(doc_title);
             // Create empty file
-            file = fs.createWriteStream(doc.title);
+            file = fs.createWriteStream(doc_title + '.' + doc_extension);
+
             res.on('data', function (chunk) {
                 // Write file with chunks
                 var bufferStore = file.write(chunk);
@@ -101,20 +117,7 @@ function getDocuments(request, response, credentials, documents) {
             });
 
             res.on('end', function() {
-                var title_extension = doc.title.split('.')
-                var doc_title       = '';
-                var doc_extension   = '';
 
-                if (title_extension.length > 0){
-                    doc_title = title_extension[0];
-                } if (title_extension.length > 1){
-                    doc_extension = title_extension[1];
-                }
-
-                if (docNames.indexOf(doc_title) > -1) {
-                    i++;
-                    doc_title = doc_title + i;
-                }
                 zip.append(fs.createReadStream(doc_title + '.' + doc_extension), {name: doc_title + '.' + doc_extension});
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
