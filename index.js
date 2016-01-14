@@ -97,12 +97,15 @@ function getDocuments(request, response, credentials, documents) {
             }
 
             if (docNames.indexOf(doc_title) > -1) {
+                if (doc_title.indexOf(index) == 1) {
+                    index = 0;
+                }
                 index++
-                doc_title = doc_title + index;
+                doc_title = doc_title + '('+ index +')';
             }
             docNames.push(doc_title);
             // Create empty file
-            file = fs.createWriteStream(doc_title + '.' + doc_extension);
+            file = fs.createWriteStream(doc_title +'.'+ doc_extension);
 
             res.on('data', function (chunk) {
                 // Write file with chunks
@@ -118,7 +121,7 @@ function getDocuments(request, response, credentials, documents) {
 
             res.on('end', function() {
 
-                zip.append(fs.createReadStream(doc_title + '.' + doc_extension), {name: doc_title + '.' + doc_extension});
+                zip.append(fs.createReadStream(doc_title +'.'+ doc_extension), {name: doc_title +'.'+ doc_extension});
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
                         files.push(key);
