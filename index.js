@@ -67,6 +67,7 @@ function getDocuments(request, response, credentials, documents) {
     var sVersion    = credentials[credentials.length - 1].salesforce_version;
     var hostUrl     = credentials[credentials.length - 1].instance_url.substring(8);
     var files       = [];
+    var docNames    = [];
     var file;
     var req;
 
@@ -99,7 +100,18 @@ function getDocuments(request, response, credentials, documents) {
             });
 
             res.on('end', function() {
-                zip.append(fs.createReadStream(doc.title), {name: doc.title});
+                var title_extension = doc.title.split('.')
+                var doc_title       = '';
+                var doc_extension   = '';
+
+                if (title_extension.length > 0){
+                    doc_title = title_extension[0];
+                } if (title_extension.length > 1){
+                    doc_extension = title_extension[1];
+                }
+
+                if (docNames.indexOf(doc_title) > -1) doc_title = doc_title + i;
+                zip.append(fs.createReadStream(doc_title + '.' + doc_extension), {name: doc_title + '.' + doc_extension});
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
                         files.push(key);
