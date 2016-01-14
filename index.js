@@ -68,6 +68,7 @@ function getDocuments(request, response, credentials, documents) {
     var hostUrl     = credentials[credentials.length - 1].instance_url.substring(8);
     var files       = [];
     var docNames    = [];
+    var index       = 0;
     var file;
     var req;
 
@@ -110,7 +111,10 @@ function getDocuments(request, response, credentials, documents) {
                     doc_extension = title_extension[1];
                 }
 
-                if (docNames.indexOf(doc_title) > -1) doc_title = doc_title + i;
+                if (docNames.indexOf(doc_title) > -1) {
+                    i++;
+                    doc_title = doc_title + i;
+                }
                 zip.append(fs.createReadStream(doc_title + '.' + doc_extension), {name: doc_title + '.' + doc_extension});
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
