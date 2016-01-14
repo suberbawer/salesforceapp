@@ -97,8 +97,8 @@ function getDocuments(request, response, credentials, documents) {
             }
 
             if (docNames.indexOf(doc_title) > -1) {
-                i = i+1;
-                doc_title = doc_title + i;
+                index++
+                doc_title = doc_title + index;
             }
             docNames.push(doc_title);
             // Create empty file
