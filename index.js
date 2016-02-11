@@ -340,3 +340,26 @@ app.get('/db/createTable', function(req,res){
 app.get('/db/dropTable', function(req,res){
     dbOperations.dropTable(req,res);
 });
+
+//Adding check if connected capability
+app.get('/connStatus/:userId', function(req,res){
+    var pg        = require('pg');
+    var conString = process.env.DATABASE_URL;
+    var f_result  = new Object;
+    var client    = new pg.Client(conString);
+    var userId = req.params.userId;
+    client.connect();
+    // Get loggin_data by sf user
+    var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
+    var results = [];
+    // Fill list with resutls by row
+    query.on("row", function (row) {
+        results.push(row);
+    });
+    // When query finish then proceed
+    query.on("end", function () {
+        client.end();
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(results));
+    });
+});
