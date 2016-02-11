@@ -367,7 +367,8 @@ app.get('/connStatus/:userId', function(req,res){
               instanceUrl : user.instance_url,
               accessToken : user.access_token,
               clientId : '3MVG91ftikjGaMd9MqeuLbTUimi28GHqoXhIqLt8hr.4Bh2sCqWadvh.p_.CLstOhNnwvCtGa8ZO7wxXtvey5',
-              clientSecret : '8067383275428676465'
+              clientSecret : '8067383275428676465',
+              redirectUri : 'https://salesforceapi.herokuapp.com/callback'
             });
             conn.authorize(user.access_token, function(err, userInfo) {
                 if (err){
