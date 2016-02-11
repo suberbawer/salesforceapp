@@ -93,7 +93,7 @@ function getDocuments(request, response, credentials, documents) {
             if (title_extension.length > 0){
                 doc_title = title_extension[0];
             } if (title_extension.length > 1){
-                doc_extension = title_extension[1];
+                doc_extension = title_extension[title_extension.length-1];
             }
 
             if (docNames.indexOf(doc_title) > -1) {
