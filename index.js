@@ -86,15 +86,12 @@ function getDocuments(request, response, credentials, documents) {
     async.forEachOfSeries(documents, function (doc, key, callback) {
         options.path = '/services/data/v'+ sVersion +'/sobjects/ContentVersion/'+doc.docId+'/VersionData';
         req = new http.request(options, function(res) {
-            for ( var a in doc ){
-                console.log('---jose: '+a+' .. '+doc[a]);
-            }
             var title_extension = doc.title.split('.');
             var doc_title       = '';
             var doc_extension   = '';
             // Workaround for duplicated names ( to be more effective, need changes if necessary )
             if (title_extension.length > 0){
-                doc_title = 'test';//title_extension.slice(0,title_extension.length-1).join('.');
+                doc_title = title_extension.slice(0,title_extension.length-1).join('.');
             } if (title_extension.length > 1){
                 doc_extension = title_extension[title_extension.length-1];
             }
