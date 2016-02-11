@@ -360,6 +360,22 @@ app.get('/connStatus/:userId', function(req,res){
     query.on("end", function () {
         client.end();
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(results));
+
+        var user = results.length > 0 ? results[0] : false;
+        if ( user ){
+            var conn = new sf.Connection({
+              instanceUrl : user.instance_url,
+              accessToken : user.access_token
+            });
+            conn.authorize(user.access_token, function(err, userInfo) {
+                if (err){
+                    res.send(JSON.stringify({status: 'Unauthorized'}));
+                }else{
+                    res.send(JSON.stringify({status: 'Authorized'}));
+                }
+            });
+        }else{
+            res.send(JSON.stringify({status: 'Unauthorized'}));
+        }
     });
 });
