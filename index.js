@@ -86,6 +86,7 @@ function getDocuments(request, response, credentials, documents) {
     async.forEachOfSeries(documents, function (doc, key, callback) {
         options.path = '/services/data/v'+ sVersion +'/sobjects/ContentVersion/'+doc.docId+'/VersionData';
         req = new http.request(options, function(res) {
+            console.log(doc);
             var title_extension = doc.title.split('.');
             var doc_title       = '';
             var doc_extension   = '';
