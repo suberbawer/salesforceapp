@@ -91,7 +91,7 @@ function getDocuments(request, response, credentials, documents) {
             var doc_extension   = '';
             // Workaround for duplicated names ( to be more effective, need changes if necessary )
             if (title_extension.length > 0){
-                doc_title = title_extension[0];
+                doc_title = title_extension.slice(0,title_extension.length-1).join('.');
             } if (title_extension.length > 1){
                 doc_extension = title_extension[title_extension.length-1];
             }
