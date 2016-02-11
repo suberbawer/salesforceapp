@@ -369,7 +369,7 @@ app.get('/connStatus/:userId', function(req,res){
             });
             conn.authorize(user.access_token, function(err, userInfo) {
                 if (err){
-                    res.send(JSON.stringify({status: 'Unauthorized'}));
+                    res.send(JSON.stringify({status: 'Unauthorized', message: err}));
                 }else{
                     res.send(JSON.stringify({status: 'Authorized'}));
                 }
