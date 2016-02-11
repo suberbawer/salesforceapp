@@ -363,16 +363,23 @@ app.get('/connStatus/:userId', function(req,res){
 
         var user = results.length > 0 ? results[0] : false;
         if ( user ){
-            var conn = new sf.Connection({oauth2: oauth2});
-            conn.authorize(user.access_token, function(err, userInfo) {
-                if (err){
-                    res.send(JSON.stringify({status: 'Unauthorized '+user.access_token, message: err}));
-                }else{
-                    res.send(JSON.stringify({status: 'Authorized'}));
-                }
+            var conn = new sf.Connection({
+              instanceUrl : user.instance_url,
+              accessToken : user.access_token
+            });
+            conn.query("SELECT Id, Name FROM Account", function(err, result) {
+              if (err){
+                  res.sendStatus('401');
+                  res.end();
+              }else{
+
+              }
+              res.sendStatus('200');
+              res.end();
             });
         }else{
-            res.send(JSON.stringify({status: 'Unauthorized'}));
+            res.sendStatus('401');
+            res.end();
         }
     });
 });
