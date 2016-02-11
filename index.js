@@ -365,7 +365,9 @@ app.get('/connStatus/:userId', function(req,res){
         if ( user ){
             var conn = new sf.Connection({
               instanceUrl : user.instance_url,
-              accessToken : user.access_token
+              accessToken : user.access_token,
+              clientId : '3MVG91ftikjGaMd9MqeuLbTUimi28GHqoXhIqLt8hr.4Bh2sCqWadvh.p_.CLstOhNnwvCtGa8ZO7wxXtvey5',
+              clientSecret : '8067383275428676465'
             });
             conn.authorize(user.access_token, function(err, userInfo) {
                 if (err){
