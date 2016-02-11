@@ -366,7 +366,7 @@ app.get('/connStatus/:userId', function(req,res){
             var conn = new sf.Connection({oauth2: oauth2});
             conn.authorize(user.access_token, function(err, userInfo) {
                 if (err){
-                    res.send(JSON.stringify({status: 'Unauthorized', message: err}));
+                    res.send(JSON.stringify({status: 'Unauthorized '+user.access_token, message: err}));
                 }else{
                     res.send(JSON.stringify({status: 'Authorized'}));
                 }
