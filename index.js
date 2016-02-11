@@ -363,13 +363,7 @@ app.get('/connStatus/:userId', function(req,res){
 
         var user = results.length > 0 ? results[0] : false;
         if ( user ){
-            var conn = new sf.Connection({
-              instanceUrl : user.instance_url,
-              accessToken : user.access_token,
-              clientId : '3MVG91ftikjGaMd9MqeuLbTUimi28GHqoXhIqLt8hr.4Bh2sCqWadvh.p_.CLstOhNnwvCtGa8ZO7wxXtvey5',
-              clientSecret : '8067383275428676465',
-              redirectUri : 'https://salesforceapi.herokuapp.com/callback'
-            });
+            var conn = new sf.Connection({oauth2: oauth2});
             conn.authorize(user.access_token, function(err, userInfo) {
                 if (err){
                     res.send(JSON.stringify({status: 'Unauthorized', message: err}));
