@@ -87,6 +87,10 @@ function getDocuments(request, response, credentials, documents) {
         options.path = '/services/data/v'+ sVersion +'/sobjects/ContentVersion/'+doc.docId+'/VersionData';
         req = new http.request(options, function(res) {
 
+            console.log('jose?');
+            console.log(doc.title);
+            console.log(doc.extension);
+            console.log('000000');
             var doc_title       = doc.title;
             var doc_extension   = doc.extension;
 
