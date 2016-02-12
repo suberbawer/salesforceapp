@@ -86,18 +86,12 @@ function getDocuments(request, response, credentials, documents) {
     async.forEachOfSeries(documents, function (doc, key, callback) {
         options.path = '/services/data/v'+ sVersion +'/sobjects/ContentVersion/'+doc.docId+'/VersionData';
         req = new http.request(options, function(res) {
-
-            console.log('jose?');
-            console.log(doc.title);
-            console.log(doc.extension);
-            console.log('000000');
             var doc_title       = doc.title;
             var doc_extension   = doc.extension;
-
             var doc_title_vector = doc.title.split('.');
 
             if ( doc_title_vector[doc_title_vector.length-1] == doc_extension){
-                doc_title = title_extension.slice(0,title_extension.length-1).join('.');
+                doc_title = doc_title_vector.slice(0,doc_title_vector.length-1).join('.');
             }
 
             if (docNames.indexOf(doc_title) > -1) {
