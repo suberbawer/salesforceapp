@@ -90,7 +90,7 @@ function getDocuments(request, response, credentials, documents) {
             var doc_title       = doc.title;
             var doc_extension   = doc.extension;
 
-            var doc_title_vector = doct.title.split('.');
+            var doc_title_vector = doc.title.split('.');
 
             if ( doc_title_vector[doc_title_vector.length-1] == doc_extension){
                 doc_title = title_extension.slice(0,title_extension.length-1).join('.');
