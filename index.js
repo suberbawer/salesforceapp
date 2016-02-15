@@ -30,6 +30,7 @@ var oauth2 = new sf.OAuth2({
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
+    console.log('ADSFASDFASDFASDFASDFADSF ', oauth2);
     res.redirect(oauth2.getAuthorizationUrl());
 });
 
@@ -41,7 +42,7 @@ app.listen(app.get('port'), function() {
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({oauth2: oauth2});
     var code = req.query.code;
-
+    console.log('44444444444444 ', conn);
     conn.authorize(code, function(err, userInfo) {
         if (err) {
             return console.error(err);
