@@ -41,20 +41,6 @@ app.listen(app.get('port'), function() {
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({oauth2: oauth2});
     var code = req.query.code;
-    var records = [];
-    conn.query("SELECT Id, IsSandbox FROM Organization")
-        .on("record", function(record) {
-            records.push(record);
-        })
-        .on("end", function(query) {
-            console.log('records  ----', records);
-            console.log("total in database : " + query.totalSize);
-            console.log("total fetched : " + query.totalFetched);
-        })
-        .on("error", function(err) {
-            console.error(err);
-        })
-        .run({ autoFetch : true, maxFetch : 1 });
 
     conn.authorize(code, function(err, userInfo) {
         if (err) {
@@ -275,6 +261,24 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     var f_result  = new Object;
     var client    = new pg.Client(conString);
     client.connect();
+
+
+    // var records = [];
+    // conn.query("SELECT Id, IsSandbox FROM Organization")
+    //     .on("record", function(record) {
+    //         records.push(record);
+    //     })
+    //     .on("end", function(query) {
+    //         console.log('records  ----', records);
+    //         console.log("total in database : " + query.totalSize);
+    //         console.log("total fetched : " + query.totalFetched);
+    //     })
+    //     .on("error", function(err) {
+    //         console.error(err);
+    //     })
+    //     .run({ autoFetch : true, maxFetch : 1 });
+
+
     // Get loggin_data by sf user
     var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
     var results = [];
