@@ -263,20 +263,20 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     client.connect();
 
 
-    // var records = [];
-    // conn.query("SELECT Id, IsSandbox FROM Organization")
-    //     .on("record", function(record) {
-    //         records.push(record);
-    //     })
-    //     .on("end", function(query) {
-    //         console.log('records  ----', records);
-    //         console.log("total in database : " + query.totalSize);
-    //         console.log("total fetched : " + query.totalFetched);
-    //     })
-    //     .on("error", function(err) {
-    //         console.error(err);
-    //     })
-    //     .run({ autoFetch : true, maxFetch : 1 });
+    var teta = [];
+    conn.query("SELECT Id, IsSandbox FROM Organization")
+        .on("record", function(record) {
+            teta.push(record);
+        })
+        .on("end", function(query) {
+            console.log('records  ----', teta);
+            console.log("total in database : " + query.totalSize);
+            console.log("total fetched : " + query.totalFetched);
+        })
+        .on("error", function(err) {
+            console.error(err);
+        })
+        .run({ autoFetch : true, maxFetch : 1 });
 
 
     // Get loggin_data by sf user
