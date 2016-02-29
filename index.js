@@ -269,9 +269,8 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             teta.push(record);
         })
         .on("end", function(query) {
-            console.log('records  ----', teta);
-            console.log("total in database : " + query.totalSize);
-            console.log("total fetched : " + query.totalFetched);
+            console.log('records  ----', teta[0].IsSandbox);
+
         })
         .on("error", function(err) {
             console.error(err);
