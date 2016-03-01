@@ -383,7 +383,7 @@ app.get('/connStatus/:userId', function(req,res){
     });
 });
 
-app.get('/check_sandbox', function(req, res) {
+app.post('/check_sandbox', function(req, res) {
     if (req.body) {
         console.log('req------', req.body);
     } else {
