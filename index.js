@@ -381,12 +381,13 @@ app.get('/connStatus/:userId', function(req,res){
             res.end();
         }
     });
+});
 
-    app.get('/check_sandbox', function(req, res) {
-        if (req.body) {
-            console.log('req------', req.body);
-        } else {
-            res.sendStatus('Body of request is empty');
-            res.end();
-        }
-    });
+app.get('/check_sandbox', function(req, res) {
+    if (req.body) {
+        console.log('req------', req.body);
+    } else {
+        res.sendStatus('Body of request is empty');
+        res.end();
+    }
+});
