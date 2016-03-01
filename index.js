@@ -10,7 +10,7 @@ var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
 var isSandbox      = false;
-var oauth2;
+//var oauth2;
 
 // app Configuration
 app.use(bodyParser.json());
@@ -21,16 +21,22 @@ app.use(express.static(__dirname + '/public'));
 // views is directory for all template files ( to add html to the popup)
 app.set('views', __dirname + '/views/pages');
 app.set('view engine', 'ejs');
-
-// Get authz url and redirect to it.
-app.get('/', function(req, res) {
-    oauth2 = new sf.OAuth2({
+var oauth2 = new sf.OAuth2({
         // we can change loginUrl to connect to sandbox or prerelease env.
-        loginUrl : isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
+        //loginUrl : isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
         clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
         clientSecret : '5644212675256863801',
         redirectUri : 'https://salesforceapi.herokuapp.com/callback'
     });
+// Get authz url and redirect to it.
+app.get('/', function(req, res) {
+    // oauth2 = new sf.OAuth2({
+    //     // we can change loginUrl to connect to sandbox or prerelease env.
+    //     loginUrl : isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
+    //     clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
+    //     clientSecret : '5644212675256863801',
+    //     redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+    // });
     res.redirect(oauth2.getAuthorizationUrl());
 });
 
@@ -260,8 +266,6 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     var pg        = require('pg');
     var conString = process.env.DATABASE_URL;
     var f_result  = new Object;
-    var sandbox   = [];
-    var isSandbox = false;
     var client    = new pg.Client(conString);
     client.connect();
 
