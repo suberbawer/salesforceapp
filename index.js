@@ -21,16 +21,17 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views/pages');
 app.set('view engine', 'ejs');
 
-var oauth2 = new sf.OAuth2({
-    // we can change loginUrl to connect to sandbox or prerelease env.
-    loginUrl : !isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
-    clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
-    clientSecret : '5644212675256863801',
-    redirectUri : 'https://salesforceapi.herokuapp.com/callback'
-});
+var oauth2;
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
+    oauth2 = new sf.OAuth2({
+        // we can change loginUrl to connect to sandbox or prerelease env.
+        loginUrl : !isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
+        clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
+        clientSecret : '5644212675256863801',
+        redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+    });
     console.log('is sandbox------ ', isSandbox);
     res.redirect(oauth2.getAuthorizationUrl());
 });
