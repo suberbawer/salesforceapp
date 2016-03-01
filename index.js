@@ -23,7 +23,7 @@ app.set('view engine', 'ejs');
 
 var oauth2 = new sf.OAuth2({
     // we can change loginUrl to connect to sandbox or prerelease env.
-    // loginUrl : 'https://test.salesforce.com',
+    loginUrl : 'https://test.salesforce.com',
     clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
     clientSecret : '5644212675256863801',
     redirectUri : 'https://salesforceapi.herokuapp.com/callback'
@@ -35,7 +35,6 @@ app.get('/', function(req, res) {
     if (!isSandbox) {
         oauth2.loginUrl = 'https://test.salesforce.com';
     }
-    console.log('oauth ', oauth2);
     res.redirect(oauth2.getAuthorizationUrl());
 });
 
@@ -47,7 +46,7 @@ app.listen(app.get('port'), function() {
 app.get('/callback', function(req, res) {
     var conn = new sf.Connection({oauth2: oauth2});
     var code = req.query.code;
-    console.log('connnnnnn ', conn);
+    console.log('connnnnnn ', conn.instanceUrl);
     conn.authorize(code, function(err, userInfo) {
         if (err) {
             return console.error(err);
