@@ -338,7 +338,7 @@ app.get('/connStatus/:userId', function(req,res){
     });
 });
 
-// Function that check if org to connect is a sandbox, set isSandbox variable
+// Function that check if org to connect is a sandbox, set boolean isSandbox variable
 app.post('/check_sandbox', function(req, res) {
     if (req.body) {
         isSandbox = req.body[0].IsSandbox;
