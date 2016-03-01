@@ -9,6 +9,8 @@ var archiver     = require('archiver');
 var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
+var isSandbox      = false;
+var oauth2;
 
 // app Configuration
 app.use(bodyParser.json());
@@ -20,16 +22,15 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views/pages');
 app.set('view engine', 'ejs');
 
-var oauth2 = new sf.OAuth2({
-    // we can change loginUrl to connect to sandbox or prerelease env.
-    // loginUrl : 'https://test.salesforce.com',
-    clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
-    clientSecret : '5644212675256863801',
-    redirectUri : 'https://salesforceapi.herokuapp.com/callback'
-});
-
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
+    oauth2 = new sf.OAuth2({
+        // we can change loginUrl to connect to sandbox or prerelease env.
+        loginUrl : isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
+        clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
+        clientSecret : '5644212675256863801',
+        redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+    });
     res.redirect(oauth2.getAuthorizationUrl());
 });
 
@@ -261,6 +262,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     var f_result  = new Object;
     var client    = new pg.Client(conString);
     client.connect();
+
     // Get loggin_data by sf user
     var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
     var results = [];
@@ -292,6 +294,59 @@ function getRecordsByUser(req, res, userId, conn, documents) {
         }
     });
 }
+
+//Adding check if connected capability
+app.get('/connStatus/:userId', function(req,res){
+    var pg        = require('pg');
+    var conString = process.env.DATABASE_URL;
+    var f_result  = new Object;
+    var client    = new pg.Client(conString);
+    var userId = req.params.userId;
+    client.connect();
+    // Get loggin_data by sf user
+    var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
+    var results = [];
+    // Fill list with resutls by row
+    query.on("row", function (row) {
+        results.push(row);
+    });
+    // When query finish then proceed
+    query.on("end", function () {
+        client.end();
+        res.setHeader('Content-Type', 'application/json');
+
+        var user = results.length > 0 ? results[0] : false;
+        if ( user ){
+            var conn = new sf.Connection({
+              instanceUrl : user.instance_url,
+              accessToken : user.access_token
+            });
+            conn.query("SELECT Id, Name FROM Account", function(err, result) {
+              if (err){
+                  res.sendStatus('401');
+                  res.end();
+              }
+              res.sendStatus('200');
+              res.end();
+            }).run({ autoFetch : true, maxFetch : 1 });
+        }else{
+            res.sendStatus('401');
+            res.end();
+        }
+    });
+});
+
+// Function that check if org to connect is a sandbox, set boolean isSandbox variable
+app.post('/check_sandbox', function(req, res) {
+    if (req.body) {
+        isSandbox = req.body[0].IsSandbox;
+        res.sendStatus('200');
+        res.end();
+    } else {
+        res.sendStatus('Body of request is empty');
+        res.end();
+    }
+});
 
 /**
  * Function that insert datata to login_data table in db
@@ -337,45 +392,4 @@ app.get('/db/createTable', function(req,res){
 // Function that drop loggin_data table
 app.get('/db/dropTable', function(req,res){
     dbOperations.dropTable(req,res);
-});
-
-//Adding check if connected capability
-app.get('/connStatus/:userId', function(req,res){
-    var pg        = require('pg');
-    var conString = process.env.DATABASE_URL;
-    var f_result  = new Object;
-    var client    = new pg.Client(conString);
-    var userId = req.params.userId;
-    client.connect();
-    // Get loggin_data by sf user
-    var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
-    var results = [];
-    // Fill list with resutls by row
-    query.on("row", function (row) {
-        results.push(row);
-    });
-    // When query finish then proceed
-    query.on("end", function () {
-        client.end();
-        res.setHeader('Content-Type', 'application/json');
-
-        var user = results.length > 0 ? results[0] : false;
-        if ( user ){
-            var conn = new sf.Connection({
-              instanceUrl : user.instance_url,
-              accessToken : user.access_token
-            });
-            conn.query("SELECT Id, Name FROM Account", function(err, result) {
-              if (err){
-                  res.sendStatus('401');
-                  res.end();
-              }
-              res.sendStatus('200');
-              res.end();
-            }).run({ autoFetch : true, maxFetch : 1 });
-        }else{
-            res.sendStatus('401');
-            res.end();
-        }
-    });
 });
