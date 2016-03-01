@@ -32,7 +32,7 @@ var oauth2 = new sf.OAuth2({
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
     console.log('is sandbox------ ', isSandbox);
-    if (isSandbox) {
+    if (!isSandbox) {
         oauth2.loginUrl = 'https://test.salesforce.com';
     }
     res.redirect(oauth2.getAuthorizationUrl());
