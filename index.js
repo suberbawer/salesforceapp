@@ -387,8 +387,9 @@ app.get('/connStatus/:userId', function(req,res){
 
 app.post('/check_sandbox', function(req, res) {
     if (req.body) {
-        isSandbox = req.body[0].IsSandbox
-        console.log('req------', isSandbox);
+        isSandbox = req.body[0].IsSandbox;
+        res.sendStatus('200');
+        res.end();
     } else {
         res.sendStatus('Body of request is empty');
         res.end();
