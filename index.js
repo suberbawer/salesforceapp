@@ -259,24 +259,10 @@ function getRecordsByUser(req, res, userId, conn, documents) {
     var pg        = require('pg');
     var conString = process.env.DATABASE_URL;
     var f_result  = new Object;
+    var sandbox   = [];
+    var isSandbox = false;
     var client    = new pg.Client(conString);
     client.connect();
-
-
-    var teta = [];
-    conn.query("SELECT Id, IsSandbox FROM Organization")
-        .on("record", function(record) {
-            teta.push(record);
-        })
-        .on("end", function(query) {
-            console.log('records  ----', teta[0].IsSandbox);
-
-        })
-        .on("error", function(err) {
-            console.error(err);
-        })
-        .run({ autoFetch : true, maxFetch : 1 });
-
 
     // Get loggin_data by sf user
     var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
@@ -395,4 +381,12 @@ app.get('/connStatus/:userId', function(req,res){
             res.end();
         }
     });
-});
+
+    app.get('/check_sandbox', function(req, res) {
+        if (req.body) {
+            console.log('req------', req.body);
+        } else {
+            res.sendStatus('Body of request is empty');
+            res.end();
+        }
+    });
