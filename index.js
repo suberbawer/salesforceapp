@@ -9,7 +9,7 @@ var archiver     = require('archiver');
 var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
-var isSandbox;
+var isSandbox      = false;
 
 // app Configuration
 app.use(bodyParser.json());
@@ -32,6 +32,9 @@ var oauth2 = new sf.OAuth2({
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
     console.log('is sandbox------ ', isSandbox);
+    if (isSandbox) {
+        oauth2.loginUrl = 'https://test.salesforce.com';
+    }
     res.redirect(oauth2.getAuthorizationUrl());
 });
 
@@ -285,6 +288,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
                 res.end();
             }
         } else {
+            console.log('conn.instanceUrl ----- ', conn.instanceUrl);
             if (results.length > 0) {
                 // Update record for this user
                 updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
