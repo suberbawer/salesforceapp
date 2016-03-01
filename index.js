@@ -9,6 +9,7 @@ var archiver     = require('archiver');
 var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
+var isSandbox;
 
 // app Configuration
 app.use(bodyParser.json());
@@ -30,6 +31,7 @@ var oauth2 = new sf.OAuth2({
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
+    console.log('is sandbox------ ', isSandbox);
     res.redirect(oauth2.getAuthorizationUrl());
 });
 
@@ -385,7 +387,8 @@ app.get('/connStatus/:userId', function(req,res){
 
 app.post('/check_sandbox', function(req, res) {
     if (req.body) {
-        console.log('req------', req.body);
+        isSandbox = req.body[0].IsSandbox
+        console.log('req------', isSandbox);
     } else {
         res.sendStatus('Body of request is empty');
         res.end();
