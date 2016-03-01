@@ -10,13 +10,7 @@ var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
 var isSandbox      = false;
-var oauth2 = new sf.OAuth2({
-        // we can change loginUrl to connect to sandbox or prerelease env.
-        //loginUrl : isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
-        clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
-        clientSecret : '5644212675256863801',
-        redirectUri : 'https://salesforceapi.herokuapp.com/callback'
-    });
+var oauth2;
 
 // app Configuration
 app.use(bodyParser.json());
@@ -30,15 +24,13 @@ app.set('view engine', 'ejs');
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
-    if (isSandbox) {
-        oauth2 = new sf.OAuth2({
-            // we can change loginUrl to connect to sandbox or prerelease env.
-            loginUrl : 'https://test.salesforce.com',
-            clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
-            clientSecret : '5644212675256863801',
-            redirectUri : 'https://salesforceapi.herokuapp.com/callback'
-        });
-    }
+    oauth2 = new sf.OAuth2({
+        // we can change loginUrl to connect to sandbox or prerelease env.
+        loginUrl : isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
+        clientId : '3MVG9uudbyLbNPZOVOmep0tsIfj7okCA1HIdTPALdUIjQzwJWgYJ6PHQdxdi6WSMh1gNtdbfKyWDP2aR2kYTw',
+        clientSecret : '5644212675256863801',
+        redirectUri : 'https://salesforceapi.herokuapp.com/callback'
+    });
     res.redirect(oauth2.getAuthorizationUrl());
 });
 
