@@ -35,6 +35,8 @@ app.post('/login_n_check', function(req, res) {
         console.log('req-----2----- ', req.body.userId);
         isSandbox = req.body.isSandbox != 'false';
         userId    = req.body.userId;
+        console.log('req-----1----- ', isSandbox);
+
         // Get loggin_data by sf user
         var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
         var results = [];
