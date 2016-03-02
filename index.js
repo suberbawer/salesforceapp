@@ -45,10 +45,10 @@ app.post('/login_n_check', function(req, res) {
         query.on("end", function () {
             client.end();
             // Check user must be saved in same org that is excuting the action
-            if (results.length > 0 && result[0].isSandbox != null && result[0].isSandbox == isSandbox) {
+            if (results.length > 0 && results[0].isSandbox != null && results[0].isSandbox == isSandbox) {
                 var conn = new sf.Connection({
-                  instanceUrl : result[0].instance_url,
-                  accessToken : result[0].access_token
+                  instanceUrl : results[0].instance_url,
+                  accessToken : results[0].access_token
                 });
 
                 // Make a query to check the connection
