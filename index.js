@@ -23,7 +23,54 @@ app.set('views', __dirname + '/views/pages');
 app.set('view engine', 'ejs');
 
 app.post('login_n_check', function(req, res) {
+    var pg        = require('pg');
+    var conString = process.env.DATABASE_URL;
+    var f_result  = new Object;
+    var client    = new pg.Client(conString);
+    client.connect();
 
+    if (req.body) {
+        isSandbox = req.body[0].IsSandbox;
+        userId    = req.body[0].userId;
+            // Get loggin_data by sf user
+        var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
+        var results = [];
+        // Fill list with resutls by row
+        query.on("row", function (row) {
+            results.push(row);
+        });
+        // When query finish then proceed
+        query.on("end", function () {
+            client.end();
+            // Check user must be saved in same org that is excuting the action
+            if (results.length > 0 && result[0].isSandbox == isSandbox) {
+                var conn = new sf.Connection({
+                  instanceUrl : result[0].instance_url,
+                  accessToken : result[0].access_token
+                });
+
+                // Make a query to check the connection
+                conn.query("SELECT Id, Name FROM Account", function(err, result) {
+                    if (err) {
+                        // Error login again please
+                        res.sendStatus('401');
+                        res.end();
+                    }
+                    // Logged in
+                    res.sendStatus('200');
+                    res.end();
+                }).run({ autoFetch : true, maxFetch : 1 });
+
+            } else {
+                // Error login again please
+                res.sendStatus('401');
+                res.end();
+            }
+        });
+    } else {
+        res.sendStatus('Body of request is empty');
+        res.end();
+    }
 });
 
 // Get authz url and redirect to it.
