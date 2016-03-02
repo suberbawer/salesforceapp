@@ -31,11 +31,8 @@ app.post('/login_n_check', function(req, res) {
     client.connect();
 
     if (req.body) {
-        console.log('req-----1----- ', typeof req.body.isSandbox);
-        console.log('req-----2----- ', req.body.userId);
         isSandbox = req.body.isSandbox;
         userId    = req.body.userId;
-        console.log('req-----1----- ', isSandbox);
 
         // Get loggin_data by sf user
         var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
@@ -393,10 +390,11 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             }
         } else {
             if (results.length > 0) {
-                console.log('IS SANDBOX------- ', isSandbox);
+                console.log('IS SANDBOXU------- ', isSandbox);
                 // Update record for this user
                 updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
             } else {
+                console.log('IS SANDBOXI------- ', isSandbox);
                 // Add new record for user
                 addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
             }
