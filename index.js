@@ -22,7 +22,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views/pages');
 app.set('view engine', 'ejs');
 
-app.post('login_n_check', function(req, res) {
+app.post('/login_n_check', function(req, res) {
     var pg        = require('pg');
     var conString = process.env.DATABASE_URL;
     var f_result  = new Object;
