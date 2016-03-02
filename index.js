@@ -31,9 +31,9 @@ app.post('/login_n_check', function(req, res) {
     client.connect();
 
     if (req.body) {
-        console.log('req-----1----- ', req.body.isSandbox);
+        console.log('req-----1----- ', typeof req.body.isSandbox);
         console.log('req-----2----- ', req.body.userId);
-        isSandbox = req.body.isSandbox != 'false';
+        isSandbox = req.body.isSandbox;
         userId    = req.body.userId;
         console.log('req-----1----- ', isSandbox);
 
@@ -393,6 +393,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             }
         } else {
             if (results.length > 0) {
+                console.log('IS SANDBOX------- ', isSandbox);
                 // Update record for this user
                 updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
             } else {
