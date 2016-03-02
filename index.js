@@ -10,6 +10,7 @@ var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
 var isSandbox      = false;
+var userId;
 var oauth2;
 
 // app Configuration
@@ -30,9 +31,9 @@ app.post('/login_n_check', function(req, res) {
     client.connect();
 
     if (req.body) {
-        isSandbox = req.body[0].IsSandbox;
+        isSandbox = req.body[0].isSandbox;
         userId    = req.body[0].userId;
-            // Get loggin_data by sf user
+        // Get loggin_data by sf user
         var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
         var results = [];
         // Fill list with resutls by row
