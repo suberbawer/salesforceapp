@@ -31,6 +31,7 @@ app.post('/login_n_check', function(req, res) {
     client.connect();
 
     if (req.body) {
+        console.log('req---------- ', req.body);
         isSandbox = req.body[0].isSandbox;
         userId    = req.body[0].userId;
         // Get loggin_data by sf user
