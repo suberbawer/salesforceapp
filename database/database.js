@@ -1,10 +1,10 @@
 module.exports = {
-    addRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version) {
+    addRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox) {
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("INSERT INTO loggin_data(user_id, access_token, refresh_token, instance_url, salesforce_version) values($1, $2, $3, $4, $5)", [user_id, access_token, refresh_token, instance_url, salesforce_version]);
+        var query = client.query("INSERT INTO loggin_data(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox) values($1, $2, $3, $4, $5, $6)", [user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox]);
 
         query.on("end", function (result) {
             client.end();
@@ -30,12 +30,12 @@ module.exports = {
             return res.json(results);
         });
     },
-    updateRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version) {
+    updateRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox) {
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
-        var query = client.query("UPDATE loggin_data SET access_token = ($1), refresh_token = ($2), instance_url = ($3), salesforce_version = ($5) WHERE user_id = ($4)", [access_token, refresh_token, instance_url, user_id, salesforce_version]);
+        var query = client.query("UPDATE loggin_data SET access_token = ($1), refresh_token = ($2), instance_url = ($3), salesforce_version = ($5), is_sandbox = ($6) WHERE user_id = ($4)", [access_token, refresh_token, instance_url, user_id, salesforce_version, is_sandbox]);
 
         query.on("end", function (result) {
             client.end();
@@ -66,6 +66,7 @@ module.exports = {
                                         "refresh_token VARCHAR (220),"+
                                         "instance_url VARCHAR (220),"+
                                         "salesforce_version VARCHAR (5),"+
+                                        "is_sandbox BOOLEAN NOT NULL DEFAULT FALSE,"+
                                         "id serial PRIMARY KEY NOT NULL"+
                                     ")");
 

@@ -22,6 +22,10 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views/pages');
 app.set('view engine', 'ejs');
 
+app.post('login_n_check', function(req, res) {
+
+});
+
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
     oauth2 = new sf.OAuth2({
@@ -246,55 +250,6 @@ app.post('/document_ids', function(req, res) {
     }
 });
 
-// DATABAES OPERATIONS
-
-/**
- * Function that get datata by user from database
- *
- * @param request, response - express frame request and response
- * @param userId - unique salesforce user id to get the requested information from db
- * @param conn - generated connection between sf and nodejs
- * @param documents - list of wrapper documents from salesforce
- */
-function getRecordsByUser(req, res, userId, conn, documents) {
-    var pg        = require('pg');
-    var conString = process.env.DATABASE_URL;
-    var f_result  = new Object;
-    var client    = new pg.Client(conString);
-    client.connect();
-
-    // Get loggin_data by sf user
-    var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
-    var results = [];
-    // Fill list with resutls by row
-    query.on("row", function (row) {
-        results.push(row);
-    });
-    // When query finish then proceed
-    query.on("end", function () {
-        client.end();
-        if (documents) {
-            if (results.length > 0) {
-                // Continue with flow to post in chatter ( get documents from sf )
-                getDocuments(req, res, results, documents);
-            } else {
-                res.sendStatus('401');
-                res.end();
-            }
-        } else {
-            if (results.length > 0) {
-                // Update record for this user
-                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
-            } else {
-                // Add new record for user
-                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
-            }
-            // Render user information
-            res.render('index.ejs');
-        }
-    });
-}
-
 //Adding check if connected capability
 app.get('/connStatus/:userId', function(req,res){
     var pg        = require('pg');
@@ -348,6 +303,55 @@ app.post('/check_sandbox', function(req, res) {
     }
 });
 
+// DATABAES OPERATIONS
+
+/**
+ * Function that get datata by user from database
+ *
+ * @param request, response - express frame request and response
+ * @param userId - unique salesforce user id to get the requested information from db
+ * @param conn - generated connection between sf and nodejs
+ * @param documents - list of wrapper documents from salesforce
+ */
+function getRecordsByUser(req, res, userId, conn, documents) {
+    var pg        = require('pg');
+    var conString = process.env.DATABASE_URL;
+    var f_result  = new Object;
+    var client    = new pg.Client(conString);
+    client.connect();
+
+    // Get loggin_data by sf user
+    var query   = client.query("select * from loggin_data where user_id=($1)", [userId]);
+    var results = [];
+    // Fill list with resutls by row
+    query.on("row", function (row) {
+        results.push(row);
+    });
+    // When query finish then proceed
+    query.on("end", function () {
+        client.end();
+        if (documents) {
+            if (results.length > 0) {
+                // Continue with flow to post in chatter ( get documents from sf )
+                getDocuments(req, res, results, documents);
+            } else {
+                res.sendStatus('401');
+                res.end();
+            }
+        } else {
+            if (results.length > 0) {
+                // Update record for this user
+                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
+            } else {
+                // Add new record for user
+                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
+            }
+            // Render user information
+            res.render('index.ejs');
+        }
+    });
+}
+
 /**
  * Function that insert datata to login_data table in db
  *
@@ -357,7 +361,7 @@ app.post('/check_sandbox', function(req, res) {
  * @param instance_url - sf instance url
  * @param salesforce_version - api version
  */
-function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version) {
+function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox) {
     dbOperations.addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version);
 }
 
@@ -370,7 +374,7 @@ function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_v
  * @param instance_url - sf instance url
  * @param salesforce_version - api version
  */
-function updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version) {
+function updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox) {
     dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version);
 }
 
