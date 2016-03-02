@@ -78,6 +78,7 @@ app.post('/login_n_check', function(req, res) {
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
+    console.log('IsSandbox---- ', isSandbox);
     oauth2 = new sf.OAuth2({
         // we can change loginUrl to connect to sandbox or prerelease env.
         loginUrl : isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
