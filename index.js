@@ -140,11 +140,11 @@ function getDocuments(request, response, credentials, documents) {
     async.forEachOfSeries(documents, function (doc, key, callback) {
         options.path = '/services/data/v'+ sVersion +'/sobjects/ContentVersion/'+doc.docId+'/VersionData';
         req = new http.request(options, function(res) {
-            var doc_title       = doc.title;
-            var doc_extension   = doc.extension;
+            var doc_title        = doc.title;
+            var doc_extension    = doc.extension;
             var doc_title_vector = doc.title.split('.');
 
-            if ( doc_title_vector[doc_title_vector.length-1] == doc_extension){
+            if ( doc_title_vector[doc_title_vector.length-1] == doc_extension) {
                 doc_title = doc_title_vector.slice(0,doc_title_vector.length-1).join('.');
             }
 
@@ -390,10 +390,10 @@ function getRecordsByUser(req, res, userId, conn, documents) {
         } else {
             if (results.length > 0) {
                 // Update record for this user
-                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
+                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
             } else {
                 // Add new record for user
-                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version);
+                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
             }
             // Render user information
             res.render('index.ejs');
