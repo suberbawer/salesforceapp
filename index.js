@@ -31,7 +31,8 @@ app.post('/login_n_check', function(req, res) {
     client.connect();
 
     if (req.body) {
-        console.log('req---------- ', req.body);
+        console.log('req-----1----- ', req.body.isSandbox);
+        console.log('req-----2----- ', req.body.userId);
         isSandbox = req.body.isSandbox;
         userId    = req.body.userId;
         // Get loggin_data by sf user
@@ -45,7 +46,7 @@ app.post('/login_n_check', function(req, res) {
         query.on("end", function () {
             client.end();
             // Check user must be saved in same org that is excuting the action
-            if (results.length > 0 && result[0].isSandbox == isSandbox) {
+            if (results.length > 0 && result[0].isSandbox != null && result[0].isSandbox == isSandbox) {
                 var conn = new sf.Connection({
                   instanceUrl : result[0].instance_url,
                   accessToken : result[0].access_token

@@ -66,7 +66,7 @@ module.exports = {
                                         "refresh_token VARCHAR (220),"+
                                         "instance_url VARCHAR (220),"+
                                         "salesforce_version VARCHAR (5),"+
-                                        "is_sandbox BOOLEAN NOT NULL DEFAULT FALSE,"+
+                                        "is_sandbox BOOLEAN DEFAULT FALSE,"+
                                         "id serial PRIMARY KEY NOT NULL"+
                                     ")");
 
