@@ -392,7 +392,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             if (results.length > 0) {
                 console.log('IS SANDBOXU------- ', isSandbox);
                 // Update record for this user
-                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
+                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, false);
             } else {
                 console.log('IS SANDBOXI------- ', isSandbox);
                 // Add new record for user
