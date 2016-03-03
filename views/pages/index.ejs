@@ -11,11 +11,11 @@
     </div>
   </body>
   <script>
-    // close window after 2 secods
-    setTimeout(function(){ window.close(); }, 2000);
     window.onunload = refreshParent();
     function refreshParent() {
         window.opener.test();
     }
+    // close window after 2 secods
+    setTimeout(function(){ window.close(); }, 2000);
   </script>
 </html>
