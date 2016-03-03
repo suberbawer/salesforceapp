@@ -77,7 +77,6 @@ app.post('/login_n_check', function(req, res) {
 
 // Get authz url and redirect to it.
 app.get('/', function(req, res) {
-    console.log('IsSandbox---- ', isSandbox);
     oauth2 = new sf.OAuth2({
         // we can change loginUrl to connect to sandbox or prerelease env.
         loginUrl : isSandbox ? 'https://test.salesforce.com' : 'https://login.salesforce.com',
@@ -390,11 +389,9 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             }
         } else {
             if (results.length > 0) {
-                console.log('IS SANDBOXU------- ', isSandbox);
                 // Update record for this user
                 updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
             } else {
-                console.log('IS SANDBOXI------- ', isSandbox);
                 // Add new record for user
                 addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
             }
