@@ -13,7 +13,7 @@
   <script>
     window.onunload = refreshParent();
     function refreshParent() {
-        window.opener.test();
+        window.opener.location.test();
     }
     // close window after 2 secods
     setTimeout(function(){ window.close(); }, 2000);
