@@ -1,5 +1,5 @@
 module.exports = {
-    addRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox) {
+    addRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox, res) {
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
@@ -8,6 +8,8 @@ module.exports = {
 
         query.on("end", function (result) {
             client.end();
+            // Render user information
+            res.render('index.ejs');
         });
     },
     readRecords: function(req, res) {
@@ -30,7 +32,7 @@ module.exports = {
             return res.json(results);
         });
     },
-    updateRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox) {
+    updateRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox, res) {
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
@@ -39,6 +41,8 @@ module.exports = {
 
         query.on("end", function (result) {
             client.end();
+            // Render user information
+            res.render('index.ejs');
         });
     },
     delRecord : function(req, res){

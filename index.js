@@ -390,13 +390,11 @@ function getRecordsByUser(req, res, userId, conn, documents) {
         } else {
             if (results.length > 0) {
                 // Update record for this user
-                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
+                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, res);
             } else {
                 // Add new record for user
-                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
+                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, res);
             }
-            // Render user information
-            res.render('index.ejs');
         }
     });
 }
@@ -410,8 +408,8 @@ function getRecordsByUser(req, res, userId, conn, documents) {
  * @param instance_url - sf instance url
  * @param salesforce_version - api version
  */
-function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox) {
-    dbOperations.addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox);
+function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox, res) {
+    dbOperations.addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox, res);
 }
 
 /**
@@ -423,8 +421,8 @@ function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_v
  * @param instance_url - sf instance url
  * @param salesforce_version - api version
  */
-function updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox) {
-    dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox);
+function updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox, res) {
+    dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox, res);
 }
 
 // Function that read all records of loggin_data table
