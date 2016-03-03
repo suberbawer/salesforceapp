@@ -44,7 +44,7 @@ app.post('/login_n_check', function(req, res) {
         // When query finish then proceed
         query.on("end", function () {
             client.end();
-            console.log('a ver si son iguales2 --- ', typeof results[0].is_sandbox);
+            console.log('a ver si son iguales2 --- ', results.length > 0 && results[0].isSandbox != null && results[0].is_sandbox == isSandbox);
             // Check user must be saved in same org that is excuting the action
             if (results.length > 0 && results[0].isSandbox != null && results[0].is_sandbox == isSandbox) {
                 var conn = new sf.Connection({
@@ -66,6 +66,7 @@ app.post('/login_n_check', function(req, res) {
                 }).run({ autoFetch : true, maxFetch : 1 });
 
             } else {
+                console.log('afuera del todo');
                 // Error login again please
                 res.sendStatus('401');
                 res.end();
