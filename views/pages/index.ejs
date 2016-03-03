@@ -11,11 +11,7 @@
     </div>
   </body>
   <script>
-    window.onunload = refreshParent();
-    function refreshParent() {
-        window.opener.location.test();
-    }
-    // close window after 2 secods
-    setTimeout(function(){ window.close(); }, 2000);
+    // close window after 1.5 secods
+    setTimeout(function(){ window.close(); }, 1500);
   </script>
 </html>
