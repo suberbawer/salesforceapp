@@ -44,10 +44,8 @@ app.post('/login_n_check', function(req, res) {
         // When query finish then proceed
         query.on("end", function () {
             client.end();
-            console.log('a ver si son iguales --- ', results);
-            console.log('a ver si son iguales2 --- ', typeof results[0].isSandbox);
             // Check user must be saved in same org that is excuting the action
-            if (results.length > 0 && results[0].isSandbox != null && results[0].isSandbox == isSandbox) {
+            if (results.length > 0 && results[0].isSandbox != null && results[0].is_sandbox == isSandbox) {
                 var conn = new sf.Connection({
                   instanceUrl : results[0].instance_url,
                   accessToken : results[0].access_token
