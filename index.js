@@ -44,6 +44,7 @@ app.post('/login_n_check', function(req, res) {
         // When query finish then proceed
         query.on("end", function () {
             client.end();
+            console.log('a ver si son iguales --- ', results[0].isSandbox == isSandbox);
             // Check user must be saved in same org that is excuting the action
             if (results.length > 0 && results[0].isSandbox != null && results[0].isSandbox == isSandbox) {
                 var conn = new sf.Connection({
@@ -54,6 +55,7 @@ app.post('/login_n_check', function(req, res) {
                 // Make a query to check the connection
                 conn.query("SELECT Id, Name FROM Account", function(err, result) {
                     if (err) {
+                        console.log('errooooooooooor en query');
                         // Error login again please
                         res.sendStatus('401');
                         res.end();
