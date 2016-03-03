@@ -392,7 +392,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             if (results.length > 0) {
                 console.log('IS SANDBOXU------- ', isSandbox);
                 // Update record for this user
-                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, false);
+                updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox);
             } else {
                 console.log('IS SANDBOXI------- ', isSandbox);
                 // Add new record for user
@@ -414,7 +414,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
  * @param salesforce_version - api version
  */
 function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox) {
-    dbOperations.addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version);
+    dbOperations.addRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox);
 }
 
 /**
@@ -427,7 +427,7 @@ function addRecord(userId, accessToken, refreshToken, instance_url, salesforce_v
  * @param salesforce_version - api version
  */
 function updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox) {
-    dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version);
+    dbOperations.updateRecord(userId, accessToken, refreshToken, instance_url, salesforce_version, is_sandbox);
 }
 
 // Function that read all records of loggin_data table
