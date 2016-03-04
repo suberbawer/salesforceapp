@@ -64,9 +64,9 @@ app.post('/login_n_check', function(req, res) {
                 }).run({ autoFetch : true, maxFetch : 1 });
 
             } else {
+                console.log('------------------ ', req.body.documents);
                 // Error login again please
                 res.sendStatus('401');
-                res.end();
             }
         });
     } else {
