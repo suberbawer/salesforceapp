@@ -1,17 +1,15 @@
 module.exports = {
-    addRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox, req, res, docs) {
+    addRecord : function(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox, res) {
         var pg = require('pg');
         var conString = process.env.DATABASE_URL;
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("INSERT INTO loggin_data(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox) values($1, $2, $3, $4, $5, $6)", [user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox]);
-        var index = require("./index.js");
 
         query.on("end", function (result) {
             client.end();
-            index.document_ids(docs, req, res);
             // Render user information
-            res.render('index.ejs');
+            //res.render('index.ejs');
         });
     },
     readRecords: function(req, res) {

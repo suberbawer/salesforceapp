@@ -399,7 +399,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
                 updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, res);
             } else {
                 // Add new record for user
-                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, res);
+                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, req, res, docs);
                 document_ids(docs, req, res);
             }
         }
