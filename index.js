@@ -70,6 +70,7 @@ app.post('/login_n_check', function(req, res) {
                 docs = req.body.documents;
                 // Error login again please
                 res.sendStatus('401');
+                res.end();
             }
         });
     } else {
