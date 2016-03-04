@@ -5,7 +5,7 @@ module.exports = {
         var client = new pg.Client(conString);
         client.connect();
         var query = client.query("INSERT INTO loggin_data(user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox) values($1, $2, $3, $4, $5, $6)", [user_id, access_token, refresh_token, instance_url, salesforce_version, is_sandbox]);
-        var index = require("./database/index.js");
+        var index = require("./index.js");
 
         query.on("end", function (result) {
             client.end();
