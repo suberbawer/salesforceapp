@@ -10,7 +10,7 @@ var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
 var isSandbox      = false;
-var documents      = [];
+var docs      = [];
 var userId;
 var oauth2;
 
@@ -67,7 +67,7 @@ app.post('/login_n_check', function(req, res) {
 
             } else {
                 console.log('------------------ ', req.body.documents);
-                documents = req.body.documents;
+                docs = req.body.documents;
                 // Error login again please
                 res.sendStatus('401');
             }
@@ -399,7 +399,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
             } else {
                 // Add new record for user
                 addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, res);
-                document_ids(documents, req, res);
+                document_ids(docs, req, res);
             }
         }
     });
