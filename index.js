@@ -10,7 +10,6 @@ var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
 var isSandbox      = false;
-var docs      = [];
 var userId;
 var oauth2;
 
@@ -60,14 +59,11 @@ app.post('/login_n_check', function(req, res) {
                         res.end();
                     }
                     // Logged in
-                    //res.sendStatus('200');
-                    //res.end();
-                    document_ids(req.body.documents, req, res);
+                    res.sendStatus('200');
+                    res.end();
                 }).run({ autoFetch : true, maxFetch : 1 });
 
             } else {
-                console.log('------------------ ', req.body.documents);
-                docs = req.body.documents;
                 // Error login again please
                 res.sendStatus('401');
                 res.end();
@@ -281,19 +277,18 @@ function postToChatter(request, response, credentials) {
 }
 
 // Function that recieve wrapper documents from salesforce to init the process
-//app.post('/document_ids', function(req, res) {
-function document_ids(documents, req, res) {
-    if (documents.length > 0) {
-        for (var index in documents) {
-            if (documents[index].itemName != '') {
+app.post('/document_ids', function(req, res) {
+    if (req.body) {
+        for (var index in req.body) {
+            if (req.body[index].itemName != '') {
                 // Get item name to set zip name
-                parentItemName = documents[index].itemName;
+                parentItemName = req.body[index].itemName;
                 break;
             }
         }
         if (parentItemName) {
             // Get credentials by user from postgres
-            getRecordsByUser(req, res, documents[0].userId, null, documents);
+            getRecordsByUser(req, res, req.body[0].userId, null, req.body);
         } else {
             // Prevent empty item names
             parentItemName = 'Generated Zip';
@@ -302,8 +297,7 @@ function document_ids(documents, req, res) {
         res.sendStatus('Body of request is empty');
         res.end();
     }
-}
-//);
+});
 
 //Adding check if connected capability
 app.get('/connStatus/:userId', function(req,res){
@@ -399,8 +393,7 @@ function getRecordsByUser(req, res, userId, conn, documents) {
                 updateRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, res);
             } else {
                 // Add new record for user
-                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, req, res, docs);
-                document_ids(docs, req, res);
+                addRecord(userId, conn.accessToken, conn.refreshToken, conn.instanceUrl, conn.version, isSandbox, res);
             }
         }
     });
