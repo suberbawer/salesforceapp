@@ -9,7 +9,7 @@ module.exports = {
         query.on("end", function (result) {
             client.end();
             // Render user information
-            //res.render('index.ejs');
+            res.render('index.ejs');
         });
     },
     readRecords: function(req, res) {
@@ -42,7 +42,7 @@ module.exports = {
         query.on("end", function (result) {
             client.end();
             // Render user information
-            //res.render('index.ejs');
+            res.render('index.ejs');
         });
     },
     delRecord : function(req, res){
