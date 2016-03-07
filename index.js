@@ -84,7 +84,7 @@ app.get('/', function(req, res) {
         clientSecret : '5644212675256863801',
         redirectUri : 'https://salesforceapi.herokuapp.com/callback'
     });
-    res.redirect(oauth2.getAuthorizationUrl({ scope: 'refresh_token' }));
+    res.redirect(oauth2.getAuthorizationUrl({ scope: 'access_token' }));
 });
 
 app.listen(app.get('port'), function() {
