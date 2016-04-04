@@ -196,14 +196,14 @@ function getDocuments(request, response, credentials, documents) {
         zip.on('end', function() {
             console.log('---------- ', __dirname);
             //response.redirect('/download-zip-file');
-            downoaldZipFile(response, request);
+            response.redirect('/download-zip-file');
             //postToChatter(request, response, credentials);
         });
     });
 }
 
-//app.get('/download-zip-file', function(req, res) {
-function donwloadZipFile(res, req) {
+app.get('/download-zip-file', function(req, res) {
+//function donwloadZipFile(res, req) {
     var archive = archiver.create('zip', {});
     archive.on('error', function(err) {
         res.status(500).send({error: err.message});
@@ -222,7 +222,7 @@ function donwloadZipFile(res, req) {
     //archive.directory(dirPath, false);
     archive.finalize();
 }
-//);
+);
 
 
 /**
