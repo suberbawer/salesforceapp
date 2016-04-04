@@ -201,7 +201,7 @@ function getDocuments(request, response, credentials, documents) {
     });
 }
 
-app.get('/download', (req, res) => {
+app.get('/download', function(req, res) {
     var file = 'outputZip.zip';
     res.download(file); // Set disposition and send it.
 });
