@@ -195,11 +195,12 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
-            download(zip, './downloads', docId, function(err, id){
+            download('outputZip', './downloads', docId, function(err, id){
                 if(err)
                     throw err;
 
                 console.log('Arquivo gravado com id %s', id);
+                response.end();
             });
             //postToChatter(request, response, credentials);
         });
