@@ -196,7 +196,7 @@ function getDocuments(request, response, credentials, documents) {
         zip.on('end', function() {
             console.log('---------- ', __dirname);
             //response.redirect('/download-zip-file');
-            downoaldZipFile(response, request);
+            donwloadZipFile(response, request);
             //postToChatter(request, response, credentials);
         });
     });
