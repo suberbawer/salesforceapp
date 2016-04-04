@@ -195,12 +195,17 @@ function getDocuments(request, response, credentials, documents) {
         zip.finalize();
         zip.on('end', function() {
             console.log('---------- ', __dirname);
-            //response.redirect('/download');
-            response.download('outputZip.zip');
+            response.redirect('/download');
             //postToChatter(request, response, credentials);
         });
     });
 }
+
+app.get('/download', (req, res) => {
+    var file = 'outputZip.zip';
+    res.download(file); // Set disposition and send it.
+});
+
 
 /**
  * Function that send zip file to salesforce chatter via chatter api
