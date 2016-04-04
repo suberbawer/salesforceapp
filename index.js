@@ -201,7 +201,7 @@ function getDocuments(request, response, credentials, documents) {
 
 app.get('/download-zip-file', function(req, res) {
 //function donwloadZipFile(res, req) {
-    var zip         = archiver.create('zip', {});
+    var zip = fs.createReadStream('outputZip.zip')
 
     // zip.on('error', function(err) {
     //     res.status(500).send({error: err.message});
@@ -214,9 +214,10 @@ app.get('/download-zip-file', function(req, res) {
     // Bind zip to output
     // zip.pipe(output);
     //console.log('respos    ', res);
-    zip.pipe(res);
+    //zip.pipe(res);
     //this is the streaming magic
-    zip.append(fs.createReadStream('file.txt'), {name:'file.txt'});
+
+    //zip.append(fs.createReadStream('file.txt'), {name:'file.txt'});
     //you can add a directory using directory function
     //archive.directory(dirPath, false);
     zip.finalize();
