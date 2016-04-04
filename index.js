@@ -195,15 +195,30 @@ function getDocuments(request, response, credentials, documents) {
         zip.finalize();
         zip.on('end', function() {
             console.log('---------- ', __dirname);
-            response.redirect('/download');
+            response.redirect('/download-zip-file');
             //postToChatter(request, response, credentials);
         });
     });
 }
 
-app.get('/download', function(req, res) {
-    var file = 'outputZip.zip';
-    res.download(file); // Set disposition and send it.
+app.get('/download-zip-file', function(req, res) {
+    var archive = Archiver('zip');
+    archive.on('error', function(err) {
+        res.status(500).send({error: err.message});
+    });
+    //on stream closed we can end the request
+    res.on('close', function() {
+        console.log('Archive wrote %d bytes', archive.pointer());
+        return res.status(200).send('OK').end();
+    });
+    //set the archive name
+    res.attachment('file-txt.zip');
+    //this is the streaming magic
+    archive.pipe(res);
+    archive.append(fs.createReadStream('mydir/file.txt'), {name:'file.txt'});
+    //you can add a directory using directory function
+    //archive.directory(dirPath, false);
+    archive.finalize();
 });
 
 
