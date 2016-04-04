@@ -195,13 +195,15 @@ function getDocuments(request, response, credentials, documents) {
         zip.finalize();
         zip.on('end', function() {
             console.log('---------- ', __dirname);
-            response.redirect('/download-zip-file');
+            //response.redirect('/download-zip-file');
+            downoaldZipFile(response, request);
             //postToChatter(request, response, credentials);
         });
     });
 }
 
-app.get('/download-zip-file', function(req, res) {
+//app.get('/download-zip-file', function(req, res) {
+function donwloadZipFile(res, req) {
     var archive = archiver.create('zip', {});
     archive.on('error', function(err) {
         res.status(500).send({error: err.message});
@@ -219,7 +221,8 @@ app.get('/download-zip-file', function(req, res) {
     //you can add a directory using directory function
     //archive.directory(dirPath, false);
     archive.finalize();
-});
+}
+//);
 
 
 /**
