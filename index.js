@@ -208,11 +208,6 @@ function donwloadZipFile(res, req) {
     archive.on('error', function(err) {
         res.status(500).send({error: err.message});
     });
-    //on stream closed we can end the request
-    res.on('close', function() {
-        console.log('Archive wrote %d bytes', archive.pointer());
-        return res.status(200).send('OK').end();
-    });
     //set the archive name
     res.attachment('file-txt.zip');
     //this is the streaming magic
