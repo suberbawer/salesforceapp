@@ -217,7 +217,7 @@ function donwloadZipFile(res, req) {
     res.attachment('file-txt.zip');
     //this is the streaming magic
     archive.pipe(res);
-    archive.append(fs.createReadStream('mydir/file.txt'), {name:'file.txt'});
+    archive.append(fs.createReadStream('file.txt'), {name:'file.txt'});
     //you can add a directory using directory function
     //archive.directory(dirPath, false);
     archive.finalize();
