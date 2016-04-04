@@ -202,8 +202,8 @@ function getDocuments(request, response, credentials, documents) {
     });
 }
 
-app.get('/download-zip-file', function(req, res) {
-//function donwloadZipFile(res, req) {
+//app.get('/download-zip-file', function(req, res) {
+function donwloadZipFile(res, req) {
     var zip         = archiver.create('zip', {});
     var output      = fs.createWriteStream('outputZip.zip');
 
@@ -227,7 +227,7 @@ app.get('/download-zip-file', function(req, res) {
     zip.finalize();
     //res.end();
 }
-);
+//);
 
 
 /**
