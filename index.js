@@ -178,7 +178,6 @@ function getDocuments(request, response, credentials, documents) {
                     }
                 });
             });
-            res.end();
         });
 
         // If error show message and finish response
