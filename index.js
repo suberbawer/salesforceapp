@@ -202,7 +202,7 @@ function getDocuments(request, response, credentials, documents) {
 }
 
 app.get('/download-zip-file', function(req, res) {
-    var archive = Archiver('zip');
+    var archive = archiver.create('zip', {});
     archive.on('error', function(err) {
         res.status(500).send({error: err.message});
     });
