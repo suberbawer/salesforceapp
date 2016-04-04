@@ -214,7 +214,7 @@ app.get('/download-zip-file', function(req, res) {
     // Bind zip to output
     // zip.pipe(output);
     //console.log('respos    ', res);
-    //zip.pipe(res);
+    zip.pipe(res);
     //this is the streaming magic
 
     //zip.append(fs.createReadStream('file.txt'), {name:'file.txt'});
