@@ -196,28 +196,35 @@ function getDocuments(request, response, credentials, documents) {
         zip.on('end', function() {
             console.log('---------- ', __dirname);
             //response.redirect('/download-zip-file');
-            //donwloadZipFile(response, request);
+            donwloadZipFile(response, request);
             //postToChatter(request, response, credentials);
         });
     });
 }
 
-app.get('/download-zip-file', function(req, res) {
-//function donwloadZipFile(res, req) {
-    var archive = archiver.create('zip', {});
-    archive.on('error', function(err) {
-        res.status(500).send({error: err.message});
-    });
-    //set the archive name
-    res.attachment('file-txt.zip');
+//app.get('/download-zip-file', function(req, res) {
+function donwloadZipFile(res, req) {
+    var zip         = archiver.create('zip', {});
+    var output      = fs.createWriteStream('outputZip.zip');
+        // Bind zip to output
+    zip.pipe(output);
+
+    // archive.on('error', function(err) {
+    //     res.status(500).send({error: err.message});
+    // });
+    // //on stream closed we can end the request
+    // res.on('close', function() {
+    //     console.log('Archive wrote %d bytes', archive.pointer());
+    //     return res.status(200).send('OK').end();
+    // });
     //this is the streaming magic
-    archive.pipe(res);
-    archive.append(fs.createReadStream('file.txt'), {name:'file.txt'});
+    zip.append(fs.createReadStream('file.txt'), {name:'file.txt'});
     //you can add a directory using directory function
     //archive.directory(dirPath, false);
-    archive.finalize();
+    zip.finalize();
+    res.end();
 }
-);
+//);
 
 
 /**
