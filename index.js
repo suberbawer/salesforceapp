@@ -222,7 +222,7 @@ app.get('/download-zip-file', function(req, res) {
     //you can add a directory using directory function
     //archive.directory(dirPath, false);
     zip.finalize();
-    res.end();
+    //res.end();
 }
 );
 
