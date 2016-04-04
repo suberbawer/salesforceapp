@@ -201,7 +201,7 @@ function getDocuments(request, response, credentials, documents) {
 
 app.get('/download-zip-file', function(req, res) {
 //function donwloadZipFile(res, req) {
-    var zip = fs.createReadStream('outputZip.zip')
+    var zip = fs.createReadStream('outputZip.zip');
 
     // zip.on('error', function(err) {
     //     res.status(500).send({error: err.message});
