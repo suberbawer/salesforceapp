@@ -215,7 +215,8 @@ app.get('/download-zip-file', function(req, res) {
     res.on('close', function() {
         console.log('Archive wrote %d bytes', zip.pointer());
         return res.status(200).send('OK').end();
-    // }); // Bind zip to output
+    });
+    // Bind zip to output
     // zip.pipe(output);
     zip.pipe(res);
     //this is the streaming magic
