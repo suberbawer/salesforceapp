@@ -10,6 +10,7 @@ var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
 var isSandbox      = false;
+var zip;
 var userId;
 var oauth2;
 
@@ -115,7 +116,7 @@ app.get('/callback', function(req, res) {
  */
 function getDocuments(request, response, credentials, documents) {
     // Variables
-    var zip         = archiver.create('zip', {});
+    zip         = archiver.create('zip', {});
     var output      = fs.createWriteStream('outputZip.zip');
     var accessToken = credentials[credentials.length - 1].access_token;
     var sVersion    = credentials[credentials.length - 1].salesforce_version;
@@ -201,7 +202,7 @@ function getDocuments(request, response, credentials, documents) {
 
 app.get('/download-zip-file', function(req, res) {
 //function donwloadZipFile(res, req) {
-    var zip = fs.createReadStream('outputZip.zip');
+    console.log('el zip----- ', zip);
 
     // zip.on('error', function(err) {
     //     res.status(500).send({error: err.message});
@@ -294,7 +295,7 @@ function postToChatter(request, response, credentials) {
 
     // write data to request body
     req.write(postData);
-    // Add final boundary and bind request to zip
+    // Add final boundary and bind zip to request
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
             req.end(CRLF + '--'+ boundary +'--' + CRLF);
