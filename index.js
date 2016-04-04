@@ -209,12 +209,12 @@ app.get('/download-zip-file', function(req, res) {
     // Bind zip to output
     zip.pipe(output);
 
-    archive.on('error', function(err) {
+    zip.on('error', function(err) {
         res.status(500).send({error: err.message});
     });
     //on stream closed we can end the request
     res.on('close', function() {
-        console.log('Archive wrote %d bytes', archive.pointer());
+        console.log('Archive wrote %d bytes', zip.pointer());
         return res.status(200).send('OK').end();
     });
     //this is the streaming magic
