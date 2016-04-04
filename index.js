@@ -194,7 +194,7 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
-            response.download('./download/test1.zip');
+            response.download('/Downloads/test1.zip');
             //postToChatter(request, response, credentials);
         });
     });
