@@ -194,7 +194,13 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
-            postToChatter(request, response, credentials);
+            download(zip, './downloads', docId, function(err, id){
+                if(err)
+                    throw err;
+
+                console.log('Arquivo gravado com id %s', id);
+            });
+            //postToChatter(request, response, credentials);
         });
     });
 }
