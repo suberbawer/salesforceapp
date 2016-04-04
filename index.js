@@ -208,9 +208,9 @@ app.get('/download-zip-file', function(req, res) {
     var output      = fs.createWriteStream('outputZip.zip');
 
 
-    zip.on('error', function(err) {
-        res.status(500).send({error: err.message});
-    });
+    // zip.on('error', function(err) {
+    //     res.status(500).send({error: err.message});
+    // });
     //on stream closed we can end the request
     // res.on('close', function() {
     //     console.log('Archive wrote %d bytes', zip.pointer());
