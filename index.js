@@ -7,7 +7,6 @@ var fs           = require('fs');
 var http         = require('https');
 var archiver     = require('archiver');
 var async        = require("async");
-var download = require('./download.js');
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
 var isSandbox      = false;
@@ -195,13 +194,7 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
-            download('outputZip', './downloads', docId, function(err, id){
-                if(err)
-                    throw err;
-
-                console.log('Arquivo gravado com id %s', id);
-                response.end();
-            });
+            response.download(zip);
             //postToChatter(request, response, credentials);
         });
     });
