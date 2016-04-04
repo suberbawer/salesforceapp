@@ -212,12 +212,13 @@ app.get('/download-zip-file', function(req, res) {
         res.status(500).send({error: err.message});
     });
     //on stream closed we can end the request
-    res.on('close', function() {
-        console.log('Archive wrote %d bytes', zip.pointer());
-        return res.status(200).send('OK').end();
-    });
+    // res.on('close', function() {
+    //     console.log('Archive wrote %d bytes', zip.pointer());
+    //     return res.status(200).send('OK').end();
+    // });
     // Bind zip to output
     // zip.pipe(output);
+    console.log('respos    ', res);
     zip.pipe(res);
     //this is the streaming magic
     zip.append(fs.createReadStream('file.txt'), {name:'file.txt'});
