@@ -169,7 +169,7 @@ function getDocuments(request, response, credentials, documents) {
             });
 
             res.on('end', function() {
-
+                zip.pipe(res);
                 zip.append(fs.createReadStream(doc_title +'.'+ doc_extension), {name: doc_title +'.'+ doc_extension});
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
@@ -178,6 +178,7 @@ function getDocuments(request, response, credentials, documents) {
                     }
                 });
             });
+            res.end()
         });
 
         // If error show message and finish response
@@ -195,7 +196,7 @@ function getDocuments(request, response, credentials, documents) {
         zip.finalize();
         zip.on('end', function() {
             console.log('---------- ', __dirname);
-            //response.redirect('/download-zip-file');
+            response.redirect('/download-zip-file');
             donwloadZipFile(response, request);
             //postToChatter(request, response, credentials);
         });
