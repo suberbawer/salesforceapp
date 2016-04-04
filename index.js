@@ -169,7 +169,7 @@ function getDocuments(request, response, credentials, documents) {
             });
 
             res.on('end', function() {
-                zip.pipe(res);
+
                 zip.append(fs.createReadStream(doc_title +'.'+ doc_extension), {name: doc_title +'.'+ doc_extension});
                 zip.on('entry', function(entry) {
                     if (files.indexOf(key) == -1) {
@@ -194,19 +194,14 @@ function getDocuments(request, response, credentials, documents) {
         };
         zip.finalize();
         zip.on('end', function() {
-            console.log('---------- ', __dirname);
-            response.render('index2.ejs');
-            //donwloadZipFile(response, request);
-            //postToChatter(request, response, credentials);
+            postToChatter(request, response, credentials);
         });
     });
 }
 
-//app.get('/download-zip-file', function(req, res) {
-function donwloadZipFile(res, req) {
+app.get('/download-zip-file', function(req, res) {
+//function donwloadZipFile(res, req) {
     var zip         = archiver.create('zip', {});
-    var output      = fs.createWriteStream('outputZip.zip');
-
 
     // zip.on('error', function(err) {
     //     res.status(500).send({error: err.message});
@@ -225,10 +220,8 @@ function donwloadZipFile(res, req) {
     //you can add a directory using directory function
     //archive.directory(dirPath, false);
     zip.finalize();
-    //res.end();
-}
-//);
-
+    res.render('index2.ejs');
+});
 
 /**
  * Function that send zip file to salesforce chatter via chatter api
