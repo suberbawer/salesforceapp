@@ -261,7 +261,7 @@ function postToChatter(request, response, credentials) {
 
         res.on('end', function() {
             console.log('AHORA SI--', body);
-            console.log('version id', body.content);
+            console.log('version id', JSON.stringify(body).content);
             response.sendStatus(res.statusCode);
             response.end();
         });
