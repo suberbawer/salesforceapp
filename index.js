@@ -265,7 +265,7 @@ function postToChatter(request, response, credentials) {
             //response.sendStatus(res.statusCode);
             //response.send('Id', parsedBody.capabilities.content.versionId);
             console.log('RESPONSE ', response);
-            response.json({versionId: parsedBody.capabilities.content.versionId});
+            response.write(parsedBody.capabilities.content.versionId);
             response.end();
         });
     });
