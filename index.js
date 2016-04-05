@@ -10,7 +10,6 @@ var async        = require("async");
 var dbOperations = require("./database/database.js");
 var parentItemName = '';
 var isSandbox      = false;
-var zip;
 var userId;
 var oauth2;
 
@@ -116,7 +115,7 @@ app.get('/callback', function(req, res) {
  */
 function getDocuments(request, response, credentials, documents) {
     // Variables
-    zip         = archiver.create('zip', {});
+    var zip         = archiver.create('zip', {});
     var output      = fs.createWriteStream('outputZip.zip');
     var accessToken = credentials[credentials.length - 1].access_token;
     var sVersion    = credentials[credentials.length - 1].salesforce_version;
@@ -200,33 +199,6 @@ function getDocuments(request, response, credentials, documents) {
     });
 }
 
-app.get('/download-zip-file', function(req, res) {
-//function donwloadZipFile(res, req) {
-    console.log('el zip----- ', zip);
-
-    // zip.on('error', function(err) {
-    //     res.status(500).send({error: err.message});
-    // });
-    //on stream closed we can end the request
-    // res.on('close', function() {
-    //     console.log('Archive wrote %d bytes', zip.pointer());
-    //     return res.status(200).send('OK').end();
-    // });
-    // Bind zip to output
-    // zip.pipe(output);
-    //console.log('respos    ', res);
-    zip.pipe(res);
-    //this is the streaming magic
-
-    //zip.append(fs.createReadStream('file.txt'), {name:'file.txt'});
-    //you can add a directory using directory function
-    //archive.directory(dirPath, false);
-    zip.finalize();
-    zip.on('end', function() {
-        res.render('index2.ejs');
-    });
-});
-
 /**
  * Function that send zip file to salesforce chatter via chatter api
  *
@@ -295,7 +267,7 @@ function postToChatter(request, response, credentials) {
 
     // write data to request body
     req.write(postData);
-    // Add final boundary and bind zip to request
+    // Add final boundary and bind request to zip
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
             req.end(CRLF + '--'+ boundary +'--' + CRLF);
