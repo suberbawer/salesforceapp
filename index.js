@@ -260,12 +260,11 @@ function postToChatter(request, response, credentials) {
         });
 
         res.on('end', function() {
-            console.log('EL Body===== ', body);
             var parsedBody = JSON.parse(body);
             console.log('a ver la response ahora22222-- ', parsedBody.capabilities.content.versionId);
             //response.sendStatus(res.statusCode);
             //response.send('Id', parsedBody.capabilities.content.versionId);
-            response.status(res.statusCode).send({Id: parsedBody.capabilities.content.versionId.toString()});
+            response.status('8000').send('prueba');
             response.end();
         });
     });
