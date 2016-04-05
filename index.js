@@ -255,7 +255,7 @@ function postToChatter(request, response, credentials) {
     // Execute request
     var req = new http.request(options, function(res) {
         //console.log('a token ---- ', accessToken);
-        console.log('RESPONSE---------', res.content);
+        console.log('RESPONSE---------', res.body);
         response.sendStatus(res.statusCode);
         response.end();
     });
@@ -269,7 +269,7 @@ function postToChatter(request, response, credentials) {
 
     // write data to request body
     req.write(postData);
-    // Add final boundary and bind request to zip
+    // Add final boundary and bind zip to request
     fs.createReadStream('outputZip.zip')
         .on('end', function() {
             req.end(CRLF + '--'+ boundary +'--' + CRLF);
