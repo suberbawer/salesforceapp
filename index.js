@@ -256,7 +256,6 @@ function postToChatter(request, response, credentials) {
     var req = new http.request(options, function(res) {
         var body = '';
         res.on('data', function (chunk) {
-            console.log('body-------', chunk);
             body += chunk;
         });
 
