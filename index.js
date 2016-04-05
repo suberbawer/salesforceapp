@@ -254,6 +254,7 @@ function postToChatter(request, response, credentials) {
 
     // Execute request
     var req = new http.request(options, function(res) {
+        console.log('RESPONSE---------', res);
         response.sendStatus(res.statusCode);
         response.end();
     });
@@ -273,7 +274,6 @@ function postToChatter(request, response, credentials) {
             req.end(CRLF + '--'+ boundary +'--' + CRLF);
         })
         .pipe(req, {end:false});
-
 }
 
 // Function that recieve wrapper documents from salesforce to init the process
