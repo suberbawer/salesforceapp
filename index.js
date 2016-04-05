@@ -254,11 +254,13 @@ function postToChatter(request, response, credentials) {
 
     // Execute request
     var req = new http.request(options, function(res) {
-        console.log('a token ---- ', accessToken);
+        //console.log('a token ---- ', accessToken);
         //console.log('RESPONSE---------', res);
+        var jsonResponse = '';
         res.on('data', function (chunk) {
-            console.log('BODY: ' + chunk);
+            jsonResponse = jsonResponse + chunk;
         });
+        console.log('JSONE RESPONSEEEEEEEE----', jsonResponse);
         response.sendStatus(res.statusCode);
         response.end();
     });
