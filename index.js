@@ -254,19 +254,17 @@ function postToChatter(request, response, credentials) {
 
     // Execute request
     var req = new http.request(options, function(res) {
-        console.log('a token ---- ', accessToken);
-        //console.log('RESPONSE---------', res);
         var body = '';
         res.on('data', function (chunk) {
-            console.log('BODY: ' + chunk);
             body += chunk;
         });
-        console.log('el body----', body);
-        res.on('end', function(){
-            console.log('en el end', body);
+
+        res.on('end', function() {
+            console.log('AHORA SI--', body);
+            console.log('version id', body.content);
+            response.sendStatus(res.statusCode);
+            response.end();
         });
-        response.sendStatus(res.statusCode);
-        response.end();
     });
 
     // If error show message and finish response
