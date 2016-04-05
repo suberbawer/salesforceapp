@@ -254,18 +254,8 @@ function postToChatter(request, response, credentials) {
 
     // Execute request
     var req = new http.request(options, function(res) {
-        var body = '';
-        res.on('data', function (chunk) {
-            body += chunk;
-        });
-
-        res.on('end', function() {
-            var parsedBody = JSON.parse(body);
-            console.log('a ver la response ahora22222-- ', parsedBody.capabilities.content.versionId);
-            response.setHeader('vId', '12345');
-            response.statusCode = res.statusCode;
-            response.end();
-        });
+        response.sendStatus(res.statusCode);
+        response.end();
     });
 
     // If error show message and finish response
@@ -283,6 +273,7 @@ function postToChatter(request, response, credentials) {
             req.end(CRLF + '--'+ boundary +'--' + CRLF);
         })
         .pipe(req, {end:false});
+
 }
 
 // Function that recieve wrapper documents from salesforce to init the process
