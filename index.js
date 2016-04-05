@@ -263,7 +263,6 @@ function postToChatter(request, response, credentials) {
             var parsedBody = JSON.parse(body);
             console.log('a ver la response ahora22222-- ', parsedBody.capabilities.content.versionId);
             response.status(res.statusCode).json({hola:'hola'});
-            response.write(parsedBody.capabilities.content.versionId);
             response.end();
         });
     });
