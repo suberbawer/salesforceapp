@@ -264,7 +264,8 @@ function postToChatter(request, response, credentials) {
             console.log('a ver la response ahora22222-- ', parsedBody.capabilities.content.versionId);
             //response.sendStatus(res.statusCode);
             //response.send('Id', parsedBody.capabilities.content.versionId);
-            response.status(res.statusCode).json({test:'prueba'});
+            response.json({id:'prueba'});
+            response.status(res.statusCode);
             response.end();
         });
     });
