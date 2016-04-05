@@ -256,11 +256,10 @@ function postToChatter(request, response, credentials) {
     var req = new http.request(options, function(res) {
         //console.log('a token ---- ', accessToken);
         //console.log('RESPONSE---------', res);
-        var jsonResponse = [];
         res.on('data', function (chunk) {
-            jsonResponse.push(chunk);
+            console.log('body------ ', chunk);
+            console.log('asdfasdfasdfasdf', chunk.versionId);
         });
-        console.log('JSONE RESPONSEEEEEEEE----', jsonResponse);
         response.sendStatus(res.statusCode);
         response.end();
     });
